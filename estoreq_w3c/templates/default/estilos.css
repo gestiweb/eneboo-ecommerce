@@ -1,0 +1,918 @@
+/*body { 
+	color:#333;
+	font-family:verdana,arial;
+	font-size:11px;
+	text-align:center;
+	margin: 0px 10px 0px 10px;
+	border: 1px solid #CCC;
+}
+
+pre {
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+}
+
+select, input, textarea, select {
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+	border: 1px solid #CCC;
+	margin: 3px;
+	padding: 2px;
+}
+*/
+input.boton {
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+	border: 1px solid #CCC;
+	margin: 3px;
+	padding: 2px;
+}
+
+input.warning, select.warning {
+	background-color: red;
+}
+
+input.normal, select.normal {
+	background-color: none;
+}
+
+
+
+div#barraTop {
+	background-color:#333;
+	color:#EEE;
+	height: 17px;
+	padding:2px 0px 2px 0px;
+}
+
+div#navTop {
+	float: left;
+	text-align:left;
+	width: 70%;
+	padding: 0px 0px 0px 5px;
+}
+
+div#bienvenidoTop {
+	float: right;
+	text-align: right;
+	width: 25%;
+	padding: 0px 20px 0px 0px;
+}
+
+
+div#logoTop {
+	color:#EEE;
+	height: 56px;
+	padding: 0px;
+	background-image: url(images/fondo_top.png);
+	background-position: right;
+	background-repeat: repeat-y;
+}
+
+div#imgLogoTop {
+	float: left;
+	text-align:left;
+	width: 600px;
+}
+
+div#sloganLogoTop {
+	float: right;
+	text-align: right;
+	width: 250px;
+	padding: 35px 20px 0px 0px;
+	font-weight: bold;
+}
+
+
+div#modulosLeft {
+	position:absolute;
+	clear: left;
+	float: left;
+	width: 140px;
+}
+
+div#contenidos {
+	text-align: left;
+	margin:0 150px;
+	padding: 0px;
+	border: 1px solid #DDD;
+}
+
+div#modulosRight {
+	float: right;
+	width: 140px;
+}
+
+
+
+div#textoPie {
+	clear: both;
+	padding: 10px 0px 3px 0px;
+	color: #555;
+	text-align:center;
+	font-size: 9px;
+}
+
+
+
+
+
+div.modulosWebLeft {
+	border-right: 1px solid #ddd;
+	background-color:#f5f5f5;
+	text-align: left;
+}
+
+div.modulosWebRight {
+	border-left: 1px solid #ddd;
+	background-color:#f5f5f5;
+	text-align: left;
+}
+
+
+div.caja {
+	padding: 0px; 
+	margin: 0px 0px 20px 0px;
+}
+
+div.caja div.titulo {
+	background-color:#DDD;
+	color:#2338AC;
+	font-size: 10px;
+	font-weight: bold;
+	padding: 2px 5px 2px 5px; 
+	margin: 0px;
+	line-height:12px;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	border-color: #ccc;
+}
+
+div.caja div.casillaUnica {
+	background-color:#DDD;
+	color:#2338AC;
+	font-size: 10px;
+	font-weight: bold;
+	padding: 2px 5px 0px 5px; 
+	margin: 0px;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	border-color: #ccc;
+}
+
+div.caja div.contenido {
+	line-height:13px;
+	padding:0px;
+	font-weight: normal;
+}
+
+div.cajaArtMatriz {
+	text-align: center;
+	float:left;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.innerCajaArtMatriz {
+	padding: 15px 5px 10px 5px;
+	border-width: 0px 1px 1px 0px;
+	border-color: #DDD;
+	border-style: solid;
+}
+
+
+div.cajaImagenMatriz {
+	text-align: center;
+	float:left;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.innerCajaImagenMatriz {
+	padding: 15px 5px 10px 5px;
+	border-width: 0px 1px 1px 0px;
+	border-color: #DDD;
+	border-style: solid;
+	height: 150px;
+}
+
+
+
+div.navBar {
+	width:99%;
+	height: 15px;
+	background-color:#EEE;
+	padding: 2px 0px 2px 0px;
+	margin: 5px 0px 0px 0px;
+}
+
+div.navBarResultPag {
+	float:left;
+	width:30%;
+	padding: 0px 0px 0px 5px;
+}
+
+div.navBarListaPag {
+	float:left;
+	width:25%;
+}
+
+div.navBarOrden {
+	float:left;
+	width:40%;
+	text-align:right;
+}
+
+div.navBarResultXPag {
+	float:left;
+	width:60%;
+	text-align: left;
+	padding-left: 5px;
+}
+
+div.navBarDisposicion {
+	float:left;
+	width:35%;
+	text-align: right;
+}
+
+
+div.cellMatriz {
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+div.cellMatriz div.descripcion {
+	font-weight: bold;
+	height: 40px;
+	line-height: 12px;
+}
+
+div.cellMatriz div.imagen {
+	font-weight: bold;
+}
+
+div.cellMatriz div.stock {
+	height: 40px;
+}
+
+div.cellMatriz div.precio {
+	font-weight: bold;
+	height: 28px;
+}
+
+div.cellMatriz div.venta {
+	height: 20px;
+	padding: 10px 0px 0px 0px;
+	vertical-align: top;
+}
+
+
+
+div.cellLista {
+	clear: left;
+	margin: 15px 0px 0px 0px;
+	width: 100%;
+	border-bottom: 1px solid #DDD;
+}
+
+div.cellListaImagen {
+	float:left;
+	font-weight: bold;
+}
+
+div.cellListaImagen img {
+	margin: 0px 20px 0px 20px;
+}
+
+div.cellListaDescripcion {
+	float:left;
+	width: 25%;
+	font-weight: bold;
+	line-height: 12px;
+}
+
+div.cellListaStock {
+	float:left;
+	width: 20%;
+}
+
+div.cellListaPrecio {
+	float:left;
+	width: 15%;
+	font-weight: bold;
+}
+
+div.cellListaVenta {
+	float:left;
+	width: 25%;
+	text-align: center;
+}
+
+
+
+div.articulo {
+	padding: 10px;
+	position: relative;
+}
+
+div.articulo div.thumb {
+	width: 200px;
+}
+
+div.articulo div.venta {
+	position: absolute;
+	left: 300px;
+	top: 10px;
+	padding: 10px;
+}
+
+
+
+div.cabeceraDescCesta {
+	float:left;
+	font-weight: bold;
+	color:#2338AC;
+	width: 120px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.cabeceraDatoCesta {
+	float:left;
+	font-weight: bold;
+	text-align: right;
+	color:#2338AC;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+	width: 80px;
+}
+
+div.articuloCesta {
+	clear:left;
+	float:left;
+	width: 120px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.datoCesta {
+	float:left;
+	text-align: right;
+	width: 80px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+	vertical-align:top;
+}
+
+div.datoCesta input {
+	padding: 1px 3px 1px 3px;
+}
+
+div#labelTotalCesta {
+	clear:left;
+	float:left;
+	height: 25px;
+	text-align: left;
+	font-weight: bold;
+	width: 120px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div#totalCesta {
+	float:left;
+	height: 25px;
+	text-align: right;
+	width: 80px;
+	font-weight: bold;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+
+div#formLogin {
+	position:relative;
+	border: 1px solid #DDD;
+	background-color:#EEE;
+	width: 350px;
+	height: 170px;
+}
+
+div#lblTengoCuentaLogin {
+	position:absolute;
+	top: 20px;
+	left: 95px;
+}
+
+div#lblEmailLogin {
+	position:absolute;
+	top: 60px;
+	left: 15px;
+	font-weight: bold;
+}
+
+div#emailLogin {
+	position:absolute;
+	top: 55px;
+	left: 90px;
+}
+
+div#lblPassLogin {
+	position:absolute;
+	top: 90px;
+	left: 15px;
+	font-weight: bold;
+}
+
+div#passLogin {
+	position:absolute;
+	top: 85px;
+	left: 90px;
+}
+
+div#botLogin {
+	position:absolute;
+	top: 125px;
+	left: 90px;
+}
+
+div#botones {
+	float:left;
+	text-align: left;
+	width: 50%;
+	padding: 10px 0px 40px 0px;
+}
+
+
+div.labelForm {
+	clear:left;
+	float:left;
+	width: 130px;
+	text-align: left;
+	padding: 5px 10px 0px 0px;
+	font-weight: bold;
+	color: #555;
+}
+
+div.datoForm {
+	float:left;
+}
+
+
+
+
+div.labelListaDocFact {
+	float:left;
+	width: 130px;
+	height: 30px;
+	padding-bottom: 10px;
+	text-align: left;
+	font-weight: bold;
+	color: #555;
+}
+
+div.datoListaDocFact {
+	float:left;
+	width: 130px;
+	height: 20px;
+}
+
+
+p.separador {
+	clear: left;
+	padding-top:20px;
+}
+
+.cleaner {
+	clear:both;
+	height:1px;
+	font-size:1px;
+	border:none;
+	margin:0; padding:0;
+	background:transparent;
+}
+
+.cleanerLeft {
+	clear:left;
+	height:1px;
+	font-size:1px;
+	border:none;
+	margin:0; padding:0;
+	background:transparent;
+}
+
+
+div#datosEnvio {
+}
+
+div#datosEnvio div.checkEnvio {
+	clear:left;
+	float:left;
+	width:25px;
+}
+
+div#datosEnvio div.labelEnvio {
+	float:left;
+	width:250px;
+}
+
+div#datosEnvio div.datoEnvio {
+	float:left;
+	width:60px;
+	text-align: right;
+}
+
+div#datosEnvio div.msgEnvio {
+	float:left;
+	width:200px;
+	text-align: left;
+	margin-left: 10px;
+}
+
+
+div.formaPago {
+	padding: 5px;
+	margin: 0px 0px 15px 0px;
+	width:500px;
+	border: 1px solid #DDD;
+}
+
+div.formaPago div.checkPago {
+	clear:left;
+	float:left;
+	width:25px;
+}
+
+div.formaPago div.labelPago {
+	float:left;
+	font-weight: bold;
+}
+
+div.formaPago div.descPago {
+	clear:left;
+	width:90%;
+	padding: 5px;
+	background-color: #EEE;
+}
+
+div.formaPago div.gastosPago {
+	clear:left;
+	width:90%;
+	padding: 5px;
+}
+
+
+div.noticia {
+	padding: 10px 20px 2px 5px; 
+	line-height:12px;
+	margin: 0px;
+	text-align:justify;
+	vertical-align:top;
+}
+
+div.noticia img {
+	float:right;
+	padding: 0px 0px 20px 20px;
+}
+
+
+div.flags {
+	padding: 4px 0px 0px 0px;
+	text-align:center;
+	vertical-align:middle;
+	background-color:#DDD;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.titPagina, .titPath {
+	font-size:13px;
+	color:#2338AC;
+	font-weight: bold;
+	margin: 0px;
+	padding: 2px 4px 2px 4px;
+	text-align: left;
+	background-color:#DDD;
+}
+
+.subCaja {
+	margin: 0px;
+	padding: 2px 4px 2px 4px;
+	text-align: left;
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	border-color: #EEE;
+}
+
+div.cajaTexto {
+	margin: 0px;
+	padding: 10px;
+	text-align: justify;
+}
+
+div.titApartado {
+	clear: left;
+	color:#2338AC;
+	font-weight: bold;
+	padding: 20px 0px 0px 0px;
+	margin: 5px 0px 10px 0px;
+	text-align: left;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+}
+
+.titApartadoText {
+	color:#2338AC;
+	font-weight: bold;
+	background-color: #EEE;
+	padding: 1px 10px 1px 10px;
+}
+
+.titModulo {
+	color:#2338AC;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 10px 0px 0px 0px;
+	padding: 0px;
+	text-align: left;
+	border-bottom: 1px solid #888;
+}
+
+.itemMenu {
+	background-color:#FFF;
+	border-bottom: 1px solid #DDD;
+	line-height:12px;
+}
+
+.itemMenu a {
+	margin: 0px;
+	display: block;
+	padding: 3px 5px 3px 5px;
+}
+
+.itemMenu a:hover {
+	background-color: #F5F5F5;
+}
+
+.itemMenuFamilia {
+	margin: 0px 0px 4px 0px;
+}
+
+a {
+	text-decoration:none;
+	color:#008;
+}
+
+a:hover {
+	color:#000;
+}
+
+a.botLink {
+	border: 1px solid #DDD;
+	padding: 2px 5px 2px 5px;
+	margin: 0px 10px 0px 0px;
+}
+
+a.botComprar, a.botFav, a.botActualizar, a.botContinuar, a.botVolver, a.botGuardar, a.botEliminar, a.botLista {
+	border: 1px solid #DDD;
+	padding: 3px 25px 2px 5px;
+	margin: 0px 10px 0px 0px;
+	background-repeat: no-repeat;
+	background-position: 95% 50%;
+}
+
+a.botContinuarCent, a.botVolverCent {
+	border: 1px solid #DDD;
+	padding: 3px 10px 2px 10px;
+	margin: 0px 5px 0px 0px;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+
+a.botLink:hover, a.botComprar:hover, a.botFav:hover, a.botActualizar:hover, a.botActualizar:hover, a.botContinuar:hover, a.botContinuarCent:hover, a.botVolver:hover a.botVolverCent:hover, a.botGuardar:hover, a.botEliminar:hover, a.botLista:hover {
+	background-color: #EEE;
+	border-color: 1px solid #555;
+}
+
+a.botComprar {
+	background-image: url(images/cesta.png);
+}
+
+a.botFav {
+	background-image: url(images/favoritos.png);
+}
+
+a.botActualizar {
+	background-image: url(images/actualizar.png);
+}
+
+a.botContinuar, a.botContinuarCent {
+	background-image: url(images/continuar.png);
+}
+
+a.botVolver, a.botVolverCent {
+	background-image: url(images/volver.png);
+}
+
+a.botGuardar {
+	background-image: url(images/guardar.png);
+}
+
+a.botEliminar {
+	background-image: url(images/eliminar.png);
+}
+
+a.botLista {
+	background-image: url(images/lista.png);
+}
+
+
+
+
+a.inv {
+	color:#FFF;
+}
+
+a.inv:hover {
+	color:#DDD;
+}
+
+ul {
+	list-style-image:url(../../images/lista.gif)
+}
+
+li {
+	margin-bottom:3px;
+}
+
+.thumb {
+	margin:0px;
+}
+
+
+.precioAnterior {
+	font-weight:normal;
+	font-size:10px;
+}
+
+.fasesPedido {
+	padding: 0px;
+	font-weight:bold;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+	font-size:10px;
+	color:#555;
+}
+
+.seccionesCuenta {
+	margin: 10px 0px 20px 0px;
+	padding: 0px;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+	font-size:10px;
+	color:#555;
+}
+
+.titSeccionCuenta {
+	color:#2338AC;
+	background-color: #EEE;
+	padding: 1px 10px 1px 10px;
+}
+
+
+.imgCaja {
+	margin: 5px;
+}
+
+.cajaImagen {
+	padding: 5px;
+	text-align:center;
+	background-color:#FFF;
+}
+
+.cajaImagen img {
+	width: 85px;
+}
+
+
+
+.msgInfo {
+	border: 1px solid #DDD;
+	padding: 3px;
+	margin: 10px 10px 10px 0px;
+}
+
+.msgError {
+	border: 1px solid #DDD;
+	padding: 3px;
+	margin: 10px 10px 10px 0px;
+	color: #500;
+}
+
+.msgOk {
+	border: 1px solid #DDD;
+	padding: 3px;
+	margin: 10px 10px 10px 0px;
+	color: #050;
+}
+
+.msgIVA {
+	font-weight:normal;
+	font-size:10px;
+	color:#555;
+	padding: 0px 0px 0px 5px;
+}
+
+div.fotoGrande {
+	border: 0px solid #CCC;
+	margin: 10px 10px 20px 10px;
+	padding: 10px 10px 0px 10px;
+}
+
+div.fotoGaleria {
+	margin: 0px;
+	padding: 10px 10px 10px 10px;
+	text-align:center;
+}
+
+div.fotoGaleria img {
+	border: 1px solid #CCC;
+	margin: 10px 0px 5px 0px;
+}
+
+div.navGaleria {
+	text-align:left;
+	padding: 4px 10px 4px 10px;
+}
+
+div.selecPais {
+	width: 220px;
+	border: 1px solid #CCC;
+	background-color: #EEE;
+	padding: 3px;
+	margin: 3px;
+}
+
+
+.ui-dialog div.links {
+	text-align: right;
+	margin: 10px 20px 0px 0px;
+}
+
+.ui-dialog div.img {
+	border: 1px solid #DDD;
+}
+
+
+.cajaEnviarAamigo {
+	border: 1px solid #999;
+	width: 500px;
+	padding: 10px;
+}
+
+.cajaEnviarAamigo input {
+	width: 350px;
+}
+
+.cajaEnviarAamigo textarea {
+	width: 450px;
+	height: 120px;
+}
+
+span#msgDescuento {
+	font-weight:bold;
+	padding-left: 10px;
+}

@@ -1,0 +1,89 @@
+body, p { 
+	color:#333;
+	font-family:verdana,arial;
+	font-size:11px;
+	text-align:justify;
+	margin:10px;
+}
+
+td {
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+}
+
+div.cabeceraDescCesta {
+	float:left;
+	font-weight: bold;
+	color:#2338AC;
+	width: 120px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.cabeceraDatoCesta {
+	float:left;
+	font-weight: bold;
+	text-align: right;
+	color:#2338AC;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+	width: 80px;
+}
+
+div.articuloCesta {
+	clear:left;
+	float:left;
+	width: 120px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.datoCesta {
+	float:left;
+	text-align: right;
+	width: 80px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+	vertical-align:top;
+}
+
+div.datoCesta input {
+	padding: 1px 3px 1px 3px;
+}
+
+div#labelTotalCesta {
+	clear:left;
+	float:left;
+	height: 25px;
+	text-align: left;
+	font-weight: bold;
+	width: 120px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div#totalCesta {
+	float:left;
+	height: 25px;
+	text-align: right;
+	width: 80px;
+	font-weight: bold;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+.titApartado {
+	font-size:11px;
+	color:#2338AC;
+	font-weight: bold;
+	margin: 20px 0px 0px 0px;
+	text-align: left;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+}

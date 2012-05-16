@@ -1,0 +1,3 @@
+DROP SEQUENCE clientes_codcliente_seq;
+
+CREATE SEQUENCE clientes_codcliente_seq START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;

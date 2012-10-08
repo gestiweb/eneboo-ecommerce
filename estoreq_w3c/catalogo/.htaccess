@@ -1,0 +1,9 @@
+RewriteEngine on
+
+RewriteRule ^([a-z0-9\-]+)$ articulos.php?famdl=$1 [QSA]
+RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)$ articulo.php?refdl=$2 [QSA]
+
+RewriteRule ^([a-zA-Z0-9_\-]+)/orden/([a-zA-Z0-9]+)$ articulos.php?famdl=$1&orden=$2 [QSA] 
+RewriteRule ^([a-zA-Z0-9_\-]+)/pagina/([0-9]+)$ articulos.php?famdl=$1&pagina=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9_\-]+)/numr/([0-9]+)$ articulos.php?famdl=$1&numr=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9_\-]+)/vista/([a-z]+)$ articulos.php?famdl=$1&vista=$2 [QSA]

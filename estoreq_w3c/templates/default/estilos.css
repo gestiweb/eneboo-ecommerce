@@ -1,0 +1,1283 @@
+html
+{
+	overflow-y: scroll;
+	font-size:100%;
+}
+
+body
+{
+	background-color: #EEE;
+	color: #564b47;
+	font: 11px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+
+input, select, textarea {
+	font: 11px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	border: 1px solid #CCC;
+	padding: 3px;
+}
+
+input.rdo {
+	border: none;
+}
+
+select.fabricantes {
+	width: 100%;
+	margin-top: 5px;
+	padding: 1px 0;
+}
+
+img {
+	border: none;
+}
+
+#container
+{
+	margin: 0 auto;
+	background:url("images/bg.png") repeat-y scroll -1015px bottom transparent;
+	width:970px;
+}
+
+#banner
+{
+	margin: 0px 11px;
+	padding: 0px;
+	text-align: right;
+}
+
+#outer
+{
+	margin-top: 18px;
+}
+
+.outerLeft { border-left: solid 160px transparent; }
+.outerRight { border-right: solid 160px transparent; }
+
+#inner
+{
+	margin: 0;
+	width: 100%;
+}
+#left
+{
+	float: left;
+	margin-left: -140px;
+	margin-right: 1px;
+	position: relative;
+	width: 140px;
+	background: white;
+}
+#right
+{
+	float: right;
+	margin-left: 1px;
+	margin-right: -140px;
+	position: relative;
+	width: 140px;
+}
+#content
+{
+	margin: 0px;
+	position: relative;
+	padding: 0 20px 20px 20px;
+}
+
+#footer {
+	clear:left;
+	height:50px;
+	margin:0;
+	padding:0;
+	text-align:right;
+}
+
+#outerFooter {
+	background:url("images/bg.png") no-repeat scroll -2010px -235px transparent;
+	height:50px;
+	margin: 0 auto;
+	width: 970px;
+}
+
+form {
+	padding: 0;
+	margin: 0;
+}
+
+form .campo {
+	position: relative;
+	margin-bottom: 5px;
+	height: 2.4em;
+}
+
+form .campoTA .campo {
+	height: 300px;
+}
+
+form .campoTAcaja .campo {
+	height: 130px;
+}
+
+form .validacion {
+	margin-top: 30px;
+}
+
+form .validacion .campo {
+	height: 90px;
+}
+
+form .validacion a {
+	margin-left: 140px;
+}
+
+form .campoImg {
+	margin-left: 140px;
+	padding: 8px 0;
+}
+
+
+label { 
+	position: absolute;
+	text-align:right;
+	width:130px; 
+}
+	
+.campo input, .campo textarea, .campo select { 
+	position: absolute;
+	left: 140px;
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+	border: 1px solid #CCC;
+	padding: 2px;
+}
+
+.campo textarea {
+	width: 330px;
+	height: 300px;
+}
+
+
+img#securimage {
+	margin-left: 140px;
+}
+
+.campoEnviar { 
+	margin: 20px 0 0 0;
+}
+
+.campoEnviar input, .campoEnviar button { 
+	margin-left: 140px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+input.boton {
+	color:#333;
+	font-size:11px;
+	font-family:verdana,arial;
+	border: 1px solid #CCC;
+	margin: 3px;
+	padding: 2px;
+}
+
+input.warning, select.warning {
+	background-color: red;
+}
+
+input.normal, select.normal {
+	background-color: none;
+}
+
+
+
+div#navTop {
+	background: url(images/menu_bg.gif) repeat-x;
+	text-align:left;
+	padding: 10px 10px;
+	color: #FFF;
+	position: relative;
+}
+div#navTop a {
+	padding: 10px;
+}
+
+div#bienvenidoTop {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+
+div#logoTop h1 {
+	margin: 0;
+}
+
+#logoTop h1 a {
+	background:url("images/logotop.png") no-repeat scroll 20px center transparent;
+	display:block;
+	height: 75px;
+	width: 200px;
+	text-decoration:none;
+	text-indent:-2000em;
+	z-index:1000;
+}
+
+
+div#contenidos {
+	text-align: left;
+	margin:0 150px;
+	padding: 0px;
+	border: 1px solid #DDD;
+}
+
+
+
+div#textoPie {
+	clear: both;
+	padding: 10px 0px 3px 0px;
+	color: #555;
+	text-align:center;
+	font-size: 9px;
+}
+
+
+
+
+
+div.caja {
+	padding: 0px; 
+	margin: 0px 0px 20px 0px;
+}
+
+div.caja div.titulo {
+	color:#E17009;
+	font-weight: bold;
+	padding: 2px 5px 2px 5px; 
+	margin: 0px;
+	line-height:12px;
+}
+
+div.caja div.casillaUnica {
+	color:#E17009;
+	font-weight: bold;
+	padding: 2px 5px 0px 5px; 
+	margin: 0px;
+}
+
+div.caja div.contenido {
+	line-height:13px;
+	padding:0px;
+	font-weight: normal;
+}
+
+div.cajaArtMatriz {
+	text-align: center;
+	float:left;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.innerCajaArtMatriz {
+	padding: 15px 5px 10px 5px;
+	border-width: 0px 1px 1px 0px;
+	border-color: #DDD;
+	border-style: solid;
+}
+
+div.primero div.innerCajaArtMatriz {
+	border-width: 0px 1px 1px 1px;
+}
+
+
+div.cajaImagenMatriz {
+	text-align: center;
+	float:left;
+	padding: 0px;
+	margin: 0px;
+}
+
+div.innerCajaImagenMatriz {
+	padding: 15px 5px 10px 5px;
+	border-width: 0px 1px 1px 0px;
+	border-color: #DDD;
+	border-style: solid;
+	height: 150px;
+}
+
+
+
+div.navBar {
+	height: 15px;
+	padding: 2px 5px 2px 0px;
+	margin: 5px 0px 0px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.navBarResultPag {
+	float:left;
+	width:30%;
+	padding: 0px 0px 0px 5px;
+}
+
+div.navBarListaPag {
+	float:left;
+	width:25%;
+}
+
+div.navBarOrden {
+	float: right;
+	width:40%;
+	text-align:right;
+}
+
+div.navBarResultXPag {
+	float:left;
+	width:60%;
+	text-align: left;
+	padding-left: 5px;
+}
+
+div.navBarDisposicion {
+	float: right;
+}
+
+div.top div.navBarResultPag {
+	display:none;
+}
+
+
+
+
+div.cellMatriz {
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+div.cellMatriz div.descripcion {
+	font-weight: bold;
+	height: 40px;
+	line-height: 12px;
+}
+
+div.cellMatriz div.imagen {
+	font-weight: bold;
+}
+
+div.cellMatriz div.stock {
+	height: 40px;
+}
+
+div.cellMatriz div.precio {
+	font-weight: bold;
+	height: 45px;
+}
+
+div.cellMatriz div.venta {
+	height: 25px;
+	padding: 10px 0px 0px 0px;
+}
+
+
+
+
+#wrapperStylishSlider {
+	height: 235px;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	position: relative;
+}
+
+#stylishSlider {
+	height: 100%;
+	width: 5000px;
+	position: absolute;
+	left: 0; top: 0;
+}
+
+#sliderFwd {
+	left:924px;
+	position:absolute;
+	top:92px;
+	z-index:10;
+	background: url(images/forward.png) no-repeat 0 0;
+	width: 22px; height: 22px;
+}
+
+#sliderBwd {
+	left:3px;
+	position:absolute;
+	top:92px;
+	z-index:10;
+	background: url(images/back.png) no-repeat 0 0;
+	width: 22px; height: 22px;
+	display: none;
+}
+
+div.cellMatrizSlider {
+	background: #FFF url(images/bg_fancySlider.png) no-repeat center bottom;
+	margin: 0;
+	float:left;
+	width: 237px;
+	height: 230px;
+	padding-top: 15px;
+}
+
+div.cellMatrizSlider .imagen {
+	height: 150px;
+}
+
+div.cellMatrizSlider .precio {
+	text-align: center;
+	font-size: 2em;
+}
+
+div.cellMatrizSlider .descripcion {
+	text-align: center;
+}
+
+div.cellMatrizSlider img {
+	width: 160px; 
+	height: 120px;
+}
+
+
+
+
+div.cellLista {
+	margin: 15px 0px 0px 0px;
+	width: 100%;
+	height: 110px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.cellListaImagen {
+	width: 20%;
+	float:left;
+	font-weight: bold;
+}
+
+div.cellListaDescripcion {
+	float:left;
+	width: 25%;
+	font-weight: bold;
+	line-height: 12px;
+}
+
+div.cellListaStock {
+	float:left;
+	width: 15%;
+}
+
+div.cellListaPrecio {
+	float:left;
+	width: 15%;
+	font-weight: bold;
+	color: #E17009;
+}
+
+div.cellListaVenta {
+	float:left;
+	width: 140px;
+}
+
+div.precio {
+	color: #E17009;
+	font-weight: bold;
+	font-size: 1.125em;
+}
+
+
+
+div.articulo {
+	padding: 10px;
+	position: relative;
+}
+
+div.articulo div.thumb {
+	width: 200px;
+}
+
+div.articulo div.botones {
+	position: absolute;
+	right: 0;
+	top: 10px;
+	padding: 10px;
+}
+
+div.articulo div#_precio {
+	color:#E17009;
+	font-size:2.5em;
+	margin-bottom:25px;
+	text-align:right;
+	line-height: 0.75em;
+	padding-right: 8px;
+}
+
+div.articulo div.botonesSec {
+	position: absolute;
+	right: 0;
+	top: 95px;
+	padding-right: 20px;
+	margin-top: 30px;
+	width: 200px;
+	text-align: right;
+}
+
+div.articulo div.botonesSec a {
+	display:block;
+	margin-bottom: 10px;
+}
+
+div.articulo div.fotosSec {
+	margin: 10px 0;
+	text-align: center;
+	min-height: 100px;
+	_height: 100px;
+}
+
+div.articulo div.fotosSec div {
+	float: left;
+	width: 80px; min-height: 50px; _height: 50px;
+	border: 1px solid #DDD;
+	margin: 0 5px 0 0;
+	padding: 5px;
+}
+
+
+div.articulos {
+	border-left: 1px solid #DDD;
+}
+
+
+div.cabeceraDescCesta {
+	float:left;
+	font-weight: bold;
+	color:#E17009;
+	width: 120px;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.cabeceraDatoCesta {
+	float:left;
+	font-weight: bold;
+	text-align: right;
+	color:#E17009;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #DDD;
+	width: 80px;
+}
+
+div.fila {
+	width: 100%;
+	height: 40px;
+}
+
+
+div.articuloCesta {
+	text-align: left;
+	float:left;
+	width: 120px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div.datoCesta {
+	float:left;
+	text-align: right;
+	width: 80px;
+	height: 25px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+	vertical-align:top;
+}
+
+div.datoCesta input {
+	padding: 1px 3px 1px 3px;
+}
+
+div#labelTotalCesta {
+	clear:left;
+	float:left;
+	height: 25px;
+	text-align: left;
+	font-weight: bold;
+	width: 120px;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+div#totalCesta {
+	float:left;
+	height: 25px;
+	text-align: right;
+	width: 80px;
+	font-weight: bold;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px solid #DDD;
+}
+
+
+div#formLogin {
+	position:relative;
+	border: 1px solid #DDD;
+	width: 350px;
+	height: 170px;
+}
+
+div#lblTengoCuentaLogin {
+	position:absolute;
+	top: 20px;
+	left: 95px;
+}
+
+div#lblEmailLogin {
+	position:absolute;
+	top: 60px;
+	left: 15px;
+	font-weight: bold;
+}
+
+div#emailLogin {
+	position:absolute;
+	top: 55px;
+	left: 90px;
+}
+
+div#lblPassLogin {
+	position:absolute;
+	top: 90px;
+	left: 15px;
+	font-weight: bold;
+}
+
+div#passLogin {
+	position:absolute;
+	top: 85px;
+	left: 90px;
+}
+
+div#botLogin {
+	position:absolute;
+	top: 125px;
+	left: 90px;
+}
+
+div#botones {
+	float:left;
+	text-align: left;
+	width: 50%;
+	padding: 10px 0px 40px 0px;
+}
+
+
+div.labelForm {
+	clear:left;
+	float:left;
+	width: 150px;
+	text-align: right;
+	padding: 5px 10px 0px 0px;
+	font-weight: bold;
+	color: #555;
+}
+
+div.datoForm {
+	float:left;
+}
+
+span.errorForm {
+	color:#BB0000;
+	left:390px;
+	padding-left:10px;
+	position:absolute;
+}
+
+
+
+table.docsFacturacion {
+	border-top : 1px solid #DDD;
+	border-bottom : 1px solid #DDD;
+}
+
+table.docsFacturacion th {
+	border-bottom : 3px solid #DDD;
+}
+
+table.docsFacturacion th.codigo {
+	width: 120px;
+}
+
+table.docsFacturacion th.total, table.docsFacturacion td.total {
+	width: 80px;
+	text-align: right;
+}
+
+table.docsFacturacion th.fecha, table.docsFacturacion td.fecha {
+	width: 80px;
+	text-align: center;
+}
+
+table.cesta th {
+	color: #E17009;
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #E17009;
+}
+
+table.cesta td {
+	padding: 5px 0;
+}
+
+table.cesta td.desc, table.cesta th.desc {
+	width: 200px;
+	text-align: left;
+}
+
+table.cesta td, table.cesta th {
+	width: 70px;
+	text-align: right;
+}
+
+table.cesta tr.totales td {
+	border-top: 1px dotted #E17009;
+	font-weight: bold;
+}
+
+table.cesta tr.subtotales td {
+	border-top: 1px dotted #E17009;
+}
+
+table.cesta tr.subtotales td.txtsubtotal {
+	text-align: right;
+}
+
+table.cesta tr.totales td.total {
+	text-align: left;
+}
+
+
+table.datosEnvio td.label {
+	width: 200px;
+}
+
+table.datosEnvio td.datoEnvio {
+	width: 70px;
+	font-weight: bold;
+	text-align: right;
+}
+
+
+p.separador {
+	clear: left;
+	padding-top:20px;
+}
+
+.cleaner {
+	clear:both;
+	height:1px;
+	font-size:1px;
+	border:none;
+	margin:0; padding:0;
+	background:transparent;
+}
+
+.cleanerLeft {
+	clear:left;
+	height:1px;
+	font-size:1px;
+	border:none;
+	margin:0; padding:0;
+	background:transparent;
+}
+
+
+
+div.formaPago {
+	padding: 5px;
+	margin: 0px 0px 15px 0px;
+	width:500px;
+	border: 1px solid #DDD;
+}
+
+div.formaPago div.checkPago {
+	float:left;
+	width:25px;
+}
+
+div.formaPago div.labelPago {
+	float:left;
+	font-weight: bold;
+}
+
+div.formaPago div.descPago {
+	margin-top: 24px;
+	padding: 5px;
+	background-color: #EEE;
+}
+
+div.formaPago div.gastosPago {
+	clear:left;
+	width:90%;
+	padding: 5px;
+}
+
+
+div.noticia {
+	padding: 10px 20px 2px 5px; 
+	line-height:12px;
+	margin: 0px;
+	text-align:justify;
+	vertical-align:top;
+}
+
+div.noticia img {
+	float:right;
+	padding: 0px 0px 20px 20px;
+}
+
+
+div.flags {
+	padding: 4px 0px 0px 6px;
+	vertical-align:middle;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+h1, .titPath {
+	font-size:1.625em;
+	color:#E17009;
+	font-weight: bold;
+	margin: 0px;
+	padding: 2px 4px 2px 0;
+	text-align: left;
+}
+
+.subCaja {
+	margin: 0px;
+	padding: 2px 0;
+	text-align: left;
+}
+
+div.cajaTexto {
+	margin: 0px;
+	padding: 10px 0;
+}
+
+h2 {
+	font-size: 1.125em;
+	color:#E17009;
+	font-weight: bold;
+	padding: 20px 0px 0px 0px;
+	margin: 5px 0px 10px 0px;
+	text-align: left;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+}
+
+h2.top {
+	padding: 0;
+}
+
+.titApartadoText {
+	color:#E17009;
+	font-weight: bold;
+	padding: 1px 10px 1px 0;
+	margin-bottom: 0; 
+}
+
+.titModulo {
+	color:#E17009;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 10px 0px 0px 0px;
+	padding: 0px;
+	text-align: left;
+	border-bottom: 1px solid #888;
+}
+
+.itemMenu {
+	line-height:12px;
+}
+
+.itemMenuActivo {
+	font-weight: bold;
+}
+
+.itemMenu a {
+	margin: 0px;
+	display: block;
+	padding: 6px 5px 1px;
+}
+
+.itemMenuFamilia {
+	margin: 0px 0px 4px 0px;
+}
+
+.caja .familias a {
+	text-transform: uppercase;
+	padding: 8px 5px 2px;
+}
+
+a {
+	text-decoration:none;
+	color:#2E6E9E;
+}
+
+a:hover {
+	color:#000;
+}
+
+a.botLink {
+	padding: 8px 10px;
+	width: 110px;
+	height:15px;
+	overflow:hidden;
+	line-height: 1em;
+}
+
+a.botNorm {
+	background: url(images/button_set.png) no-repeat -5px -5px;
+}
+
+a.botNorm:hover {
+	background: url(images/button_set.png) no-repeat -135px -5px;
+}
+
+a.botContinuar {
+	background: url(images/button_set.png) no-repeat -5px -5px;
+}
+
+
+
+/* REQUIRED BUTTON STYLES: */		
+button { 
+	position: relative;
+	border: 0; 
+	padding: 0;
+	cursor: pointer;
+	overflow: visible; /* removes extra side padding in IE */
+}
+
+button::-moz-focus-inner {
+	border: none;  /* overrides extra padding in Firefox */
+}
+
+button span { 
+	position: relative;
+	display: block; 
+	white-space: nowrap;	
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	/* Safari and Google Chrome only - fix margins */
+	button span {
+		margin-top: -1px;
+	}
+}
+
+
+/* OPTIONAL BUTTON STYLES for applying custom look and feel: */		
+button.submitBtn { 
+	padding: 0 15px 0 0; 
+	margin-right:5px; 
+	font-size:1em; 
+	text-align: center; 
+	background: transparent url(images/botones.png) no-repeat right -140px; 
+}
+	
+button.submitBtn span {
+	padding: 8px 0 0 15px; 
+	height:28px; 
+	background: transparent url(images/botones.png) no-repeat left top; 
+	color:#2E6E9E; 
+}
+	
+button.submitBtn:hover, button.submitBtnHover { /* the redundant class is used to apply the hover state with a script */
+	color: #000;
+}
+	
+button.submitBtn:hover span, button.submitBtnHover span {
+	color: #000;
+}
+
+button.buscar { 
+	text-align: center;
+	background: #FFF;
+	background: transparent url(images/buscar.png) no-repeat 0 0; 
+	height:22px; 
+	width:22px; 
+}
+
+button.buscar span  { 
+	padding: 8px 0 0 15px; 
+	height:20px; 
+	display: inline;
+}
+
+
+
+
+
+a.button {
+	/* Sliding right image */
+	background: transparent url(images/botones.png) no-repeat right -140px; 
+	display: block;
+	float: left;
+	height: 28px; 
+	margin-right: 6px;
+	padding-right: 15px; /* CHENGE THIS VALUE ACCORDING TO RIGHT IMAGE WIDTH */
+	/* FONT PROPERTIES */
+	text-decoration: none;
+	text-align: center; 
+}
+a.button span {
+	/* Background left image */ 
+	background: transparent url(images/botones.png) no-repeat left top; 
+	display: block;
+	line-height: 28px; /* CHANGE THIS VALUE ACCORDING TO BUTTONG HEIGHT */
+	padding: 0 0 0 15px; 
+} 
+
+a.button:hover { /* the redundant class is used to apply the hover state with a script */
+	color: #000;
+}
+
+div.venta a.button, div.articulo a.button {
+	background-position: right -280px; 
+	padding-right: 35px;
+	margin-left: 30px;
+}
+
+
+
+
+a.inv {
+	color:#FFF;
+}
+
+a.inv:hover {
+	color:#DDD;
+}
+
+ul {
+	list-style-image:url(../../images/lista.gif)
+}
+
+li {
+	margin-bottom:3px;
+}
+
+.thumb {
+	margin:0px;
+}
+
+
+.precioAnterior {
+	font-size:10px;
+	font-weight:normal;
+	line-height:1.1em;
+	margin:5px 0 0;
+}
+
+.fasesPedido {
+	padding: 0px;
+	font-weight:bold;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+	font-size:10px;
+	color:#555;
+}
+
+.seccionesCuenta {
+	margin: 10px 0px 20px 0px;
+	padding: 0px;
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #EEE;
+	font-size:10px;
+	color:#555;
+}
+
+.titSeccionCuenta {
+	color:#E17009;
+	background-color: #EEE;
+	padding: 1px 10px 1px 10px;
+}
+
+
+.imgCaja {
+	margin: 15px 5px;
+}
+
+.cajaImagen {
+	padding: 5px;
+	text-align:center;
+	background-color:#FFF;
+}
+
+.cajaImagen a.titulo {
+	display: block;
+	text-align: left;
+	padding-bottom: 2px;
+	border-bottom: 1px dotted #2E6E9E;
+}
+
+
+
+
+.msgInfo {
+	color: #080;
+	margin: 10px 10px 10px 0px;
+}
+
+.msgError {
+	margin: 10px 10px 10px 0px;
+	color: #500;
+}
+
+form .msgInfo, form .msgError {
+	margin-left: 140px;
+}
+
+
+.msgOk {
+	border: 1px solid #DDD;
+	padding: 3px;
+	margin: 10px 10px 10px 0px;
+	color: #050;
+}
+
+.msgIVA {
+	font-weight:normal;
+	font-size:10px;
+	color:#555;
+	padding: 0px 0px 0px 5px;
+}
+
+.ok {
+	color: #050;
+}
+
+.nok {
+	color: #500;
+}
+
+div.fotoGrande {
+	border: 0px solid #CCC;
+	margin: 10px 10px 20px 10px;
+	padding: 10px 10px 0px 10px;
+}
+
+div.fotoGaleria {
+	margin: 0px;
+	padding: 10px 10px 10px 10px;
+	text-align:center;
+}
+
+div.fotoGaleria img {
+	border: 1px solid #CCC;
+	margin: 10px 0px 5px 0px;
+}
+
+div.navGaleria {
+	text-align:left;
+	padding: 4px 10px 4px 10px;
+}
+
+div.selecPais {
+	width: 220px;
+	border: 1px solid #CCC;
+	background-color: #EEE;
+	padding: 3px;
+	margin: 3px;
+}
+
+
+.ui-dialog div.links {
+	text-align: right;
+	margin: 10px 20px 0px 0px;
+}
+
+.ui-dialog div.img {
+	border: 1px solid #DDD;
+}
+
+
+.formUp {
+	width: 600px;
+	height: 430px;
+}
+
+.formUp input {
+	width: 350px;
+}
+
+.formUp textarea {
+	width: 350px;
+	height: 120px;
+}
+
+.formUp .titulo {
+	font-weight: bold;
+	padding: 0px 0 20px 140px;
+}
+
+.formUp .botones {
+	padding: 15px 0 20px 140px;
+}
+
+.formUp .aviso {
+	color: #C00;
+	padding: 5px 0 5px 140px;
+}
+
+div#msgDescuento {
+	font-weight:bold;
+	margin-top: 10px;
+}

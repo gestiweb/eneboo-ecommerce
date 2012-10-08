@@ -31,7 +31,7 @@ class oficial_noticias
 	
 		$texto = $__LIB->traducir("noticias", "texto", $row["id"], $row["texto"]);
 		
-		$codigo .= '<div class="titApartado">'.$titulo.'</div>';
+		$codigo .= '<h2>'.$titulo.'</h2>';
 		
 		$codigo .= '<div class="noticia">';
 		
@@ -116,7 +116,7 @@ class oficial_noticias
 	{
 		global $__BD, $__LIB, $CLEAN_GET;
 		
-		echo '<div class="titPagina">'._NOTICIAS.'</div>';
+		echo '<h1>'._NOTICIAS.'</h1>';
 		echo '<div class="cajaTexto">';
 		
 		$idNoticia = '';
@@ -139,7 +139,7 @@ class oficial_noticias
 			$id = $row[0];
 			$this->procesarImagen($id);
 			$titulo = $__LIB->traducir("noticias", "titulo", $id, $row["titulo"]);
-			$menu .= '<a href="noticias.php#'.$id.'">'.$titulo.'</a><br>';
+			$menu .= '<a href="noticias.php#'.$id.'">'.$titulo.'</a><br/>';
 			$noticias .= $this->mostrarNoticia($row, $titulo);
 		}
 		

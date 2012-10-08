@@ -41,8 +41,8 @@ class oficial_funBD
 				}
 			
 				$options = 'dbname='._DB_DATABASE.' port='._DB_PORT.' user='._DB_SERVER_USERNAME.' host='._DB_SERVER.' password='._DB_SERVER_PASSWORD;
-				$link_id = @pg_connect($options)
- 					or die(include(_DOCUMENT_ROOT."general/error_db.php"));
+				$link_id = pg_connect($options);
+//  					or die(include(_DOCUMENT_ROOT."general/error_db.php"));
  					
  				$_SESSION["connId"] = $link_id; 
 	
@@ -76,6 +76,21 @@ class oficial_funBD
 			
 			case 'postgresql':
 				$rows = pg_fetch_array($result);
+			break;
+		}		
+		
+		return $rows;
+	}
+	
+	function db_fetch_assoc($result)
+	{
+		switch(_DB_TYPE) {
+			case 'mysql':
+				$rows = mysql_fetch_assoc($result);
+			break;
+			
+			case 'postgresql':
+				$rows = pg_fetch_assoc($result);
 			break;
 		}		
 		
@@ -182,6 +197,22 @@ class oficial_funBD
 		}
 		
 		return $result;
+	}
+	
+	function escape_string($string)
+	{
+		switch (_DB_TYPE) {
+			case "postgresql":
+				$string = pg_escape_string($string);
+			break;
+				
+			// Para mysql usamos tablas especiales con campos auto_increment
+			case "mysql":
+				$string = mysql_real_escape_string($string);
+			break;
+		}
+
+		return $string;
 	}
 }
 

@@ -51,7 +51,8 @@ class oficial_cliente {
 				return;
 		}
 		
-		$codigo = '<div class="titApartado">'.$titulo.'</div>';
+		$codigo = '';
+// 		$codigo = '<h2>'.$titulo.'</h2>';
 		
 		$ordenSQL = "select codigo, fecha, total from $tabla where codcliente = '".$this->codCliente."' order by codigo DESC";
 		
@@ -62,16 +63,23 @@ class oficial_cliente {
 		
 		$result = $__BD->db_query($ordenSQL);
 		
-		$codigo .= '<div class="labelListaDocFact">'._CODIGO.'</div>';
-		$codigo .= '<div class="labelListaDocFact">'._FECHA.'</div>';
-		$codigo .= '<div class="labelListaDocFact" style="text-align:right">'._TOTAL.'</div>';
+		$codigo .= '<table class="docsFacturacion">';
+		$codigo .= '<tr>';
+		
+		$codigo .= '<th class="codigo">'._CODIGO.'</th>';
+		$codigo .= '<th class="fecha">'._FECHA.'</th>';
+		$codigo .= '<th class="total">'._TOTAL.'</th>';
 		
 		while ($row = $__BD->db_fetch_array($result)) {
 			$fecha = date("d-m-Y", strtotime($row["fecha"]));
-			$codigo .= '<div class="datoListaDocFact" style="clear:left"><a href="'.$tipoDoc.'.php?codigo='.$row["codigo"].'">'.$row["codigo"].'</a></div>';
-			$codigo .= '<div class="datoListaDocFact">'.$fecha.'</div>';
-			$codigo .= '<div class="datoListaDocFact" style="text-align:right">'.$__CAT->precioDivisa($row["total"]).'</div>';
+			$codigo .= '<tr>';
+ 			$codigo .= '<td><a href="'._WEB_ROOT.'cuenta/'.$tipoDoc.'.php?codigo='.$row["codigo"].'">'.$row["codigo"].'</a></td>';
+			$codigo .= '<td class="fecha">'.$fecha.'</td>';
+			$codigo .= '<td class="total">'.$__CAT->precioDivisa($row["total"]).'</td>';
+			$codigo .= '</tr>';
 		}
+		
+		$codigo .= '</table>';
 		
 		return $codigo;
 	}
@@ -85,21 +93,36 @@ class oficial_cliente {
 	
 	function datosPersonales()
 	{
-		global $__BD;
-		return $__BD->db_row("select email, contacto, apellidos, nombre, telefono1, fax, esempresa, cifnif from clientes where codcliente = '".$this->codCliente."'");
+		global $__BD, $__LIB;
+		
+		$ordenSQL = "select email, contacto, apellidos, nombre, telefono1, fax, esempresa, cifnif from clientes where codcliente = '".$this->codCliente."'";
+		$result = $__BD->db_query($ordenSQL);
+		$row = $__BD->db_fetch_assoc($result);
+		if ($__LIB->esTrue($row["esempresa"])) {
+			$row["empresa"] = $row["nombre"];
+		}
+		else {
+			$row["empresa"] = '';
+		}
+		
+		return $row;
 	}
 	
 	function direccionFact()
 	{
 		global $__BD;
-		return $__BD->db_row("select direccion, codpostal, ciudad, provincia, codpais, id from dirclientes where codcliente = '".$this->codCliente."' and domfacturacion = true");
+		$ordenSQL = "select direccion, codpostal, ciudad, provincia, codpais, id from dirclientes where codcliente = '".$this->codCliente."' and domfacturacion = true";
+		$result = $__BD->db_query($ordenSQL);
+		return $__BD->db_fetch_assoc($result);
 	}
 	
 	function direccionEnv()
 	{
 		// Solo se devuelve si es distinta de la de facturacion
 		global $__BD;
-		return $__BD->db_row("select direccion, codpostal, ciudad, provincia, codpais, id from dirclientes where codcliente = '".$this->codCliente."' and domenvio = true and domfacturacion = false");
+		$ordenSQL = "select direccion, codpostal, ciudad, provincia, codpais, id from dirclientes where codcliente = '".$this->codCliente."' and domenvio = true and domfacturacion = false";
+		$result = $__BD->db_query($ordenSQL);
+		return $__BD->db_fetch_assoc($result);
 	}
 	
 	// Barra de navegacion de las paginas de cuenta
@@ -126,13 +149,13 @@ class oficial_cliente {
 				$codigo .= ' <b>&middot;</b> ';
 			
 			if ($val == $seccion)
-				$codigo .= '<span class="titSeccionCuenta"><a href="'.$val.'.php">'.$titulo.'</a></span>';
+ 				$codigo .= '<span class="titSeccionCuenta"><a href="cuenta/'.$val.'.php">'.$titulo.'</a></span>';
 			else
-				$codigo .= '<a href="'.$val.'.php">'.$titulo.'</a>';
+				$codigo .= '<a href="cuenta/'.$val.'.php">'.$titulo.'</a>';
 		}
 		$codigo .= '</div>';
 		
-		echo $codigo;	
+		return $codigo;	
 	}
 	
 	// Opciones de la cuenta
@@ -141,17 +164,17 @@ class oficial_cliente {
 		global $__LIB;
 		
 		echo _BIENVENIDO.' <b>'.$this->nombre().'</b>';
-		echo '<p>'. _TEXT_CUENTA;
+		echo '<br/><br/>'. _TEXT_CUENTA;
 		echo '<ul>';
-		echo '<li><a href="editar_cuenta.php">'._EDITAR_CUENTA.'</a>';
-		echo '<li><a href="pedidos.php">'._PEDIDOS.'</a>';
+		echo '<li><a href="cuenta/editar_cuenta.php">'._EDITAR_CUENTA.'</a></li>';
+		echo '<li><a href="cuenta/pedidos.php">'._PEDIDOS.'</a></li>';
 		if ($__LIB->esTrue($_SESSION["opciones"]["mostraralbaranes"]))
-			echo '<li><a href="albaranes.php">'._ALBARANES.'</a>';
+			echo '<li><a href="cuenta/albaranes.php">'._ALBARANES.'</a></li>';
 		if ($__LIB->esTrue($_SESSION["opciones"]["mostrarfacturas"]))
-			echo '<li><a href="facturas.php">'._FACTURAS.'</a>';
-		echo '<li><a href="favoritos.php">'._FAVORITOS.'</a>';
-		echo '<li><a href="../general/cesta.php">'._VER_CESTA.'</a>';
-		echo '<li><a href="salir_sesion.php">'._SALIR_SESION.'</a>';
+			echo '<li><a href="cuenta/facturas.php">'._FACTURAS.'</a></li>';
+		echo '<li><a href="cuenta/favoritos.php">'._FAVORITOS.'</a></li>';
+		echo '<li><a href="general/cesta.php">'._VER_CESTA.'</a></li>';
+		echo '<li><a href="cuenta/salir_sesion.php">'._SALIR_SESION.'</a></li>';
 		echo '</ul>';
 	}
 	
@@ -182,7 +205,6 @@ class oficial_cliente {
 		$ordenSQL .= ', modificado = true';
 		$ordenSQL .= ', esempresa = '.$esEmpresa;
 		$ordenSQL .= ' where codcliente = \''.$this->codCliente.'\'';
-		eqDebug::log($ordenSQL);
 		
 		if ($__BD->db_query($ordenSQL))
 			return 'ok';
@@ -235,6 +257,7 @@ class oficial_cliente {
 		
 		$ordenSQL .= ', modificado = true';
 		$ordenSQL .= ' where id = '.$datos["id"];
+		
 		if ($__BD->db_query($ordenSQL))
 			return 'ok';
 		else

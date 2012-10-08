@@ -2,9 +2,6 @@
 
 <?php
 
-error_reporting(E_USER_NOTICE);
-		
-
 /***************************************************************************
     begin                : vie sep 29 2006
     copyright            : (C) 2006 by InfoSiAL S.L.
@@ -33,65 +30,91 @@ class oficial_datosEnvio
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._CREAR_PEDIDO.'</div>';
-		echo '<div class="cajaTexto">';
+		$codigo = '';
+		
+		$codigo .= '<h1>'._CREAR_PEDIDO.'</h1>';
+		$codigo .= '<div class="cajaTexto">';
 	
 		if ($_SESSION["cesta"]->cestaVacia()) {
-			echo _CESTA_VACIA;
-			echo '</div>';
+			$codigo .= _CESTA_VACIA;
+			$codigo .= '</div>';
 			return;
 		}
 	
-		echo $__LIB->fasesPedido('envio');
+		$codigo .= $__LIB->fasesPedido('envio');
 	
 	
-		echo '<form name="datosDirEnv" id="datosDirEnv" action="datos_pago.php" method="post">';
-		echo '<input type="hidden" name="ambito" value="cesta_envio">';
+		$codigo .= '<form name="datosDirEnv" id="datosDirEnv" action="'._WEB_ROOT_SSL_L.'cesta/datos_pago.php" method="post">';
+		$codigo .= '<input type="hidden" name="ambito" value="cesta_envio">';
 		
-		if ($__LIB->esTrue($_SESSION["opciones"]["activarcoddescuento"])) {
-			unset($_SESSION["pedido"]);
-			$_SESSION["pedido"]["coddescuento"] = $CLEAN_POST["coddescuento"];
+ 		if ($__LIB->esTrue($_SESSION["opciones"]["activarcoddescuento"])) {
+			if (isset($CLEAN_POST["coddescuento"]))
+				$_SESSION["pedido"]["datosEnv"]["coddescuento"] = $CLEAN_POST["coddescuento"];
+ 			$codDescuento = isset($_SESSION["pedido"]["datosEnv"]["coddescuento"]) ? $_SESSION["pedido"]["datosEnv"]["coddescuento"] : '';
 		}
 		
-		
-		echo '<div class="titApartado">'._DIRECCION_ENV.'</div>';
+		$codigo .= '<h2>'._DIRECCION_ENV.'</h2>';
 		
 		// Datos personales (nombre, empresa)
-		$datosPer = $__CLI->datosPersonales();
-		echo formularios::nombreEnv($datosPer);
+		if (isset($_SESSION["pedido"]["datosEnv"]))
+			$datosPer = $_SESSION["pedido"]["datosEnv"];
+		else
+			$datosPer = $__CLI->datosPersonales();
+		
+		$codigo .= formularios::nombre($datosPer);
 		
 		// Direccion de envio
-		$dirEnv = $__CLI->direccionEnv();
-		if (!$dirEnv[0])
-			$dirEnv = $__CLI->direccionFact();
-		echo formularios::dirEnv($dirEnv, 'datosDirEnv');
+		if (isset($_SESSION["pedido"]["datosEnv"])) {
+			$suf = '_env';
+			$dirEnv = $_SESSION["pedido"]["datosEnv"];
+		}
+		else {
+			$dirEnv = $__CLI->direccionEnv();
+			if (!$dirEnv["direccion"])
+				$dirEnv = $__CLI->direccionFact();
+			$suf = '';
+		}
+		
+		$codigo .= formularios::dirEnv($dirEnv, 'datosDirEnv', array(), $suf);
 	
 	
 	
 	
-		echo '<div class="titApartado">'._FORMA_ENVIO.'</div>';
+		$codigo .= '<h2>'._FORMA_ENVIO.'</h2>';
 		
 		
-		echo '<div id="datosEnvio">';
+		$codigo .= '<div id="datosEnvio">';
 		
-		$datosEnvio = $__LIB->formasEnvio($dirEnv[4], $dirEnv[3]);
+		$datosEnvio = $__LIB->formasEnvio($dirEnv["codpais$suf"], $dirEnv["provincia$suf"]);
 		if ($datosEnvio)
-			echo $datosEnvio;
+			$codigo .= $datosEnvio;
 		else
-			echo _NO_FORMAS_ENVIO;
+			$codigo .= _NO_FORMAS_ENVIO;
 			
-		echo '</div>';
+		$codigo .= '</div>';
 		
-		echo '</form>';
 		
-		echo '<p class="separador">';
+		if ($__LIB->esTrue($_SESSION["opciones"]["activarcoddescuento"])) {
+			$codigo .= '<h2>'._CODIGO_DTO.'</h2>';
+			$codigo .= _INTRO_CODIGO_DTO.' <input name="coddescuento" size="10" value="'.$codDescuento.'"> ';
+			$codigo .= '<a href="#" class="botLink" onclick="xajax_verificarDto(xajax.getFormValues(\'datosDirEnv\')); return false;">'._VERIFICAR.'</a>';
+			$codigo .= ' <div id="msgDescuento"></div>';
+		}
 		
-		echo '<div id="divContinuar">';
-		if ($datosEnvio)
-	 		echo '<p class="separador"><a class="botContinuar" href="javascript:document.datosDirEnv.submit()">'._CONTINUAR.'</a>';
-		echo '</div>';
+		$codigo .= '<p class="separador">';
 		
-		echo '</div>';
+		$codigo .= '<div id="divContinuar">';
+		$codigo .= '<a class="button" href="general/cesta.php"><span>'._VOLVER.'</span></a>';
+		if ($datosEnvio) 
+			$codigo .= '<button type="submit" value="'._CONTINUAR.'" class="submitBtn"><span>'._CONTINUAR.'</span></button>';
+		$codigo .= '</p>';
+		$codigo .= '</div>';
+		
+		$codigo .= '</form>';
+		
+		$codigo .= '</div>';
+		
+		echo $codigo;
 	}
 }
 

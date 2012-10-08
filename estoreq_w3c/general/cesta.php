@@ -26,40 +26,51 @@ class oficial_verCesta
 	{
 		global $CLEAN_GET, $__LIB;
 		
-		echo '<div class="titPagina">'._MI_CESTA.'</div>';		
+		$codigo = '';
+		echo '<h1>'._MI_CESTA.'</h1>';
 		echo '<div class="cajaTexto">';
 	
 		if ($__LIB->esTrue($_SESSION["opciones"]["noautoaccount"]) && !isset($_SESSION["codCliente"])) {
 			echo _DEBES_LOGIN;
-			echo '<p><br>';
-			echo '<a class="botLink" href="'._WEB_ROOT_SSL.'cuenta/login.php">'._MI_CUENTA.'</a>&nbsp;';
+			echo '<br/><br/>';
+			echo '<a class="button" href="'._WEB_ROOT_SSL.'cuenta/login.php"><span>'._MI_CUENTA.'</span></a>';
 			echo '</div>';
 			return;
 		}
 
-		$codigo = '';
+		$ref = '';
 		$accion = '';
 		
 		if (isset($CLEAN_GET["ref"]))
-			$codigo = $CLEAN_GET["ref"];
+			$ref = $CLEAN_GET["ref"];
 			
 		if (isset($CLEAN_GET["acc"]))
 			$accion = $CLEAN_GET["acc"];
 		
 		if ($accion == "add") {	
-			$_SESSION["cesta"]->introduce_articulo($codigo);
+			$_SESSION["cesta"]->introduce_articulo($ref);
 		}
 		
 		if ($accion == "del") {	
-			$_SESSION["cesta"]->elimina_articulo($codigo);
+			$_SESSION["cesta"]->elimina_articulo($ref);
 		}
 		
 		$tieneAlgo = $_SESSION["cesta"]->imprime_cesta();
 	
+		echo $this->jsReloadCesta();
+		
 		if (!$tieneAlgo)
 			echo _CESTA_VACIA;
 
 		echo '</div>';
+		
+		echo $codigo;
+	}
+	
+	function jsReloadCesta()
+	{
+		$codigo = '<script type="text/javascript">$(document).ready( function() { xajax_reloadCesta() })</script>';
+		return $codigo;
 	}
 }
 

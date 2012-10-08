@@ -16,8 +16,6 @@
  *                                                                         *
  ***************************************************************************/
 
-error_reporting(E_USER_NOTICE);
-
 /** @class_definition oficial_olvideContra */
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
@@ -30,7 +28,7 @@ class oficial_olvideContra
 		global $__BD, $__CAT, $__LIB, $__SEC, $__CLI;
 		global $CLEAN_GET, $CLEAN_POST;
 	
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		
@@ -46,12 +44,12 @@ class oficial_olvideContra
 			
 			// Cambio de contra
 			if ($email) {
-				$titulo = _CAMBIO_CONTRA;
 				$contra = $__LIB->generarPassword(6);
 				$contraSha = sha1($contra);
 				
 				$result = $__BD->db_query("update clientes set password='$contraSha' where email='$email'");
 				
+				$titulo = $_SESSION["opciones"]["titulo"].' - '._NUEVA_CONTRA;
 				$texto = _NUEVA_CONTRA.' '.$contra;
 				
 				$__LIB->enviarMail($email, $titulo, $texto);
@@ -70,6 +68,7 @@ class oficial_olvideContra
 			exit;
 		}
 		
+		$errores = array();
 		$procesar = 0;
 		if (isset($CLEAN_POST["procesar"]))
 			$procesar = $CLEAN_POST["procesar"];	
@@ -77,30 +76,25 @@ class oficial_olvideContra
 		// Primera fase, el usuario indica su email
 		if ($procesar == 1) {
 		
-			$error = "";
+			$validacion = $__SEC->validarRecordarContra($CLEAN_POST, "datosCuenta");
+			$CLEAN_POST = $validacion["datos"];
+			$errores = $validacion["errores"];
+			$pasa = $validacion["pasa"];
 			
 			$email = $CLEAN_POST["email"];
 			
-			if (!$email)
-				$error = _RELLENAR_CAMPOS;
-				
 			// control de email
-			if (!$error)
-				if (!$__BD->db_valor("select codcliente from clientes where email='$email'"))
-					$error = _MAIL_NO_REGISTRADO;
+			if ($pasa)
+				if (!$__BD->db_valor("select codcliente from clientes where email='$email'")) {
+					$errores["email"] = _MAIL_NO_REGISTRADO;
+					$pasa = false;
+				}
 				
-			if ($error) {
-				echo $error;
-				echo '<p><a href="'._WEB_ROOT_SSL.'cuenta/olvide_contra.php">'._VOLVER.'</a>';
-				include("../includes/right_bottom.php");
-				exit;
-			}
-				
-			if (!$error) {
+			if ($pasa) {
 				
 				mt_srand((double)microtime()*1000000);
 				$randValor = mt_rand();
-				$fecha = date("Y-m-d", time());
+				$fecha = time();
 				$link = _WEB_ROOT_SSL.'cuenta/olvide_contra.php?codigo='.$randValor;
 				$texto = '<a href="'.$link.'">'.$link.'</a>';
 				
@@ -115,7 +109,7 @@ class oficial_olvideContra
 					exit;
 				}
 			
-				$titulo = _CAMBIO_CONTRA;
+				$titulo = $_SESSION["opciones"]["titulo"].' - '._CAMBIO_CONTRA;
 				$texto = _MAIL_CONTRA.'<p>'.$texto;
 				
 				// Envio del correo
@@ -133,15 +127,17 @@ class oficial_olvideContra
 
 		<p>
 		
-		<form name="olvide" action="olvide_contra.php" method="post">
-		<div class="labelForm"><?php echo _EMAIL?></div>
-		<div class="datoForm"><input style="width:250px" type="text" name="email"></div>
-
-		<input type="hidden" name="procesar" value="1">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="submit" value="<?php echo _ENVIAR?>">
+		<form action="cuenta/olvide_contra.php" method="post"><div>
 		
-		</form>
+		<?php 
+			$codigo .= formularios::recordarContra($CLEAN_POST, $errores);
+ 			$codigo .= formularios::botEnviar();
+ 			echo $codigo;
+		?>
+		
+		<input type="hidden" name="procesar" value="1">
+		
+		</div></form>
 	
 	</div>
 

@@ -27,11 +27,11 @@ class oficial_modMicuenta
 		
 		if (isset($_SESSION["codCliente"])) {
 			$codigoMod .= '<a href="'._WEB_ROOT.'cuenta/micuenta.php">'._MI_CUENTA.'</a>';
-			$codigoMod .= '<br><a href="'._WEB_ROOT.'cuenta/salir_sesion.php">'._SALIR.'</a>';
+			$codigoMod .= '<br/><a href="'._WEB_ROOT.'cuenta/salir_sesion.php">'._SALIR.'</a>';
 		}
 		else {
 			$codigoMod .= '<a href="'._WEB_ROOT.'cuenta/login.php">'._ENTRAR.'</a>';
-			$codigoMod .= '<br><a href="'._WEB_ROOT.'cuenta/crear_cuenta.php">'._CREAR_CUENTA.'</a>';
+			$codigoMod .= '<br/><a href="'._WEB_ROOT.'cuenta/crear_cuenta.php">'._CREAR_CUENTA.'</a>';
 		}
 		return $codigoMod;
 	}

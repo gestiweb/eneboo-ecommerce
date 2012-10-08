@@ -16,8 +16,6 @@
  *                                                                         *
  ***************************************************************************/
 
-error_reporting(E_ALL);
-
 /** @class_definition oficial_retornoPasarela */
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
@@ -46,7 +44,7 @@ class oficial_retornoPasarela
 		
 		$timeStamp = time();
 		
-		echo '<div class="titPagina">'._CREAR_PEDIDO.'</div>';
+		echo '<h1>'._CREAR_PEDIDO.'</h1>';
 		echo '<div class="cajaTexto">';
 
 		// Se eliminan los registros de la misma sesion y mismo cliente
@@ -64,7 +62,7 @@ class oficial_retornoPasarela
 		$ordenSQL = "select idpedido from pedidoscli where codigo='".$row["codigo"]."'";
 		$idPedido = $__BD->db_valor($ordenSQL);
 
-		// ¿Ya se registró el pago?
+		// Ã¸Ya se registrÃ› el pago?
 		$ordenSQL = "select pagado from pedidoscli where codigo='".$row["codigo"]."'";
 		$pagado = $__BD->db_valor($ordenSQL);
 		if (!$__LIB->esTrue($pagado)) {
@@ -88,7 +86,7 @@ class oficial_retornoPasarela
 		echo '<div class="msgInfo">'._PEDIDO_PAGO_CORRECTO.'</div>';
 
 		echo $__LIB->imprimirDocFacturacion("pedido", $idPedido);
-		echo '<p><br><a href="'._WEB_ROOT_SSL.'cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
+		echo '<p><br/><a href="'._WEB_ROOT_SSL.'cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
 
 		echo '</div>';
 	}

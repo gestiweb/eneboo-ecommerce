@@ -16,7 +16,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-error_reporting(E_PARSE);
+
 
 /** @class_definition oficial_crearCuenta */
 //////////////////////////////////////////////////////////////////
@@ -24,6 +24,7 @@ error_reporting(E_PARSE);
 
 class oficial_crearCuenta
 {
+	var $campos;
 	var $camposNoNulos;
 	
 	// Crea un nuevo registro de cliente
@@ -32,14 +33,19 @@ class oficial_crearCuenta
 		global $__BD, $__CAT, $__LIB, $__SEC;
 		global $CLEAN_POST, $CLEAN_GET;
 		
+		$this->setCampos();
 		$this->setNoNulos();
-		$noNulos = $this->camposNoNulos;
+
+		while (list ($clave, $campo) = each ($this->campos)) {
+			if (!isset($CLEAN_POST[$campo]))
+				$CLEAN_POST[$campo] = '';
+		}
 		
-		echo '<div class="titPagina">'._CREAR_CUENTA.'</div>';
+		echo '<h1>'._CREAR_CUENTA.'</h1>';
 	
-		echo '<div class="cajaTexto" style="width: 470px">';
+		echo '<div class="cajaTexto">';
 		
-		$procesar = $CLEAN_POST["procesar"];
+		$procesar = (isset($CLEAN_POST["procesar"])) ? $CLEAN_POST["procesar"] : '';
 		
 		$continua = '';
 		if (isset($CLEAN_GET["continua"]))
@@ -61,72 +67,35 @@ class oficial_crearCuenta
 			exit;
 		}
 
-
+		$errores = array();
+		
 		// Si hay que procesar los datos
 		if ($procesar) {
 		
-			$error = "";
+			$validacion = $__SEC->validarDatosCuenta($CLEAN_POST, "datosCuenta", true);
+			$CLEAN_POST = $validacion["datos"];
+			$errores = $validacion["errores"];
+			$pasa = $validacion["pasa"];
 			
-			while (list ($clave, $campo) = each ($CLEAN_POST)) {
-				$$clave = $CLEAN_POST[$clave];
-				if (strlen(trim($$clave)) == 0 && in_array($clave, $noNulos))
-					$error = _RELLENAR_TODOS_CAMPOS;
-			}
+			while (list ($clave, $campo) = each ($CLEAN_POST))
+				$$clave = $__BD->escape_string($CLEAN_POST[$clave]);
 			
-			// Comprobacion de email
-			if (!$__SEC->comprobarMail($email)) {
-					$error = _EMAIL_NOVALIDO;
-			}
-			
-			// Comprobacion de email y confirmacion
-			if (!$error) {
-				if ($email != $emailconf)
-					$error = _EMAIL_DISTINTO;
-			}
-			
-			// Comprobacion de password
-			if (!$error) {
-				if ($password != $confirmacion)
-					$error = _PASSWORD_DISTINTO;
-			}
-			
-			// Comprobacion de longitud de password
-			if (!$error) {
-				if (strlen(trim($password)) < 6)
-					$error = _PASSWORD_MIN_6;
-			}
-			
-			// Comprobacion de email existente
-			if (!$error) {
-				$result = $__BD->db_query("select email from clientes where email = '$email'");
-				$row = $__BD->db_fetch_row($result);
- 				if ($row[0]) $error = _EMAIL_EXISTENTE;
-			}
-			
-			// Comprobacion de direccion de envio: Todos vacios o todos rellenos
-			if (!$error) {
-				$numVacios = 0;
-				$datosEnvio = array ("direccion_env", "codpostal_env", "ciudad_env", "codpais_env", "provincia_env");
-				while (list ($clave, $campo) = each ($datosEnvio)) {
-					if (strlen(trim($CLEAN_POST[$campo])) == 0)
-						$numVacios++;
-				}
-				if ($numVacios != 0 && $numVacios != count($datosEnvio))
-					$error = _RELLENAR_CAMPOS_ENVIO;
-			}
 			
 			// Debe existir una serie
+			$error = '';
 			$ordenSQL = "select codserie from empresa";
 			$codSerie = $__BD->db_valor($ordenSQL);
-			if (!$codSerie)
+			if (!$codSerie) {
+				$pasa = false;
 				$error = _ERROR_CREAR_CUENTA;
-			
-			if ($error) {
-				echo '<div class="msgError">'.$error.'</div>';
+			}
+
+			if (!$pasa) {
+				if ($error)
+					echo '<div class="msgError">'.$error.'</div>';
 				include("form_crear_cuenta.php");
 			}
 			else {
-				
 				// Cuando el cliente define una empresa, se registra
 				if (strlen(trim($empresa)) > 0) {
 					$nomCliente = $empresa;
@@ -152,9 +121,7 @@ class oficial_crearCuenta
 				$listaValores .= $this->masValores();
 				
 				$ordenSQL = "insert into clientes ($listaCampos) values ($listaValores)";
-					
 				$result = $__BD->db_query($ordenSQL);
-				
 				// Direccion de envio si existe
 				if ($result) {
 					// id de la direccion
@@ -208,8 +175,6 @@ class oficial_crearCuenta
 					$cliente->cuenta();
 					include("../includes/right_bottom.php");
 					exit;
-// 					echo '<p><a href="'._WEB_ROOT_SSL.'cuenta/login.php">'._ENTRAR_CUENTA.'</a>';				
-// 					$_SESSION["codCliente"] = $codCliente;
  					
 				}
 			}
@@ -221,6 +186,11 @@ class oficial_crearCuenta
 		}
 		
 		echo '</div>';
+	}
+
+	function setCampos()
+	{
+		$this->campos =	array ("nombre", "apellidos", "email", "emailconf", "password", "confirmacion", "direccion", "codpostal", "ciudad", "provincia", "codpais", "direccion_env", "codpostal_env", "ciudad_env", "provincia_env", "codpais_env", "telefono", "fax", "empresa");
 	}
 
 	function setNoNulos()

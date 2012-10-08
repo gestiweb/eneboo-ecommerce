@@ -34,7 +34,7 @@ class oficial_funCatalogo
 	// Despliega los articulos en lista
 	function articulosLista($ordenSQL)
 	{
-		global $__BD;
+		global $__BD, $CLEAN_GET;
 	
 		if ($__BD->db_num_rows($ordenSQL) == 0)
 			return '<p><div class="msgInfo">'._NO_ARTICULOS.'</div><p>';
@@ -51,10 +51,10 @@ class oficial_funCatalogo
 	
 	function articulosMatriz($ordenSQL)
 	{
-		global $__BD;
+		global $__BD, $CLEAN_GET;
 	
 		$numArticulos = $__BD->db_num_rows($ordenSQL);
-	
+		
 		if ($numArticulos == 0)
 			return '<div class="msgInfo">'._NO_ARTICULOS.'</div>';
 	
@@ -68,7 +68,9 @@ class oficial_funCatalogo
 
 		while($row = $__BD->db_fetch_array($result)) {
 			
-			$codigo .= "\n".'<div class="cajaArtMatriz" style="width:'.$anchoCol.'%">';
+			$clase = ($idCol % $artXfila == 0) ? ' primero':'';
+			
+			$codigo .= "\n".'<div class="cajaArtMatriz'.$clase.'" style="width:'.$anchoCol.'%">';
 			$codigo .= '<div class="innerCajaArtMatriz">';
 			$codigo .= $this->cajaArtMatriz($row);
 			$codigo .= '</div>';
@@ -83,11 +85,13 @@ class oficial_funCatalogo
 	// Devuelve la clausula sql para la seleccion por pagina
 	function wherePagina($ordenSQL)
 	{
+		global $CLEAN_GET;
+		
 		$registrosXpag = $_SESSION["numresults"];
 		
 		$pagina = 0;
-		if (isset($_GET["pag"]))
-			$pagina = htmlentities($_GET["pag"]);	
+		if (isset($CLEAN_GET["pagina"]))
+			$pagina = htmlentities($CLEAN_GET["pagina"]);
 		
 		if (!$pagina)
 			$pagina = 1;
@@ -97,8 +101,9 @@ class oficial_funCatalogo
 		return $limit;
 	}
 		
+	
 	// Links de navegacion por las paginas
-	function navPaginas($ordenSQL)
+	function navPaginas($ordenSQL, $clase = '')
 	{
 		global $__BD;
 	
@@ -111,8 +116,8 @@ class oficial_funCatalogo
 		$linkAnt = '';
 		$linkSig = '';
 		
-		if ( isset($_GET["pag"]) && intval($_GET["pag"]) )
-			$pagina = $_GET["pag"];
+		if ( isset($_GET["pagina"]) && intval($_GET["pagina"]) )
+			$pagina = $_GET["pagina"];
 		
 		if (!$pagina)
 			$pagina = 1;
@@ -122,12 +127,12 @@ class oficial_funCatalogo
 		
 		if ($pagina > 1) {
 			$pagAnt = $pagina - 1;
-			$linkAnt = $nomPHP.'?pag='.$pagAnt;
+			$linkAnt = $this->paramsDeepLink('pagina', $pagAnt);
 			$linkAnt = '<a href="'.$linkAnt.'">'._ANTERIOR.'</a>';
 		}
 		if ($pagina < $numPaginas) {
 			$pagSig = $pagina + 1;
-			$linkSig = $nomPHP.'?pag='.$pagSig;
+			$linkSig = $this->paramsDeepLink('pagina', $pagSig);
 			$linkSig = '<a href="'.$linkSig.'">'._SIGUIENTE.'</a>';
 		}
 		
@@ -154,7 +159,7 @@ class oficial_funCatalogo
 		
 		if ($indGrupoPag > 1) { // Link de grupo anteriores <<
 			$pagGrupoAnterior = ($indGrupoPag - 1) * _NUM_PAG_GRUPO;
-			$linkPag = $nomPHP.'?pag='.$pagGrupoAnterior;
+			$linkPag = $this->paramsDeepLink('pagina', $pagGrupoAnterior);
 			$listaPaginas .= '<a href="'.$linkPag.'">&lt;&lt;</a> ';
 		}
 			
@@ -163,14 +168,14 @@ class oficial_funCatalogo
 			if ($i == $pagina)
 				$listaPaginas .= '<b>'.$i.'</b> ';
 			else {
-				$linkPag = $nomPHP.'?pag='.$i;
+				$linkPag = $this->paramsDeepLink('pagina', $i);
 				$listaPaginas .= '<a href="'.$linkPag.'">'.$i.'</a> ';
 			}
 		}
 		
 		if ($indGrupoPag < $numGrupos) { // Link de grupo siguientes >>
 			$pagGrupoSiguiente = $indGrupoPag * _NUM_PAG_GRUPO + 1;
-			$linkPag = $nomPHP.'?pag='.$pagGrupoSiguiente;
+			$linkPag = $this->paramsDeepLink('pagina', $pagGrupoSiguiente);
 			$listaPaginas .= '<a href="'.$linkPag.'">&gt;&gt;</a> ';
 		}
 			
@@ -195,7 +200,7 @@ class oficial_funCatalogo
 			$orden = $_SESSION["orden"];
 	
 		if ($orden != 'pvp')
-			$codigo .= '<a href="'.$nomPHP.'?ord=pvp">'.strtolower(_PRECIO).'</a>';
+			$codigo .= '<a href="'.$this->paramsDeepLink('orden', 'pvp').'">'.strtolower(_PRECIO).'</a>';
 		else
 			$codigo .= '<b>'.strtolower(_PRECIO).'</b>';
 			
@@ -203,7 +208,7 @@ class oficial_funCatalogo
 		if ($_SESSION["opciones"]["codidiomadefecto"] == $_SESSION["idioma"]) { 
 			$codigo .= '&nbsp;<b>&middot;</b>&nbsp;';
 			if ($orden != 'descripcion')
-				$codigo .= '<a href="'.$nomPHP.'?ord=descripcion">'.strtolower(_ARTICULO).'</a>';
+				$codigo .= '<a href="'.$this->paramsDeepLink('orden', 'descripcion').'">'.strtolower(_ARTICULO).'</a>';
 			else
 				$codigo .= '<b>'.strtolower(_ARTICULO).'</b>';
 		}
@@ -216,6 +221,33 @@ class oficial_funCatalogo
 		
 		return $codigo;
 	}
+	
+	
+	function paramsDeepLink($tipo, $valor)
+	{
+		global $CLEAN_GET, $__LIB;
+		
+		if (!$__LIB->esTrue($_SESSION["opciones"]["deeplinking"])) {
+			$fam = isset($CLEAN_GET["fam"]) ? $CLEAN_GET["fam"] : '';
+			$link = 'catalogo/articulos.php?fam='.$fam.'&amp;'.$tipo.'='.$valor;
+			return $link;
+		}
+		
+		if (isset($CLEAN_GET["famdl"])) {
+			$famDL = $CLEAN_GET["famdl"];
+			$link = 'catalogo/'.$famDL.'/'.$tipo.'/'.$valor;
+		}
+		else if (isset($_SESSION["buscar"])) {
+			$link = 'catalogo/buscar/'.$tipo.'/'.$valor;
+		}
+		else {
+			$fam = isset($CLEAN_GET["fam"]) ? $CLEAN_GET["fam"] : '';
+			$link = 'catalogo/articulos.php?fam='.$fam.'&amp;'.$tipo.'='.$valor;
+		}
+			
+		return $link;
+	}
+	
 	
 	// Para agregar en extensiones
 	function masOpcionesNav()
@@ -237,7 +269,7 @@ class oficial_funCatalogo
 		
 		// Matriz
 		if ($_SESSION["vista"] == 1)
-			$numResults = array(2, 3, 6, 10, 20, 50);	
+			$numResults = array(1,2, 3, 6, 10, 20, 50);	
 		// Lista
 		else
 			$numResults = array(10, 20, 30, 50, 100);	
@@ -254,7 +286,7 @@ class oficial_funCatalogo
 			}
 			
 			if ($val != $_SESSION["numresults"])
-				$resultadosPP .= '<a href="'.$nomPHP.'?numr='.$val.'">'.$val.'</a>';
+				$resultadosPP .= '<a href="'.$this->paramsDeepLink('numr', $val).'">'.$val.'</a>';
 			else
 				$resultadosPP .= '<b>'.$val.'</b>';
 
@@ -270,14 +302,14 @@ class oficial_funCatalogo
 		$codigo .= '<div class="navBarDisposicion">'._DISPOSICION_EN.' ';
 		
 		if ($_SESSION["vista"] != 0)
-			$codigo .= '<a href="'.$nomPHP.'?vista=lista">'._LISTA.'</a>';
+			$codigo .= '<a href="'.$this->paramsDeepLink('vista', 'lista').'">'._LISTA.'</a>';
 		else
 			$codigo .= '<b>'._LISTA.'</b>';
 			
 		$codigo .= '&nbsp;<b>&middot;</b>&nbsp;';
 		
 		if ($_SESSION["vista"] != 1)
-			$codigo .= '<a href="'.$nomPHP.'?vista=matriz">'._MATRIZ.'</a>';
+			$codigo .= '<a href="'.$this->paramsDeepLink('vista', 'matriz').'">'._MATRIZ.'</a>';
 		else
 			$codigo .= '<b>'._MATRIZ.'</b>';
 		
@@ -302,14 +334,14 @@ class oficial_funCatalogo
 		
 		$resultAcc = $__BD->db_query($ordenSQL);
 		while($rowAcc = $__BD->db_fetch_array($resultAcc)) {		
-			$ordenSQL = "select referencia, descripcion, pvp, descpublica, fechapub, codimpuesto, codfabricante, controlstock, enoferta, codplazoenvio from articulos where referencia = '".$rowAcc["ref"]."'";
+			$ordenSQL = "select referencia, descripcion, descripciondeeplink, pvp, descpublica, fechapub, codimpuesto, ivaincluido, codfabricante, controlstock, enoferta, codplazoenvio from articulos where referencia = '".$rowAcc["ref"]."'";
 			$result = $__BD->db_query($ordenSQL);
 			$row = $__BD->db_fetch_array($result);
 			$codigo .= $this->cajaArtLista($row);
 		}
 		
 		if ($codigo) {
-			$encabezado = '<div class="titApartado"><span class="titApartadoText">'._ACCESORIOS.'</span></div>';
+			$encabezado = '<h2><span class="titApartadoText">'._ACCESORIOS.'</span></h2>';
 			$codigo = $encabezado.$codigo;
 			return $codigo;
 		}
@@ -321,18 +353,21 @@ class oficial_funCatalogo
 	function cajaArtLista($row)
 	{
 		global $__LIB;
-		
+
 		$precio = $this->precioArticulo($row, true);
-		$codImg = $this->codigoThumb($row["referencia"]);
+		$descripcion = $__LIB->traducir("articulos", "descripcion", $row["referencia"], $row["descripcion"]);
+
+		$codImg = $this->codigoThumb($row["referencia"], $descripcion);
 		
 		$altoCaja = $_SESSION["opciones"]["piximages"] + 10;
 		
-		$descripcion = $__LIB->traducir("articulos", "descripcion", $row["referencia"], $row["descripcion"]);
 		
+		$link = $this->linkArticulo($row["referencia"], $row["descripciondeeplink"]);
+
 		$codigo = "\n".'<div class="cellLista">';
 
-		$codigo .= '<div class="cellListaImagen"><a href="'._WEB_ROOT.'catalogo/articulo.php?ref='.$row["referencia"].'">'.$codImg.'</a></div>';
-		$codigo .= '<div class="cellListaDescripcion"><a href="'._WEB_ROOT.'catalogo/articulo.php?ref='.$row["referencia"].'">'.$descripcion.'</a></div>';
+		$codigo .= '<div class="cellListaImagen"><a href="'.$link.'">'.$codImg.'</a></div>';
+		$codigo .= '<div class="cellListaDescripcion"><a href="'.$link.'">'.$descripcion.'</a></div>';
 		$codigo .= '<div class="cellListaPrecio">'.$precio.'</div>';
 		
 		// Datos de stock
@@ -356,47 +391,166 @@ class oficial_funCatalogo
 	{	
 		global $__LIB;
 		
+		$venta = true;
+		if ($__LIB->esTrue($_SESSION["opciones"]["preciossolousuarios"]) && !isset($_SESSION["codCliente"]))
+			$venta = false;
+		
 		$precio = $this->precioArticulo($row, true);
-		$codImg = $this->codigoThumb($row["referencia"]);
+		$descripcion = $__LIB->traducir("articulos", "descripcion", $row["referencia"], $row["descripcion"]);
+		
+		$codImg = $this->codigoThumb($row["referencia"], $descripcion);
+		
 		$altoCeldaImg = $_SESSION["opciones"]["piximages"] + 10;
 		
-		$descripcion = $__LIB->traducir("articulos", "descripcion", $row["referencia"], $row["descripcion"]);
+		
+		$link = $this->linkArticulo($row["referencia"], $row["descripciondeeplink"]);
 		
 		$codigo = '<div class="cellMatriz">';
 		
 		// Descripcion
 		$codigo .= '<div class="descripcion">';
-		$codigo .= '<a href="'._WEB_ROOT.'catalogo/articulo.php?ref='.$row["referencia"].'">'.$descripcion.'</a>';
+		$codigo .= '<a href="'.$link.'">'.$descripcion.'</a>';
 		$codigo .= '</div>';
 		
 		// Imagen
 		$codigo .= '<div class="imagen" style="height:'.$altoCeldaImg.'px">';
-		$codigo .= '<a href="'._WEB_ROOT.'catalogo/articulo.php?ref='.$row["referencia"].'">'.$codImg.'</a>';
+		$codigo .= '<a href="'.$link.'">'.$codImg.'</a>';
 		$codigo .= '</div>';
 		
 		// Precio
-		$codigo .= '<div class="precio">';
-		$codigo .= $precio;
-		$codigo .= '</div>';
+		if ($venta) {
+			$codigo .= '<div class="precio">';
+			$codigo .= $precio;
+			$codigo .= '</div>';
+		}
 		
 		// Datos de stock
-		$codigo .= '<div class="stock" valign="top">';
+		$codigo .= '<div class="stock">';
 		$datosStock = $this->datosStock($row);
 		$botonVenta = $datosStock["venta"];
 		if ($datosStock["stock"])
 			$codigo .= $datosStock["stock"];
 		$codigo .= '</div>';
 		
-		// Boton de venta y favoritos
-		$codigo .= '<div class="venta">';
-		if ($datosStock["venta"])
-			$codigo .= $__LIB->crearBotonVenta($row["referencia"]);
+		if ($venta) {
+			$codigo .= '<div class="venta">';
+			if ($datosStock["venta"])
+				$codigo .= $__LIB->crearBotonVenta($row["referencia"]);
+			$codigo .= '</div>';
+		}
+		
+		$codigo .= '</div>';
+	
+		return $codigo;
+	}
+	
+	// HTML de una celda de matriz
+	function cajaArtMatrizSlider($row)
+	{	
+		global $__LIB;
+		
+		$venta = true;
+		if ($__LIB->esTrue($_SESSION["opciones"]["preciossolousuarios"]) && !isset($_SESSION["codCliente"]))
+			$venta = false;
+		
+		$precio = $this->precioArticulo($row, true);
+		$descripcion = $__LIB->traducir("articulos", "descripcion", $row["referencia"], $row["descripcion"]);
+		
+		$codImg = $this->codigoThumb($row["referencia"], $descripcion, false, 'normal');
+		
+		$link = $this->linkArticulo($row["referencia"], $row["descripciondeeplink"]);
+		
+		$codigo = '<div class="cellMatrizSlider">';
+		
+		// Descripcion
+		$codigo .= '<div class="descripcion">';
+		$codigo .= '<a href="'.$link.'">'.$descripcion.'</a>';
+		$codigo .= '</div>';
+		
+		// Imagen
+		$codigo .= '<div class="imagen">';
+		$codigo .= '<a href="'.$link.'">'.$codImg.'</a>';
+		$codigo .= '</div>';
+		
+		// Precio
+		if ($venta) {
+			$codigo .= '<div class="precio">';
+			$codigo .= $precio;
+			$codigo .= '</div>';
+		}
+		
+		$codigo .= '</div>';
+	
+		return $codigo;
+	}
+	
+	function familiasMatriz($codFamilia)
+	{
+		global $__BD, $CLEAN_GET;
+	
+		$codigo = '';
+		$ordenSQL = "select codfamilia, descripcion, descripciondeeplink from familias where codmadre = '$codFamilia' AND publico = true order by orden";
+		
+		$numF = $__BD->db_num_rows($ordenSQL);
+		
+		if ($numF == 0)
+			return '';
+	
+		$codigo = '';
+			
+		$idCol = 0;
+		$artXfila = $_SESSION["opciones"]["articulosxfila"];
+		$anchoCol = 100/$artXfila;
+		
+		$result = $__BD->db_query($ordenSQL);
+
+		while($row = $__BD->db_fetch_array($result)) {
+			
+			$clase = ($idCol % $artXfila == 0) ? ' primero':'';
+			
+			$codigo .= "\n".'<div class="cajaArtMatriz'.$clase.'" style="width:'.$anchoCol.'%">';
+			$codigo .= '<div class="innerCajaArtMatriz">';
+			$codigo .= $this->cajaFamMatriz($row);
+			$codigo .= '</div>';
+			$codigo .= '</div>';
+			
+			$idCol++;
+		}
+		
+		return $codigo;
+	}
+	
+	// HTML de una celda de matriz
+	function cajaFamMatriz($row)
+	{	
+		global $__LIB;
+		
+//		$codImg = $this->codigoThumb($row["referencia"]);
+		$codImg = '';
+		
+		$altoCeldaImg = $_SESSION["opciones"]["piximages"] + 10;
+		
+		$descripcion = $__LIB->traducir("familias", "descripcion", $row["codfamilia"], $row["descripcion"]);
+		
+ 		$link = $this->linkFamilia($row["codfamilia"], $row["descripciondeeplink"]);
+		
+		$codigo = '<div class="cellMatriz">';
+		
+		// Descripcion
+		$codigo .= '<div class="descripcion">';
+		$codigo .= '<a href="'.$link.'">'.$descripcion.'</a>';
+		$codigo .= '</div>';
+		
+		// Imagen
+		$codigo .= '<div class="imagen" style="height:'.$altoCeldaImg.'px">';
+		$codigo .= '<a href="'.$link.'">'.$codImg.'</a>';
 		$codigo .= '</div>';
 		
 		$codigo .= '</div>';
 	
 		return $codigo;
 	}
+	
 	
 	// Datos del stock y plazo de envio de un articulo
 	function datosStock($row)
@@ -437,7 +591,7 @@ class oficial_funCatalogo
 			$codigo;
 			
 			if ($datos["stock"])
-				$datos["stock"] .= '<br>';
+				$datos["stock"] .= '<br/>';
 				
 			$datos["stock"] .= $codigo;
 		}
@@ -457,123 +611,80 @@ class oficial_funCatalogo
 		$ordenSQL = "select count(referencia) from articulos $where and publico = true";
 		return $__BD->db_valor($ordenSQL);
 	}
+
 	
 	// HTML de la miniatura de la imagen
-	function codigoThumb($referencia, $link = false)
+	function codigoThumb($referencia, $descripcion, $link = false, $tam = 'thumb')
 	{
 		global $__BD;
-		
-		$ordenSQL = "select tipoimagen, fechaimagen from articulos where referencia = '$referencia'";
+	
+		$ordenSQL = "select id,nomfichero from articulosfotos where referencia = '$referencia' order by orden";
 
-		$row = $__BD->db_row($ordenSQL);
-		$tipoImagen = $row[0];
+		$result = $__BD->db_query($ordenSQL);
+		$row = $__BD->db_fetch_row($result);
+		$id = $row[0];
+		$nomFichero = $row[1];
 		
-		// Si se sube directamente o por FTP
-		if (!$tipoImagen)
-			$tipoImagen = 'jpg';
+		if (!$nomFichero)
+			return '';
 		
-		$baseImg = $referencia.'.'.$tipoImagen;
+		$baseImg = $referencia.'/'.$nomFichero;
 
-		$fichImg = _DOCUMENT_ROOT.'catalogo/img_thumb/'.$baseImg;
+		$fichImg = _DOCUMENT_ROOT.'catalogo/img_'.$tam.'/'.$baseImg;
 		$fichImgN = _DOCUMENT_ROOT.'catalogo/img_normal/'.$baseImg;
 		
-		if (!file_exists($fichImgN))
-			return '';
-		// Si existe la grande pero no la pequena, se crea la pequena
-		if (!file_exists($fichImg)) {
-			$this->crearThumb($baseImg);
-		}
+ 		if (!file_exists($fichImg))
+ 			return '';
 		
-		// Si se subio una imagen nueva sobre la que ya existia, se recrea la miniatura
-		$fechaImagen = $row[1];
-		$fechaMod = filemtime ($fichImgN);
-		if ($fechaImagen != $fechaMod) {
-			$this->crearThumb($baseImg);
+		$fichImg = _WEB_ROOT.'catalogo/img_'.$tam.'/'.$baseImg;
 
-			$ordenSQL = "update articulos set fechaimagen = '$fechaMod' where referencia = '$referencia'";
-			$__BD->db_query($ordenSQL);
+		$codigo = '<img class="thumb" alt="'.$descripcion.'" src="'.$fichImg.'"/>';
+		// Si hay que poner link a foto grande
+		if ($link && file_exists($fichImgN)) {
+			$fichImgN = _WEB_ROOT.'catalogo/img_normal/'.$baseImg;
+			$codigo = '<a class="ampliar" rel="galeria" title="'.$descripcion.'" href="'.$fichImgN.'">'.$codigo.'</a>';
 		}
 		
-		$codigo = $this->contenidoCodigoThumb($referencia, $baseImg, $fichImg, $fichImgN, $link);
+		return $codigo;
+	} 
+
+	// HTML de la miniatura de la familia
+	function codigoThumbFam($codFamilia, $link = false, $tam = 'thumb')
+	{
+		global $__BD;
+	
+		$ordenSQL = "select id,nomfichero from familiasfotos where codfamilia = '$codFamilia' order by orden";
+
+		$result = $__BD->db_query($ordenSQL);
+		$row = $__BD->db_fetch_row($result);
+		$id = $row[0];
+		$nomFichero = $row[1];
+		
+		if (!$nomFichero)
+			return '';
+		
+		$baseImg = $referencia.'/'.$nomFichero;
+
+		$fichImg = _DOCUMENT_ROOT.'catalogo/img_'.$tam.'/'.$baseImg;
+		$fichImgN = _DOCUMENT_ROOT.'catalogo/img_normal/'.$baseImg;
+		
+ 		if (!file_exists($fichImg))
+ 			return '';
+		
+		$fichImg = _WEB_ROOT.'catalogo/img_'.$tam.'/'.$baseImg;
+
+		$codigo = '<img class="thumb" src="'.$fichImg.'">';
+		// Si hay que poner link a foto grande
+		if ($link && file_exists($fichImgN)) {
+			$fichImgN = _WEB_ROOT.'catalogo/img_normal/'.$baseImg;
+			$codigo = '<a class="ampliar" rel="galeria" alt="'.$descripcion.'" href="'.$fichImgN.'">'.$codigo.'</a>';
+		}
 		
 		return $codigo;
 	} 
 
 
-	function contenidoCodigoThumb($referencia, $baseImg, $fichImg, $fichImgN, $link)
-	{
-		$codigo = '';
-		if (file_exists($fichImg)) {
-			$codigoTh = '<img class="thumb" border="0" src="'._WEB_ROOT.'catalogo/img_thumb/'.$baseImg.'">';
-			// Si hay que poner link a foto grande
-			
-			if ($link && file_exists($fichImgN)) {
-				$fichImgN = _WEB_ROOT.'catalogo/img_normal/'.$baseImg;
-				$codigo .= '<a class="ampliar" href="'.$fichImgN.'">'.$codigoTh.'</a>';
-			}
-			else
-				$codigo = $codigoTh;
-		}
-		
-		return $codigo;
-	}
-
-
-	// Crea la imagen pequena a partir de una grande nueva
-	function crearThumb($fichImagen, $pixImages = 0, $codFoto = '')
-	{
-		// Solo si el servidor tiene las funciones php necesarias
-		if (!function_exists("imagecreatetruecolor"))
-			return;
-		
-		$imgNor = _DOCUMENT_ROOT.'catalogo/img_normal/'.$fichImagen;
-		$imgPeq = _DOCUMENT_ROOT.'catalogo/img_thumb/'.$fichImagen;
-		list($width, $height) = getimagesize($imgNor);
-		$path_parts = pathinfo($imgNor);
-		$extension = $path_parts["extension"];
-		
-		if ($pixImages == 0)
-			$pixImages = $_SESSION["opciones"]["piximages"];
-
-		// Miniatura de secundaria?
-		if ($codFoto)
-			$pixImages = _PIX_FOTO_SEC;
-		
-		// Vertical
-		if ($width < $height) {
-			$new_height = $pixImages;
-			$new_width = round($new_height * $width / $height);
-		}
-		// Horizontal o cuadrada
-		else {
-			$new_width = $pixImages;
-			$new_height = round($new_width * $height / $width );
-		}
-		
-		$image_p = imagecreatetruecolor($new_width, $new_height);
-		
-		switch ($extension) {
-			case "png":
-				$image = imagecreatefrompng($imgNor);
-				imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-				$res = imagepng($image_p, $imgPeq);
-				break;
-			case "jpg":
-			case "jpeg":
-				$image = imagecreatefromjpeg($imgNor);
-				imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-				imagejpeg($image_p, $imgPeq, 75);
-				break;
-			case "gif":
-				$image = imagecreatefromgif($imgNor);
-				imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-				imagegif($image_p, $imgPeq);
-				break;
-			
-			default:
-				return;
-		}
-	}
+	
 	
 	// Devuelve la clausula where de una familia y sus familias hijas. Recursiva
 	function whereFamiliasHijas($codFamilia, $where)
@@ -609,7 +720,7 @@ class oficial_funCatalogo
 		while($row = $__BD->db_fetch_array($result)) {
 			$nombre = $__LIB->traducir("atributos", "nombre", $row["codatributo"], $row["nombre"]);
 			$valor = $__LIB->traducir("atributosart", "valor", $row["id"], $row["valor"]);
-			$atributos .= '<b>'.$nombre.'</b>: '.$valor.'<br>';
+			$atributos .= '<b>'.$nombre.'</b>: '.$valor.'<br/>';
 		}
 		
 		if ($atributos)
@@ -645,15 +756,17 @@ class oficial_funCatalogo
 			$precio = $this->aplicarTarifa($precio, $row["referencia"]);
 		
 		$enOferta = false;
-		if ($__LIB->esTrue($row["enoferta"]) && $row["pvpoferta"] > 0)
-			$enOferta = true;
+		if (isset($row["enoferta"])) {
+			if ($__LIB->esTrue($row["enoferta"]) && $row["pvpoferta"] > 0)
+				$enOferta = true;
+		}
 		
 		if ($enOferta)
 			$precio = $row["pvpoferta"];
 		
 		$ivaIncluido = false;
 		if (isset($row["ivaincluido"]))
-			$ivaIncluido = $row["ivaincluido"]; 
+			$ivaIncluido = $row["ivaincluido"];
 		
 		// Con IVA no incluido
 		if ($__LIB->esTrue($_SESSION["opciones"]["impincluidos"]) && !$__LIB->esTrue($ivaIncluido)) {
@@ -680,10 +793,10 @@ class oficial_funCatalogo
 				$precio .= ' <span class="msgIVA">'._IVA_NO_INCLUIDO.'</span>';
 			
 			$precioAnterior = $this->precioDivisa($precioAnterior);
-			$precio .= '<br><span class="precioAnterior">'._ANTES.': '.$precioAnterior;
-			if ($_SESSION["vista"] == 0) $precio .= '<br>';
+			$precio .= '<div class="precioAnterior">'._ANTES.': '.$precioAnterior;
+			if ($_SESSION["vista"] == 0) $precio .= '<br/>';
 			$precio .= ' '._DTO.': '.$descuento.'%';
-			$precio .= '</span>';
+			$precio .= '</div>';
 		}
 		else {
 			$precio = $this->precioDivisa($precio);		
@@ -729,7 +842,44 @@ class oficial_funCatalogo
 			
 		return $precio;
 	}
+
 	
+	function pvp($row)
+	{
+		global $__LIB;
+		
+		$precio = $row["pvp"];
+		$precio = $this->aplicarTarifa($precio, $row["referencia"]);
+		$codImpuesto = $row["codimpuesto"];
+		$iva = $this->selectIVA($codImpuesto);
+
+		// Oferta
+		if (isset($row["enoferta"])) {
+			$enOferta = false;
+			if ($__LIB->esTrue($row["enoferta"]) && $row["pvpoferta"] > 0)
+				$enOferta = true;
+			
+			if ($enOferta)
+				$precio = $row["pvpoferta"];
+		}
+		
+		// Si el precio lleva IVA incluido lo restamos
+		if ($__LIB->esTrue($row["ivaincluido"])) {
+			$precioIva = $precio;
+			$precio = $precio / (1 + $iva / 100);
+			
+		}
+		else {
+			$precioIva = $precio * (1 + $iva / 100);
+		}
+
+		$precios;
+		$precios["coniva"] = number_format($precioIva,2,".","");
+		$precios["siniva"] = number_format($precio,2,".","");
+
+		return $precios;
+	}
+
 	// Devuelve el precio + impuestos del articulo
 	function precioImpuestos($row, $formato = false, $precioOferta = true)
 	{
@@ -778,7 +928,7 @@ class oficial_funCatalogo
 		if (!$codTarifa)
 			return $precio;
 
-		// Precio por artï¿?culo y tarifa?
+		// Precio por artï¿½culo y tarifa?
 		if ($referencia) {
 			$ordenSQL = "select pvp from articulostarifas where codtarifa = '$codTarifa' and referencia = '$referencia'" ;
 			$precioTarifa = $__BD->db_valor($ordenSQL);
@@ -845,10 +995,10 @@ class oficial_funCatalogo
 				$precio .= ' <span class="msgIVA">'._IVA_NO_INCLUIDO.'</span>';
 			
 			$precioAnterior = $this->precioDivisa($precioAnterior);
-			$precio .= '<br><span class="precioAnterior">'._ANTES.': '.$precioAnterior;
-			if ($_SESSION["vista"] == 0) $precio .= '<br>';
+			$precio .= '<div class="precioAnterior">'._ANTES.': '.$precioAnterior;
+			if ($_SESSION["vista"] == 0) $precio .= '<br/>';
 			$precio .= ' '._DTO.': '.$descuento.'%';
-			$precio .= '</span>';
+			$precio .= '</div>';
 		}
 		else {
 			$precio = $this->precioDivisa($precio);		
@@ -889,16 +1039,15 @@ class oficial_funCatalogo
 	{
 		global $__BD, $__LIB;
 	
-		$ordenSQL = "select codmadre, descripcion from familias where codfamilia = '$codFamilia'";
+		$ordenSQL = "select codmadre, descripcion, descripciondeeplink from familias where codfamilia = '$codFamilia'";
 		$row = $__BD->db_row($ordenSQL);
 		$codMadre = $row[0];
 		
 		$descripcion = $__LIB->traducir("familias", "descripcion", $codFamilia, $row[1]);
-		
 		$link = '';
 		
 		if ($rastro)
-			$link .= '<a href="articulos.php?fam='.$codFamilia.'">';
+			$link .= '<a href="'.$this->linkFamilia($codFamilia, $row[2]).'">';
 		
 		$link .= $descripcion;
 		
@@ -921,7 +1070,7 @@ class oficial_funCatalogo
 		global $__BD, $__LIB;
 	
 		$codigo = '';
-		$ordenSQL = "select codfamilia, descripcion from familias where codmadre = '$codFamilia' AND publico = true order by orden";
+		$ordenSQL = "select codfamilia, descripcion, descripciondeeplink from familias where codmadre = '$codFamilia' AND publico = true order by orden";
 		
 		$result = $__BD->db_query($ordenSQL);
 		while($row = $__BD->db_fetch_array($result)) {
@@ -934,13 +1083,30 @@ class oficial_funCatalogo
 			if ($codigo)
 				$codigo .= ' &middot; ';
 				
-			$codigo .= '<a href="articulos.php?fam='.$row["codfamilia"].'">';
+			$codigo .= '<a href="'.$this->linkFamilia($row["codfamilia"], $row["descripciondeeplink"]).'">';
+			
 			$codigo .= $descripcion;
 			$codigo .= '</a>';
 		}
 		
 		if ($codigo)
 			$codigo = '<div class="subCaja">'.$codigo.'</div>';
+	
+		return $codigo;
+	}
+	
+	// Lista de familias hijas de una familia
+	function listaFamiliasHijasFoto($codFamilia)
+	{
+		global $__BD, $__LIB;
+	
+		$codigo = '';
+		$ordenSQL = "select codfamilia, descripcion, descripciondeeplink from familias where codmadre = '$codFamilia' AND publico = true order by orden";
+		
+		$result = $__BD->db_query($ordenSQL);
+		while($row = $__BD->db_fetch_array($result)) {
+			$codigo .= $this->cajaFamMatriz($row);
+		}
 	
 		return $codigo;
 	}
@@ -957,7 +1123,7 @@ class oficial_funCatalogo
 		$likeD = '(';
 		$likeT = '(';
 		
-		$arrayPalabras = split(" ",$palabras);
+		$arrayPalabras = explode(" ",$palabras);
 		for ($i = 0; $i < count($arrayPalabras); $i++) {
 			if ($i > 0) {
 				$like .= " AND";
@@ -996,85 +1162,107 @@ class oficial_funCatalogo
 		$like = 'referencia IN ('.$lista.')';
 		return $like;	
 	}
-
-
+	
+	function checkDeepLinks()
+	{
+		global $__BD, $__LIB;
+		
+		if (!$__LIB->esTrue($_SESSION["opciones"]["deeplinking"]))
+			return;
+		
+ 		$ordenSQL = "select codfamilia,descripcion from familias where descripciondeeplink is null or descripciondeeplink = ''";
+		$result = $__BD->db_query($ordenSQL);
+		while($row = $__BD->db_fetch_assoc($result)) {
+			$codFamilia = $row["codfamilia"];
+			$deepLink = $__LIB->cleanURL($row["descripcion"]);
+			$ordenSQL = "update familias set descripciondeeplink = '$deepLink' where codfamilia = '$codFamilia'";
+			$__BD->db_query($ordenSQL);
+		}
+		
+ 		$ordenSQL = "select referencia,descripcion from articulos where descripciondeeplink is null or descripciondeeplink = ''";
+		$result = $__BD->db_query($ordenSQL);
+		while($row = $__BD->db_fetch_assoc($result)) {
+			$referencia = $row["referencia"];
+			$deepLink = $__LIB->cleanURL($row["descripcion"]);
+			$ordenSQL = "update articulos set descripciondeeplink = '$deepLink' where referencia = '$referencia'";
+			$__BD->db_query($ordenSQL);
+		}
+	}
+	
+	function linkArticulo($referencia, $descripcionDL)
+	{
+		global $__LIB, $CLEAN_GET, $__BD;
+		
+		if (!$__LIB->esTrue($_SESSION["opciones"]["deeplinking"]))
+			return 'catalogo/articulo.php?ref='.$referencia;
+		
+		if (!strlen($descripcionDL))
+			return 'catalogo/articulo.php?ref='.$referencia;
+		else {
+			$familia = isset($CLEAN_GET["famdl"]) ? $CLEAN_GET["famdl"]:'';
+			if (!$familia) {
+				$ordenSQL = "select f.descripciondeeplink from articulos a inner join familias f on a.codfamilia=f.codfamilia where a.referencia='$referencia'";
+				$familia = $__BD->db_valor($ordenSQL);
+			}
+			return 'catalogo/'.$familia.'/'.$descripcionDL;
+		}
+	}
+	
+	function linkFamilia($codFamilia, $descripcionDL)
+	{
+		global $__LIB;
+		
+		if (!$__LIB->esTrue($_SESSION["opciones"]["deeplinking"]))
+			return 'catalogo/articulos.php?fam='.$codFamilia;
+		if (!strlen($descripcionDL))
+			return 'catalogo/articulos.php?fam='.$codFamilia;
+		else
+			return 'catalogo/'.$descripcionDL;
+	}
+	
+	function stylishSlider()
+	{
+		global $__BD;
+		
+		$codigo = '';
+		
+		$codigo .= '<div id="wrapperStylishSlider">';
+		$codigo .= '<div id="stylishSlider">';
+		
+		$where = "publico = true AND superenportada=true ORDER BY ordenportada";
+		$ordenSQL = "select referencia, descripcion, descripciondeeplink, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where ".$where;
+		
+		$pasos = 0;
+		
+		$result = $__BD->db_query($ordenSQL);
+		while($row = $__BD->db_fetch_assoc($result)) {
+			$codigo .= $this->cajaArtMatrizSlider($row);
+			$pasos ++;
+		}
+		
+		$codigo .= '</div>';
+		
+		if ($pasos > 4) {
+			$codigo .= '<button id="sliderBwd" onclick="sliderBwd()"><span></span></button>';
+			$codigo .= '<button id="sliderFwd" onclick="sliderFwd('.$pasos.')"><span></span></button>';
+		}
+		$codigo .= '</div>';
+		
+		if (!$pasos)
+			return '';
+		
+		return $codigo;
+	}
+	
 }
+
+
 
 //// OFICIAL /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
 
-/** @class_definition pcrednet_funCatalogo */
-//////////////////////////////////////////////////////////////////
-//// PC REDNET /////////////////////////////////////////////////////
-
-class pcrednet_funCatalogo extends oficial_funCatalogo
-{
-	// Devuelve el precio modificado con su tarifa si corresponde
-	// Si no, busca la tarifa general web
-	function aplicarTarifa($precio, $referencia)
-	{
-		global $__BD, $__LIB;
-		$preciosXtarifa = $_SESSION["opciones"]["preciosportarifas"];
-
-		if ($__LIB->esTrue($preciosXtarifa) && isset($_SESSION["codCliente"]))  {
-			$ordenSQL = "
-					select t.incporcentual, t.inclineal from
-					tarifas t inner join
-					gruposclientes g on t.codtarifa = g.codtarifa inner join
-					clientes c on g.codgrupo = c.codgrupo
-					where c.codcliente = '".$_SESSION["codCliente"]."'";
-	
-			if ($__BD->db_num_rows($ordenSQL) > 0)
-				return parent::aplicarTarifa($precio);
-		}
-
-		$codTarifaWeb = $_SESSION["opciones"]["codtarifaweb"];
-		if (!$__LIB->esTrue($codTarifaWeb))
-			return $precio;
-
-		// Precio por artÃ­culo y tarifa?
-		if ($referencia) {
-			$ordenSQL = "select pvp from articulostarifas where codtarifa = '$codTarifaWeb' and referencia = '$referencia'" ;
-			$precioTarifa = $__BD->db_valor($ordenSQL);
-			if ($precioTarifa) {
-				return $precioTarifa;
-			}
-		}
-
-		$ordenSQL = "select incporcentual, inclineal from tarifas where codtarifa = '$codTarifaWeb'";
-		if ($__BD->db_num_rows($ordenSQL) == 0)
-			return $precio;
-
-		$result = $__BD->db_query($ordenSQL);
-		$row = $__BD->db_fetch_row($result);
-		
-		$incPor = $row[0];
-		$incLin = $row[1];
-
-		$precio = $precio + $precio * $incPor / 100 + $incLin; 
-		
-		return $precio;
-	}
-
-	// Numero de articulos por familia
-	function numArticulosF($codFamilia) 
-	{
-		global $__BD;
-	
-		$where = " where (codfamilia = '$codFamilia'";	 	
-		$where = $this->whereFamiliasHijas($codFamilia, $where);
-		$where .= ')';
-		$ordenSQL = "select count(referencia) from articulos $where and publico = true and obsoleto = false";
-		return $__BD->db_valor($ordenSQL);
-	}
-
-}
-
-//// PC REDNET /////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-	
 /** @main_class_definition oficial_funCatalogo */
-class funCatalogo extends pcrednet_funCatalogo{};
+class funCatalogo extends oficial_funCatalogo {};
 
 ?>

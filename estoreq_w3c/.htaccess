@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^(eng|fra|esp|cat|ita|por|deu)$ index.php?newlang=$1 [QSA]
+RewriteRule ^(eng|fra|esp|cat|ita|por|deu)/(.*)$ $2?newlang=$1 [QSA]

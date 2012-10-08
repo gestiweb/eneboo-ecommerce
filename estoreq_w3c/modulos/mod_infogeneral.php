@@ -37,14 +37,14 @@ class oficial_modInfogeneral
 		while($row = $__BD->db_fetch_array($result)) {
 			$titulo = $__LIB->traducir("infogeneral", "titulo", $row["codigo"], $row["titulo"]);
 			$codigoMod .= '<div class="itemMenu">';
-			$codigoMod .= '<a href="'._WEB_ROOT.'general/infogeneral.php?cod='.$row["codigo"].'">'.$titulo.'</a>';
+			$codigoMod .= '<a href="general/infogeneral.php?cod='.$row["codigo"].'">'.$titulo.'</a>';
 			$codigoMod .= '</div>';
 		}
 		
 		// FAQs
 		if ($__LIB->esTrue($_SESSION["opciones"]["activarfaq"])) {
 			$codigoMod .= '<div class="itemMenu">';
-			$codigoMod .= '<a href="'._WEB_ROOT.'general/faq.php">'._FAQ.'</a>';
+			$codigoMod .= '<a href="general/faq.php">'._FAQ.'</a>';
 			$codigoMod .= '</div>';
 		}
 		return $codigoMod;

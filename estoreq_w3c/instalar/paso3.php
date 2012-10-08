@@ -27,17 +27,17 @@ if (isset($CLEAN_POST["procesar"]))
 
 ?>
 
-<div class="titPagina"><?php echo _INSTALL_TV ?></div>
+<h1><?php echo _INSTALL_TV ?></h1>
 
 <p>
 <?php
 
 	echo $__LIB->fasesInstalacion('datos');
-	echo '<div class="titApartado">'._FASES_INS_DATOS.'</div>';
+	echo '<h2>'._FASES_INS_DATOS.'</h2>';
 	
 	echo _INS_TEXTO_3;
 	
-	echo '<p><a class="botLink" href="javascript:formVolcar.submit()">'._INS_COMPROBAR_3.'</a>';
+	echo '<p><a class="button" href="javascript:formVolcar.submit()"><span>'._INS_COMPROBAR_3.'</span></a>';
 	
 	if ($procesar) {
 	
@@ -53,10 +53,12 @@ if (isset($CLEAN_POST["procesar"]))
 			if (!$__LIB->comprobarBD(_DB_TYPE))
 				$error = _ERROR_CREACION_BD;
 		
-		echo '<div class="titApartado">'._RESULTADO.'</div>';
+		echo '<br/><br/>';
+		
+		echo '<h2>'._RESULTADO.'</h2>';
 		if (!$error) {
-			echo '<p><div class="msgOk">'._INS_OK_3.'</div>';
-			echo '<p><a class="botLink" href="../index.php">'._INS_SIGUIENTE_3.'</a>';
+			echo '<div class="msgOk">'._INS_OK_3.'</div>';
+			echo '<br/><br/><a class="button" href="../index.php"><span>'._INS_SIGUIENTE_3.'</span></a>';
 		}
 		else
 			echo '<p><div class="msgError">'.$error.'</div>';

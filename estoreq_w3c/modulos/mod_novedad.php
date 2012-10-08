@@ -39,7 +39,7 @@ class oficial_modNovedad
 		srand((double)microtime()*1000000);
 		$randval = rand(0, $numNovedades - 1);
 		
-		$ordenSQL = "select referencia, descripcion, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where fechapub > '$fechaLimite' and publico=true limit 1 offset $randval";
+		$ordenSQL = "select referencia, descripcion, descripciondeeplink, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where fechapub > '$fechaLimite' and publico=true limit 1 offset $randval";
 		
 		$result = $__BD->db_query($ordenSQL);
 		$row = $__BD->db_fetch_array($result);
@@ -55,48 +55,7 @@ class oficial_modNovedad
 //////////////////////////////////////////////////////////////////
 
 
-/** @class_definition pcrednet_modNovedad */
-//////////////////////////////////////////////////////////////////
-//// PC REDNET /////////////////////////////////////////////////////
-
-class pcrednet_modNovedad extends oficial_modNovedad
-{
-	// Muesta aleatoriamente un articulo nuevo
-	function contenidos()
-	{
-		global $__BD, $__LIB;
-	
-		$codigoMod = '';
-		
-		$lastmonth = mktime(0,0,0,date("m"),date("d")-42,  date("Y"));
-		$fechaLimite = date("Y-m-d", $lastmonth);
-		
-		$ordenSQL = "select referencia from articulos where fechapub > '$fechaLimite' and publico=true";
-		
-		$numNovedades = $__BD->db_num_rows($ordenSQL);
-		if ($numNovedades == 0)
-			return;
-		
-		srand((double)microtime()*1000000);
-		$randval = rand(0, $numNovedades - 1);
-		
-		$ordenSQL = "select referencia, descripcion, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where fechapub > '$fechaLimite' and publico=true and obsoleto = false limit 1 offset $randval";
-		
-		$result = $__BD->db_query($ordenSQL);
-		$row = $__BD->db_fetch_array($result);
-		if (!$row)
-			return '';		
-
-		$codigoMod .= '<div class="cajaImagen">';
-		$codigoMod .= $__LIB->cajaImagen($row);
-		$codigoMod .= '</div>';
-		return $codigoMod;
-	}
-}
-
-//// PC REDNET /////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
 /** @main_class_definition oficial_modNovedad */
-class modNovedad extends pcrednet_modNovedad{};
+class modNovedad extends oficial_modNovedad {};
 
 ?>

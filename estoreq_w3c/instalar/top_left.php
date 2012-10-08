@@ -16,8 +16,7 @@
 
 /** @no_class */
    	
-//    	error_reporting(E_ALL);
-//    	ini_set('display_errors', true);
+   	ini_set('display_errors', false);
    	
    	include('libreria.php');
    	$__LIB = new funLibreria;
@@ -45,7 +44,7 @@
 <table cellspacing=0 cellpadding=0 class="mainTop" width="100%" height="100%">
 	<tr><td class="logo" width="100">
 	
-		<img border="0" class="logotop" src="../templates/default/images/logotop.png"></a>
+		<img class="logotop" src="../templates/default/images/logotop.png"></a>
 	
 	</td></tr>
 </table>

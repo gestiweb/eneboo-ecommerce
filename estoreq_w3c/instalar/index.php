@@ -19,28 +19,29 @@ require_once( '../idiomas/esp/main.php' );
 
 ?>
 
-<div class="titPagina"><?php echo _INSTALL_TV ?></div>
+<h1><?php echo _INSTALL_TV ?></h1>
 
 <p>
 
 <?php
 	echo $__LIB->fasesInstalacion('previo');
-	echo '<div class="titApartado">'._FASES_INS_PREVIO.'</div>';
+	echo '<h2>'._FASES_INS_PREVIO.'</h2>';
 
 	echo _INS_TEXTO_0;
 ?>
 
-<p><br />
-	<a class="botLink" href="javascript:window.location=window.location"><?php echo _COMPROBAR_NUEVO ?></a>
-	&nbsp;
-	<a class="botLink" href="licencia.php"><?php echo _SIGUIENTE_MAS ?></a>
-<p>
+<p><br/>
+	<a class="button" href="javascript:window.location=window.location"><span><?php echo _COMPROBAR_NUEVO ?></span></a>
+	<a class="button" href="licencia.php"><span><?php echo _SIGUIENTE_MAS ?></span></a>
+<p/>
 
-<div class="titApartado"><?php echo _RECURSOS_SISTEMA ?></div>
+<br/>		
+		
+<h2><?php echo _RECURSOS_SISTEMA ?></h2>
 
 <?php echo _RECURSOS_SISTEMA_TEXT ?>
 
-<br /><br />
+<br/><br/>
 
 <table class="datos">
 
@@ -68,11 +69,11 @@ require_once( '../idiomas/esp/main.php' );
 </table>
 
 
-<div class="titApartado"><?php echo _DIRECT_SISTEMA ?></div>
+<h2><?php echo _DIRECT_SISTEMA ?></h2>
 
 <?php echo _DIRECT_SISTEMA_TEXT ?>
 
-<br><br>
+<br/><br/>
 
 <table class="datos">
 <tr>
@@ -97,8 +98,10 @@ foreach ($settings as $sett) {
 </table>
 
 
-<div class="titApartado"><?php echo _PERMISOS_DISCO ?></div>
+<h2><?php echo _PERMISOS_DISCO ?></h2>
 <?php echo _PERMISOS_DISCO_TEXT ?>
+
+<br/><br/>
 
 <table class="datos">
 <tr>
@@ -108,9 +111,11 @@ foreach ($settings as $sett) {
 <?php
 	
 $dirs = array(
+	'includes',
 	'includes/configure_web.php',
 	'includes/configure_bd.php',
 	'catalogo/img_normal',
+	'catalogo/img_mediana',
 	'catalogo/img_thumb',
 	'catalogo/img_superthumb',
 	'images/noticias'

@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
     begin                : vie sep 29 2006
     copyright            : (C) 2006 by InfoSiAL S.L.
@@ -13,9 +12,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-   	
-include("includes/top_left.php");
 
+$enIndex = true;
+include("includes/top_left.php");
 
 /** @class_definition oficial_indexPage */
 //////////////////////////////////////////////////////////////////
@@ -29,7 +28,8 @@ class oficial_indexPage
 		global $__LIB, $__CAT, $__BD;
 
 		$codigo = '';
-		$codigo .= '<div class="titPagina">'._BIENVENIDO.'</div>';
+		
+		$codigo .= '<h1>'._BIENVENIDO.'</h1>';
 	
 		// Texto de presentacion
 		if ($__LIB->esTrue($_SESSION["opciones"]["mostrartextopre"])) {
@@ -42,7 +42,7 @@ class oficial_indexPage
 			$codigo .= '</div>';
 		}
 		
-		$codigo .= '<div class="titApartado"><span class="titApartadoText">'._DESTACADOS.'</span></div>';
+		$codigo .= '<h2 class="titApartadoText">'._DESTACADOS.'</h2>';
 		
 		if (!isset($_SESSION["vista"])) $_SESSION["vista"] = 1;
 		
@@ -54,61 +54,20 @@ class oficial_indexPage
 		
 		// articulos destacados
 		$where = "publico = true AND enportada=true ORDER BY ordenportada";
-		$ordenSQL = "select referencia, descripcion, pvp, codimpuesto, stockfis, stockmin, controlstock, codplazoenvio, enoferta, pvpoferta, ivaincluido from articulos where ".$where;
+		$ordenSQL = "select referencia, descripcion, descripciondeeplink, pvp, codimpuesto, stockfis, stockmin, controlstock, codplazoenvio, enoferta, pvpoferta, ivaincluido from articulos where ".$where;
  		$codigo .= $__CAT->articulos($ordenSQL);
 
+// 		$__LIB->enviarMail('jesus@infosial.com', 'hi there', 'bokepaaasa', 'bokepaaasa <strong>my friend</strong>');
 		echo $codigo;
 	}
+	
 }
  
 //// OFICIAL /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-/** @class_definition pcrednet_indexPage */
-//////////////////////////////////////////////////////////////////
-//// PC REDNET /////////////////////////////////////////////////////
-
-class pcrednet_indexPage extends oficial_indexPage
-{
-	/** Obtiene y muestra la informacion de un indexPage */
-	function contenidos() 
-	{
-		global $__LIB, $__CAT;
-
-		$codigo = '';
-		$codigo .= '<div class="titPagina">'._BIENVENIDO.'</div>';
-	
-		// Texto de presentacion
-		if ($__LIB->esTrue($_SESSION["opciones"]["mostrartextopre"])) {
-			$codigo .= '<div class="subCaja">';
-			$codigo .= nl2br($_SESSION["opciones"]["textopre"]);
-			$codigo .= '</div>';
-		}
-		
-		$codigo .= '<div class="titApartado"><span class="titApartadoText">'._DESTACADOS.'</span></div>';
-		
-		if (!isset($_SESSION["vista"])) $_SESSION["vista"] = 1;
-		
-		// Al volver al inicio las opciones se resetean
-		unset($_SESSION["buscar"]);
-		unset($_SESSION["orden"]);
-		unset($_SESSION["fabricante"]);
-		unset($_SESSION["familia"]);
-		
-		// articulos destacados
-		$where = "publico = true AND obsoleto = false AND enportada=true ORDER BY ordenportada";
-		$ordenSQL = "select referencia, descripcion, pvp, codimpuesto, stockfis, stockmin, controlstock, codplazoenvio, enoferta, pvpoferta, ivaincluido from articulos where ".$where;
-		$codigo .= $__CAT->articulos($ordenSQL);
-
-		echo $codigo;
-	}
-}
-
-//// PC REDNET /////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-	
 /** @main_class_definition oficial_indexPage */
-class indexPage extends pcrednet_indexPage{};
+class indexPage extends oficial_indexPage {};
 
 $iface_indexPage = new indexPage;
 $iface_indexPage->contenidos();

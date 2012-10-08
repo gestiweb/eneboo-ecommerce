@@ -66,19 +66,23 @@ if (!$webRoot || !$documentRoot)
 
 ?>
 
-<div class="titPagina"><?php echo _INSTALL_TV ?></div>
+<h1><?php echo _INSTALL_TV ?></h1>
 
 <p>
 <?php
 
 	echo $__LIB->fasesInstalacion('web'); 
-	echo '<div class="titApartado">'._FASES_INS_WEB.'</div>';
+	echo '<h2>'._FASES_INS_WEB.'</h2>';
 
 	echo _INS_TEXTO_2;
 
-	echo '<p><a class="botLink" href="javascript:formDatos.submit()">'._INS_COMPROBAR_2.'</a>';
+	echo '<br/><br/>';
 	
-	echo '<div class="titApartado">'._INS_ESTADO_2.'</div>';
+	echo '<a class="button" href="javascript:formDatos.submit()"><span>'._INS_COMPROBAR_2.'</span></a>';
+	
+	echo '<br/><br/>';
+	
+	echo '<h2>'._INS_ESTADO_2.'</h2>';
 	if (!$procesar)
 		echo '<p><div class="msgInfo">'._PENDIENTE_CHECK.'</div>';
 	
@@ -104,18 +108,19 @@ if (!$webRoot || !$documentRoot)
 	
 		if (!$error) {
 			$__LIB->crearConfigureWeb($CLEAN_POST);
-			echo '<p><div class="msgOk">'._INS_OK_2.'</div>';
-			echo '<p><a class="botLink" href="paso2.php">'._SIGUIENTE_MAS.'</a>';
+			echo '<div class="msgOk">'._INS_OK_2.'</div>';
+			echo '<a class="button" href="paso2.php"><span>'._SIGUIENTE_MAS.'</a></span>';
+			echo '<br/><br/>';
 		}
 	
 		if ($error)
-			echo '<p><div class="msgError">'.$error.'</div>'; 
+			echo '<div class="msgError">'.$error.'</div>'; 
 	}		
 ?>
 
 <p>
 
-<div class="titApartado"><?php echo _DATOS_WEB ?></div>
+<h2><?php echo _DATOS_WEB ?></h2>
 
 	<form action="paso1.php" method="post" name="formDatos">
 		<table class="formBD">

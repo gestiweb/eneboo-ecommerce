@@ -17,9 +17,6 @@
  *                                                                         *
  ***************************************************************************/
 
-// error_reporting(E_PARSE);
-  error_reporting(E_ALL);
-
 /** @class_definition oficial_crearPedido */
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
@@ -28,6 +25,92 @@ class oficial_crearPedido
 {
 	// Inserta las lineas del pedido
 	function insertarLineas($idPedido)
+	{
+		global $__BD, $__CAT, $__LIB;
+			
+		$cesta = $_SESSION["cesta"];
+		
+		$totalPedido = 0;
+		$arrayImpuestos;
+		$arrayImpuestos["18"] = 0;
+		$arrayImpuestos["8"] = 0;
+		$arrayImpuestos["4"] = 0;
+		$totales;
+		$totales["coniva"] = 0;
+		$totales["siniva"] = 0;
+
+		for ($i=0; $i < $cesta->num_articulos; $i++) {
+		
+			$referencia = $cesta->codigos[$i];
+			$cantidad = $cesta->cantidades[$i];
+			$ordenSQL = "select * from articulos where referencia='$referencia'";
+			$gastosEnvio = "false";
+			if ($referencia == 'null')
+				continue;
+		
+			$result = $__BD->db_query($ordenSQL);	
+			$row = $__BD->db_fetch_array($result);
+			
+			$descripcion = $cesta->descripcionLinea($row, $i);
+			$codImpuesto = $row["codimpuesto"];
+			$iva = $__CAT->selectIVA($codImpuesto);
+			$pvps = $__CAT->pvp($row);
+			$ivaIncluido = "false";
+			$netoSinDto;
+			if ($__LIB->esTrue($row["ivaincluido"])) {
+				$ivaIncluido = "true";
+				$netoSinDto["siniva"] = ($pvps["coniva"] * $cantidad) / (1 + $iva / 100);
+				$netoSinDto["coniva"] = $pvps["coniva"] * $cantidad;
+			}
+			else {
+				$ivaIncluido = "false";
+				$netoSinDto["siniva"] = $pvps["siniva"] * $cantidad;
+				$netoSinDto["coniva"] = ($pvps["siniva"] * $cantidad) * (1 + $iva / 100);
+			}
+	
+			$netoSinDto["siniva"] = number_format($netoSinDto["siniva"],2,".","");
+			$netoSinDto["coniva"] = number_format($netoSinDto["coniva"],2,".","");
+
+			$totales["siniva"] += $netoSinDto["siniva"];
+			$totales["coniva"] += $netoSinDto["coniva"];
+
+			$arrayImpuestos[$iva] += $netoSinDto["siniva"];
+			
+			$linea = array (
+				"idpedido" => $idPedido,
+				"referencia" => "'$referencia'",
+				"descripcion" => "'".$descripcion."'",
+				"cantidad" => "'".$cantidad."'",
+				"pvpsindto" => "'".$netoSinDto["siniva"]."'",
+				"pvpunitario" => "'".$pvps["siniva"]."'",
+				"pvpunitarioiva" => "'".$pvps["coniva"]."'",
+				"ivaincluido" =>"'".$ivaIncluido."'",
+				"pvptotal" => "'".$netoSinDto["siniva"]."'",
+				"codimpuesto" => "'".$row["codimpuesto"]."'",
+				"iva" => "'".$iva."'",
+				"totalenalbaran" => 0,
+				"dtolineal" => 0,
+				"dtopor" => 0,
+				"gastosenvio" => "'".$gastosEnvio."'",
+				"pvpsindtoiva" => "'".$netoSinDto["coniva"]."'",
+				"pvptotaliva" => "'".$netoSinDto["coniva"]."'"
+			);
+									
+			$linea = $this->editarLinea($linea);
+
+			if (!$this->insertarLinea($linea, $i))
+				return false;
+		}
+		
+		$this->lineaDescuento($idPedido, $totales["siniva"]);
+		$totalPedido += $this->lineaGastosEnvio($idPedido);
+		$this->lineaGastosPago($idPedido, $totales["siniva"]);
+		
+		$result = $this->calcularTotales($idPedido);
+		return $result;
+	}
+
+	function insertarLineas_old($idPedido)
 	{
 		global $__BD, $__CAT, $__LIB;
 			
@@ -80,6 +163,7 @@ class oficial_crearPedido
 				return false;
 		}
 		
+		$this->lineaDescuento($idPedido, $totalPedido);
 		$totalPedido += $this->lineaGastosEnvio($idPedido);
 		$this->lineaGastosPago($idPedido, $totalPedido);
 		
@@ -126,31 +210,32 @@ class oficial_crearPedido
 			return $result;
 	}
 
-	
-	// Inserta una linea de gastos de pago si procede
-	function lineaGastosPago($idPedido, $netoPedido)
+
+	// Inserta una linea de descuento
+	function lineaDescuento($idPedido, $totalPedido)
 	{
 			global $__CAT, $__BD, $__LIB;
 	
-			$codPago = $_SESSION["pedido"]["datosPag"]["codpago"];
-	
-			$ordenSQL = "select * from formaspago where codpago = '".$codPago."'";
+			if (!$__LIB->esTrue($_SESSION["opciones"]["activarcoddescuento"]))
+				return;
+				
+			$hoy = date("Y-m-d");
+			$codDescuento = $_SESSION["pedido"]["datosEnv"]["coddescuento"];
+			$ordenSQL = "select * from codigosdescuento where codigo='$codDescuento' and activo=true and (caducidad is null or caducidad >= '$hoy')";
 			$result = $__BD->db_query($ordenSQL);
 			$row = $__BD->db_fetch_array($result);
 			
-			$gastos = 0;
-			if ($__LIB->esTrue($row["gastosfijo"]))
-				$gastos = $row["gastosfijo"];
+			if (!$row["id"])
+				return;
 			
-			if (!$__LIB->esTrue($row["gastos"]) && $gastos == 0)
-				return 0;
-						
-			$gastos += $netoPedido * $row["gastos"]/ 100;
-			$row["pvp"] = $gastos;
-			$pvpUnitario = $__CAT->precioNeto($row, false, true, true);
+			$pvpUnitario = 0 - $totalPedido * $row["dtopor"] / 100 - $row["dtolineal"];
 			
-			$porIVA = $__CAT->selectIVA($row["codimpuesto"]);
-			$descripcion = _GASTOS_PAGO;
+			if ($row["dtopor"] > 0)
+				$lblDto = $row["dtopor"].'%';
+			if ($row["dtolineal"] > 0)
+				$lblDto = $__CAT->precioDivisa($row["dtolineal"]);
+
+			$descripcion = _DTO.' '.$row["codigo"].' ('.$lblDto.')';
 			
 			$linea = array (
 				"idpedido" => $idPedido,
@@ -162,12 +247,76 @@ class oficial_crearPedido
 				"pvpunitarioiva" => "'".$pvpUnitario."'",
 				"ivaincluido" => "false",
 				"pvptotal" => "'".$pvpUnitario."'",
-				"codimpuesto" => "'".$row["codimpuesto"]."'",
-				"iva" => "'".$porIVA."'",
+				"codimpuesto" => "''",
+				"iva" => 0,
 				"totalenalbaran" => 0,
 				"dtolineal" => 0,
 				"dtopor" => 0,
-				"gastosenvio" => "false"
+				"gastosenvio" => "false",
+				"pvpsindtoiva" => "'".$pvpUnitario."'",
+				"pvptotaliva" => "'".$pvpUnitario."'"
+			);
+	
+		if (!$this->insertarLinea($linea))
+			return false;
+	}
+	
+	
+	// Inserta una linea de gastos de pago si procede
+	function lineaGastosPago($idPedido, $netoPedido)
+	{
+			global $__CAT, $__BD, $__LIB;
+	
+			$codPago = $_SESSION["pedido"]["datosPag"]["codpago"];
+	
+			$ordenSQL = "select * from formaspago where codpago = '".$codPago."'";
+			$result = $__BD->db_query($ordenSQL);
+			$row = $__BD->db_fetch_array($result);
+
+			$codImpuesto = $row["codimpuesto"];
+			$iva = $__CAT->selectIVA($codImpuesto);
+
+			$gastos = 0;
+		
+			$ivaIncluido = "false";
+			if ($__LIB->esTrue($row["ivaincluido"]))
+				$ivaIncluido = "true";
+
+			if ($__LIB->esTrue($row["gastosfijo"])) {
+				if ($__LIB->esTrue($row["ivaincluido"])) {
+					$gastos = $row["gastosfijo"]/ (1 + $iva / 100);
+				}
+				else {
+					$gastos = $row["gastosfijo"];
+				}
+			}
+			
+			if (!$__LIB->esTrue($row["gastos"]) && $gastos == 0)
+				return 0;
+
+			$gastos += $netoPedido * $row["gastos"] / 100;
+			$gastosConIva = $gastos  * (1 + $iva / 100);
+
+			$descripcion = _GASTOS_PAGO;
+			
+			$linea = array (
+				"idpedido" => $idPedido,
+				"referencia" => "''",
+				"descripcion" => "'".$descripcion."'",
+				"cantidad" => 1,
+				"pvpsindto" => "'".$gastos."'",
+				"pvpunitario" => "'".$gastos."'",
+				"pvpunitarioiva" => "'".$gastosConIva."'",
+				"ivaincluido" => "'".$ivaIncluido."'",
+				"pvptotal" => "'".$gastos."'",
+				"codimpuesto" => "'".$row["codimpuesto"]."'",
+				"iva" => "'".$iva."'",
+				"totalenalbaran" => 0,
+				"dtolineal" => 0,
+				"dtopor" => 0,
+				"gastosenvio" => "false",
+				"pvpsindtoiva" => "'".$gastosConIva."'",
+				"pvptotaliva" => "'".$gastosConIva."'"
 			);
 	
 		if (!$this->insertarLinea($linea))
@@ -185,10 +334,12 @@ class oficial_crearPedido
 			if ($__LIB->envioGratuito($codEnvio))
 				$pvp = 0;
 			else {
+				$codPeso = $_SESSION["cesta"]->intervaloPeso();
+				$codZona = $__LIB->zonaEnvio($_SESSION["pedido"]["datosEnv"]["codpais_env"], $_SESSION["pedido"]["datosEnv"]["provincia_env"]);
 				$ordenSQL = "select * from formasenvio where codenvio = '$codEnvio'";
 				$result = $__BD->db_query($ordenSQL);
 				$row = $__BD->db_fetch_array($result);
-				$pvp = $row["pvp"];
+				$pvp = $__LIB->precioEnvio($row, $codPeso, $codZona);
 			}
 			
 			$row["pvp"] = $pvp;
@@ -214,7 +365,9 @@ class oficial_crearPedido
 				"totalenalbaran" => 0,
 				"dtolineal" => 0,
 				"dtopor" => 0,
-				"gastosenvio" => "false"
+				"gastosenvio" => "false",
+				"pvpsindtoiva" => "'".$pvpUnitario."'",
+				"pvptotaliva" => "'".$pvpUnitario."'",
 			);
 	
 		if (!$this->insertarLinea($linea))
@@ -331,20 +484,20 @@ class oficial_crearPedido
 		
 		$__LIB->comprobarCliente(true);
 	
-		echo '<div class="titPagina">'._CREAR_PEDIDO.'</div>';
+		echo '<h1>'._CREAR_PEDIDO.'</h1>';
 		echo '<div class="cajaTexto">';
 
 		$cesta = $_SESSION["cesta"];
 		if ($cesta->cestaVacia()) {
 			echo _AVISO_PEDIDO_CREADO.'<p>';
-			echo '<a class="botLista" href="../cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
+			echo '<a class="botLista" href="'._WEB_ROOT_SSL_L.'cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
 			echo '</div>';
 			include("../includes/right_bottom.php");
 			exit;
 		}
 		
 		if (!isset($_SESSION["pedido"])) {
-			echo '<a href="'._WEB_ROOT.'cuenta/login.php">'._PEDIDO_INCORRECTO.'</a>';
+			echo '<a href="'._WEB_ROOT_L.'cuenta/login.php">'._PEDIDO_INCORRECTO.'</a>';
 			echo '</div>';
 			include("../includes/right_bottom.php");
 			exit;
@@ -403,7 +556,7 @@ class oficial_crearPedido
 			"ciudad" => "'".$_SESSION["pedido"]["datosPag"]["ciudad"]."'",
 			"provincia" => "'".$_SESSION["pedido"]["datosPag"]["provincia"]."'",
 			"codpais" => "'".$_SESSION["pedido"]["datosPag"]["codpais"]."'",
-			"nombre" => "'".$_SESSION["pedido"]["datosPag"]["nombre"]."'",
+			"nombre" => "'".$_SESSION["pedido"]["datosPag"]["contacto"]."'",
 			"apellidos" => "'".$_SESSION["pedido"]["datosPag"]["apellidos"]."'",
 			"empresa" => "'".$_SESSION["pedido"]["datosPag"]["empresa"]."'",
 			
@@ -412,9 +565,9 @@ class oficial_crearPedido
 			"ciudadenv" => "'".$_SESSION["pedido"]["datosEnv"]["ciudad_env"]."'",
 			"provinciaenv" => "'".$_SESSION["pedido"]["datosEnv"]["provincia_env"]."'",
 			"codpaisenv" => "'".$_SESSION["pedido"]["datosEnv"]["codpais_env"]."'",
-			"nombreenv" => "'".$_SESSION["pedido"]["datosEnv"]["nombre_env"]."'",
-			"apellidosenv" => "'".$_SESSION["pedido"]["datosEnv"]["apellidos_env"]."'",
-			"empresaenv" => "'".$_SESSION["pedido"]["datosEnv"]["empresa_env"]."'",
+			"nombreenv" => "'".$_SESSION["pedido"]["datosEnv"]["contacto"]."'",
+			"apellidosenv" => "'".$_SESSION["pedido"]["datosEnv"]["apellidos"]."'",
+			"empresaenv" => "'".$_SESSION["pedido"]["datosEnv"]["empresa"]."'",
 			
 			"fecha" => "'$fecha'",
 			"fechasalida" => "'$fecha'",
@@ -518,17 +671,17 @@ class oficial_crearPedido
 				echo '<div class="msgInfo">'._PEDIDO_CORRECTO.'</div>';
 				echo $__LIB->imprimirDocFacturacion("pedido", $id);		
    				echo $__LIB->enviarMailPedido($id);
-				echo '<p class="separador"><br><a class="botLista" href="'._WEB_ROOT_SSL.'cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
+				echo '<p class="separador"><br/><a class="botLista" href="'._WEB_ROOT_SSL_L.'cuenta/pedidos.php">'._LISTA_PEDIDOS.'</a>';
 			}
 		}
 		else {
 			echo _PEDIDO_INCORRECTO;
-			echo '<p><br><a class="botLista" href="'._WEB_ROOT.'general/contactar.php">'. _CONTACTAR.'</a>';
+			echo '<p><br/><a class="botLista" href="'._WEB_ROOT_L.'general/contactar.php">'. _CONTACTAR.'</a>';
 		}
 			
 		// Vaciar la cesta y el pedido
-  	   	unset($_SESSION["pedido"]);
-  	   	unset($_SESSION["cesta"]);
+   	   	unset($_SESSION["pedido"]);
+   	   	unset($_SESSION["cesta"]);
   	   	$_SESSION["cesta"] = new cesta();
 	
 		echo '</div>';

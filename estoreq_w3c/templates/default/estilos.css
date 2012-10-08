@@ -1,27 +1,195 @@
-/*body { 
-	color:#333;
-	font-family:verdana,arial;
-	font-size:11px;
-	text-align:center;
-	margin: 0px 10px 0px 10px;
-	border: 1px solid #CCC;
+html
+{
+	overflow-y: scroll;
+	font-size:100%;
 }
 
-pre {
-	color:#333;
-	font-size:11px;
-	font-family:verdana,arial;
+body
+{
+	background-color: #EEE;
+	color: #564b47;
+	font: 11px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	margin: 0px;
+	padding: 0px;
 }
 
-select, input, textarea, select {
+input, select, textarea {
+	font: 11px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	border: 1px solid #CCC;
+	padding: 3px;
+}
+
+input.rdo {
+	border: none;
+}
+
+select.fabricantes {
+	width: 100%;
+	margin-top: 5px;
+	padding: 1px 0;
+}
+
+img {
+	border: none;
+}
+
+#container
+{
+	margin: 0 auto;
+	background:url("images/bg.png") repeat-y scroll -1015px bottom transparent;
+	width:970px;
+}
+
+#banner
+{
+	margin: 0px 11px;
+	padding: 0px;
+	text-align: right;
+}
+
+#outer
+{
+	margin-top: 18px;
+}
+
+.outerLeft { border-left: solid 160px transparent; }
+.outerRight { border-right: solid 160px transparent; }
+
+#inner
+{
+	margin: 0;
+	width: 100%;
+}
+#left
+{
+	float: left;
+	margin-left: -140px;
+	margin-right: 1px;
+	position: relative;
+	width: 140px;
+	background: white;
+}
+#right
+{
+	float: right;
+	margin-left: 1px;
+	margin-right: -140px;
+	position: relative;
+	width: 140px;
+}
+#content
+{
+	margin: 0px;
+	position: relative;
+	padding: 0 20px 20px 20px;
+}
+
+#footer {
+	clear:left;
+	height:50px;
+	margin:0;
+	padding:0;
+	text-align:right;
+}
+
+#outerFooter {
+	background:url("images/bg.png") no-repeat scroll -2010px -235px transparent;
+	height:50px;
+	margin: 0 auto;
+	width: 970px;
+}
+
+form {
+	padding: 0;
+	margin: 0;
+}
+
+form .campo {
+	position: relative;
+	margin-bottom: 5px;
+	height: 2.4em;
+}
+
+form .campoTA .campo {
+	height: 300px;
+}
+
+form .campoTAcaja .campo {
+	height: 130px;
+}
+
+form .validacion {
+	margin-top: 30px;
+}
+
+form .validacion .campo {
+	height: 90px;
+}
+
+form .validacion a {
+	margin-left: 140px;
+}
+
+form .campoImg {
+	margin-left: 140px;
+	padding: 8px 0;
+}
+
+
+label { 
+	position: absolute;
+	text-align:right;
+	width:130px; 
+}
+	
+.campo input, .campo textarea, .campo select { 
+	position: absolute;
+	left: 140px;
 	color:#333;
 	font-size:11px;
 	font-family:verdana,arial;
 	border: 1px solid #CCC;
-	margin: 3px;
 	padding: 2px;
 }
-*/
+
+.campo textarea {
+	width: 330px;
+	height: 300px;
+}
+
+
+img#securimage {
+	margin-left: 140px;
+}
+
+.campoEnviar { 
+	margin: 20px 0 0 0;
+}
+
+.campoEnviar input, .campoEnviar button { 
+	margin-left: 140px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 input.boton {
 	color:#333;
 	font-size:11px;
@@ -41,69 +209,44 @@ input.normal, select.normal {
 
 
 
-div#barraTop {
-	background-color:#333;
-	color:#EEE;
-	height: 17px;
-	padding:2px 0px 2px 0px;
-}
-
 div#navTop {
-	float: left;
+	background: url(images/menu_bg.gif) repeat-x;
 	text-align:left;
-	width: 70%;
-	padding: 0px 0px 0px 5px;
+	padding: 10px 10px;
+	color: #FFF;
+	position: relative;
+}
+div#navTop a {
+	padding: 10px;
 }
 
 div#bienvenidoTop {
-	float: right;
-	text-align: right;
-	width: 25%;
-	padding: 0px 20px 0px 0px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
 }
 
 
-div#logoTop {
-	color:#EEE;
-	height: 56px;
-	padding: 0px;
-	background-image: url(images/fondo_top.png);
-	background-position: right;
-	background-repeat: repeat-y;
+div#logoTop h1 {
+	margin: 0;
 }
 
-div#imgLogoTop {
-	float: left;
-	text-align:left;
-	width: 600px;
+#logoTop h1 a {
+	background:url("images/logotop.png") no-repeat scroll 20px center transparent;
+	display:block;
+	height: 75px;
+	width: 200px;
+	text-decoration:none;
+	text-indent:-2000em;
+	z-index:1000;
 }
 
-div#sloganLogoTop {
-	float: right;
-	text-align: right;
-	width: 250px;
-	padding: 35px 20px 0px 0px;
-	font-weight: bold;
-}
-
-
-div#modulosLeft {
-	position:absolute;
-	clear: left;
-	float: left;
-	width: 140px;
-}
 
 div#contenidos {
 	text-align: left;
 	margin:0 150px;
 	padding: 0px;
 	border: 1px solid #DDD;
-}
-
-div#modulosRight {
-	float: right;
-	width: 140px;
 }
 
 
@@ -120,47 +263,24 @@ div#textoPie {
 
 
 
-div.modulosWebLeft {
-	border-right: 1px solid #ddd;
-	background-color:#f5f5f5;
-	text-align: left;
-}
-
-div.modulosWebRight {
-	border-left: 1px solid #ddd;
-	background-color:#f5f5f5;
-	text-align: left;
-}
-
-
 div.caja {
 	padding: 0px; 
 	margin: 0px 0px 20px 0px;
 }
 
 div.caja div.titulo {
-	background-color:#DDD;
-	color:#2338AC;
-	font-size: 10px;
+	color:#E17009;
 	font-weight: bold;
 	padding: 2px 5px 2px 5px; 
 	margin: 0px;
 	line-height:12px;
-	border-width: 1px 0px 1px 0px;
-	border-style: solid;
-	border-color: #ccc;
 }
 
 div.caja div.casillaUnica {
-	background-color:#DDD;
-	color:#2338AC;
-	font-size: 10px;
+	color:#E17009;
 	font-weight: bold;
 	padding: 2px 5px 0px 5px; 
 	margin: 0px;
-	border-width: 1px 0px 1px 0px;
-	border-style: solid;
-	border-color: #ccc;
 }
 
 div.caja div.contenido {
@@ -183,6 +303,10 @@ div.innerCajaArtMatriz {
 	border-style: solid;
 }
 
+div.primero div.innerCajaArtMatriz {
+	border-width: 0px 1px 1px 1px;
+}
+
 
 div.cajaImagenMatriz {
 	text-align: center;
@@ -202,11 +326,10 @@ div.innerCajaImagenMatriz {
 
 
 div.navBar {
-	width:99%;
 	height: 15px;
-	background-color:#EEE;
-	padding: 2px 0px 2px 0px;
+	padding: 2px 5px 2px 0px;
 	margin: 5px 0px 0px 0px;
+	border-bottom: 1px solid #DDD;
 }
 
 div.navBarResultPag {
@@ -221,7 +344,7 @@ div.navBarListaPag {
 }
 
 div.navBarOrden {
-	float:left;
+	float: right;
 	width:40%;
 	text-align:right;
 }
@@ -234,10 +357,14 @@ div.navBarResultXPag {
 }
 
 div.navBarDisposicion {
-	float:left;
-	width:35%;
-	text-align: right;
+	float: right;
 }
+
+div.top div.navBarResultPag {
+	display:none;
+}
+
+
 
 
 div.cellMatriz {
@@ -262,31 +389,92 @@ div.cellMatriz div.stock {
 
 div.cellMatriz div.precio {
 	font-weight: bold;
-	height: 28px;
+	height: 45px;
 }
 
 div.cellMatriz div.venta {
-	height: 20px;
+	height: 25px;
 	padding: 10px 0px 0px 0px;
-	vertical-align: top;
 }
+
+
+
+
+#wrapperStylishSlider {
+	height: 235px;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	position: relative;
+}
+
+#stylishSlider {
+	height: 100%;
+	width: 5000px;
+	position: absolute;
+	left: 0; top: 0;
+}
+
+#sliderFwd {
+	left:924px;
+	position:absolute;
+	top:92px;
+	z-index:10;
+	background: url(images/forward.png) no-repeat 0 0;
+	width: 22px; height: 22px;
+}
+
+#sliderBwd {
+	left:3px;
+	position:absolute;
+	top:92px;
+	z-index:10;
+	background: url(images/back.png) no-repeat 0 0;
+	width: 22px; height: 22px;
+	display: none;
+}
+
+div.cellMatrizSlider {
+	background: #FFF url(images/bg_fancySlider.png) no-repeat center bottom;
+	margin: 0;
+	float:left;
+	width: 237px;
+	height: 230px;
+	padding-top: 15px;
+}
+
+div.cellMatrizSlider .imagen {
+	height: 150px;
+}
+
+div.cellMatrizSlider .precio {
+	text-align: center;
+	font-size: 2em;
+}
+
+div.cellMatrizSlider .descripcion {
+	text-align: center;
+}
+
+div.cellMatrizSlider img {
+	width: 160px; 
+	height: 120px;
+}
+
 
 
 
 div.cellLista {
-	clear: left;
 	margin: 15px 0px 0px 0px;
 	width: 100%;
+	height: 110px;
 	border-bottom: 1px solid #DDD;
 }
 
 div.cellListaImagen {
+	width: 20%;
 	float:left;
 	font-weight: bold;
-}
-
-div.cellListaImagen img {
-	margin: 0px 20px 0px 20px;
 }
 
 div.cellListaDescripcion {
@@ -298,19 +486,25 @@ div.cellListaDescripcion {
 
 div.cellListaStock {
 	float:left;
-	width: 20%;
+	width: 15%;
 }
 
 div.cellListaPrecio {
 	float:left;
 	width: 15%;
 	font-weight: bold;
+	color: #E17009;
 }
 
 div.cellListaVenta {
 	float:left;
-	width: 25%;
-	text-align: center;
+	width: 140px;
+}
+
+div.precio {
+	color: #E17009;
+	font-weight: bold;
+	font-size: 1.125em;
 }
 
 
@@ -324,19 +518,62 @@ div.articulo div.thumb {
 	width: 200px;
 }
 
-div.articulo div.venta {
+div.articulo div.botones {
 	position: absolute;
-	left: 300px;
+	right: 0;
 	top: 10px;
 	padding: 10px;
 }
 
+div.articulo div#_precio {
+	color:#E17009;
+	font-size:2.5em;
+	margin-bottom:25px;
+	text-align:right;
+	line-height: 0.75em;
+	padding-right: 8px;
+}
+
+div.articulo div.botonesSec {
+	position: absolute;
+	right: 0;
+	top: 95px;
+	padding-right: 20px;
+	margin-top: 30px;
+	width: 200px;
+	text-align: right;
+}
+
+div.articulo div.botonesSec a {
+	display:block;
+	margin-bottom: 10px;
+}
+
+div.articulo div.fotosSec {
+	margin: 10px 0;
+	text-align: center;
+	min-height: 100px;
+	_height: 100px;
+}
+
+div.articulo div.fotosSec div {
+	float: left;
+	width: 80px; min-height: 50px; _height: 50px;
+	border: 1px solid #DDD;
+	margin: 0 5px 0 0;
+	padding: 5px;
+}
+
+
+div.articulos {
+	border-left: 1px solid #DDD;
+}
 
 
 div.cabeceraDescCesta {
 	float:left;
 	font-weight: bold;
-	color:#2338AC;
+	color:#E17009;
 	width: 120px;
 	padding-bottom: 5px;
 	margin-bottom: 5px;
@@ -347,15 +584,21 @@ div.cabeceraDatoCesta {
 	float:left;
 	font-weight: bold;
 	text-align: right;
-	color:#2338AC;
+	color:#E17009;
 	padding-bottom: 5px;
 	margin-bottom: 5px;
 	border-bottom: 1px solid #DDD;
 	width: 80px;
 }
 
+div.fila {
+	width: 100%;
+	height: 40px;
+}
+
+
 div.articuloCesta {
-	clear:left;
+	text-align: left;
 	float:left;
 	width: 120px;
 	height: 25px;
@@ -402,7 +645,6 @@ div#totalCesta {
 div#formLogin {
 	position:relative;
 	border: 1px solid #DDD;
-	background-color:#EEE;
 	width: 350px;
 	height: 170px;
 }
@@ -456,8 +698,8 @@ div#botones {
 div.labelForm {
 	clear:left;
 	float:left;
-	width: 130px;
-	text-align: left;
+	width: 150px;
+	text-align: right;
 	padding: 5px 10px 0px 0px;
 	font-weight: bold;
 	color: #555;
@@ -467,23 +709,84 @@ div.datoForm {
 	float:left;
 }
 
-
-
-
-div.labelListaDocFact {
-	float:left;
-	width: 130px;
-	height: 30px;
-	padding-bottom: 10px;
-	text-align: left;
-	font-weight: bold;
-	color: #555;
+span.errorForm {
+	color:#BB0000;
+	left:390px;
+	padding-left:10px;
+	position:absolute;
 }
 
-div.datoListaDocFact {
-	float:left;
-	width: 130px;
-	height: 20px;
+
+
+table.docsFacturacion {
+	border-top : 1px solid #DDD;
+	border-bottom : 1px solid #DDD;
+}
+
+table.docsFacturacion th {
+	border-bottom : 3px solid #DDD;
+}
+
+table.docsFacturacion th.codigo {
+	width: 120px;
+}
+
+table.docsFacturacion th.total, table.docsFacturacion td.total {
+	width: 80px;
+	text-align: right;
+}
+
+table.docsFacturacion th.fecha, table.docsFacturacion td.fecha {
+	width: 80px;
+	text-align: center;
+}
+
+table.cesta th {
+	color: #E17009;
+	padding-bottom: 5px;
+	border-bottom: 1px dotted #E17009;
+}
+
+table.cesta td {
+	padding: 5px 0;
+}
+
+table.cesta td.desc, table.cesta th.desc {
+	width: 200px;
+	text-align: left;
+}
+
+table.cesta td, table.cesta th {
+	width: 70px;
+	text-align: right;
+}
+
+table.cesta tr.totales td {
+	border-top: 1px dotted #E17009;
+	font-weight: bold;
+}
+
+table.cesta tr.subtotales td {
+	border-top: 1px dotted #E17009;
+}
+
+table.cesta tr.subtotales td.txtsubtotal {
+	text-align: right;
+}
+
+table.cesta tr.totales td.total {
+	text-align: left;
+}
+
+
+table.datosEnvio td.label {
+	width: 200px;
+}
+
+table.datosEnvio td.datoEnvio {
+	width: 70px;
+	font-weight: bold;
+	text-align: right;
 }
 
 
@@ -511,33 +814,6 @@ p.separador {
 }
 
 
-div#datosEnvio {
-}
-
-div#datosEnvio div.checkEnvio {
-	clear:left;
-	float:left;
-	width:25px;
-}
-
-div#datosEnvio div.labelEnvio {
-	float:left;
-	width:250px;
-}
-
-div#datosEnvio div.datoEnvio {
-	float:left;
-	width:60px;
-	text-align: right;
-}
-
-div#datosEnvio div.msgEnvio {
-	float:left;
-	width:200px;
-	text-align: left;
-	margin-left: 10px;
-}
-
 
 div.formaPago {
 	padding: 5px;
@@ -547,7 +823,6 @@ div.formaPago {
 }
 
 div.formaPago div.checkPago {
-	clear:left;
 	float:left;
 	width:25px;
 }
@@ -558,8 +833,7 @@ div.formaPago div.labelPago {
 }
 
 div.formaPago div.descPago {
-	clear:left;
-	width:90%;
+	margin-top: 24px;
 	padding: 5px;
 	background-color: #EEE;
 }
@@ -586,10 +860,8 @@ div.noticia img {
 
 
 div.flags {
-	padding: 4px 0px 0px 0px;
-	text-align:center;
+	padding: 4px 0px 0px 6px;
 	vertical-align:middle;
-	background-color:#DDD;
 }
 
 
@@ -615,34 +887,29 @@ div.flags {
 
 
 
-.titPagina, .titPath {
-	font-size:13px;
-	color:#2338AC;
+h1, .titPath {
+	font-size:1.625em;
+	color:#E17009;
 	font-weight: bold;
 	margin: 0px;
-	padding: 2px 4px 2px 4px;
+	padding: 2px 4px 2px 0;
 	text-align: left;
-	background-color:#DDD;
 }
 
 .subCaja {
 	margin: 0px;
-	padding: 2px 4px 2px 4px;
+	padding: 2px 0;
 	text-align: left;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
-	border-color: #EEE;
 }
 
 div.cajaTexto {
 	margin: 0px;
-	padding: 10px;
-	text-align: justify;
+	padding: 10px 0;
 }
 
-div.titApartado {
-	clear: left;
-	color:#2338AC;
+h2 {
+	font-size: 1.125em;
+	color:#E17009;
 	font-weight: bold;
 	padding: 20px 0px 0px 0px;
 	margin: 5px 0px 10px 0px;
@@ -652,15 +919,19 @@ div.titApartado {
 	border-color: #EEE;
 }
 
+h2.top {
+	padding: 0;
+}
+
 .titApartadoText {
-	color:#2338AC;
+	color:#E17009;
 	font-weight: bold;
-	background-color: #EEE;
-	padding: 1px 10px 1px 10px;
+	padding: 1px 10px 1px 0;
+	margin-bottom: 0; 
 }
 
 .titModulo {
-	color:#2338AC;
+	color:#E17009;
 	font-size: 12px;
 	font-weight: bold;
 	margin: 10px 0px 0px 0px;
@@ -670,28 +941,31 @@ div.titApartado {
 }
 
 .itemMenu {
-	background-color:#FFF;
-	border-bottom: 1px solid #DDD;
 	line-height:12px;
+}
+
+.itemMenuActivo {
+	font-weight: bold;
 }
 
 .itemMenu a {
 	margin: 0px;
 	display: block;
-	padding: 3px 5px 3px 5px;
-}
-
-.itemMenu a:hover {
-	background-color: #F5F5F5;
+	padding: 6px 5px 1px;
 }
 
 .itemMenuFamilia {
 	margin: 0px 0px 4px 0px;
 }
 
+.caja .familias a {
+	text-transform: uppercase;
+	padding: 8px 5px 2px;
+}
+
 a {
 	text-decoration:none;
-	color:#008;
+	color:#2E6E9E;
 }
 
 a:hover {
@@ -699,62 +973,124 @@ a:hover {
 }
 
 a.botLink {
-	border: 1px solid #DDD;
-	padding: 2px 5px 2px 5px;
-	margin: 0px 10px 0px 0px;
+	padding: 8px 10px;
+	width: 110px;
+	height:15px;
+	overflow:hidden;
+	line-height: 1em;
 }
 
-a.botComprar, a.botFav, a.botActualizar, a.botContinuar, a.botVolver, a.botGuardar, a.botEliminar, a.botLista {
-	border: 1px solid #DDD;
-	padding: 3px 25px 2px 5px;
-	margin: 0px 10px 0px 0px;
-	background-repeat: no-repeat;
-	background-position: 95% 50%;
+a.botNorm {
+	background: url(images/button_set.png) no-repeat -5px -5px;
 }
 
-a.botContinuarCent, a.botVolverCent {
-	border: 1px solid #DDD;
-	padding: 3px 10px 2px 10px;
-	margin: 0px 5px 0px 0px;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
+a.botNorm:hover {
+	background: url(images/button_set.png) no-repeat -135px -5px;
 }
 
-a.botLink:hover, a.botComprar:hover, a.botFav:hover, a.botActualizar:hover, a.botActualizar:hover, a.botContinuar:hover, a.botContinuarCent:hover, a.botVolver:hover a.botVolverCent:hover, a.botGuardar:hover, a.botEliminar:hover, a.botLista:hover {
-	background-color: #EEE;
-	border-color: 1px solid #555;
+a.botContinuar {
+	background: url(images/button_set.png) no-repeat -5px -5px;
 }
 
-a.botComprar {
-	background-image: url(images/cesta.png);
+
+
+/* REQUIRED BUTTON STYLES: */		
+button { 
+	position: relative;
+	border: 0; 
+	padding: 0;
+	cursor: pointer;
+	overflow: visible; /* removes extra side padding in IE */
 }
 
-a.botFav {
-	background-image: url(images/favoritos.png);
+button::-moz-focus-inner {
+	border: none;  /* overrides extra padding in Firefox */
 }
 
-a.botActualizar {
-	background-image: url(images/actualizar.png);
+button span { 
+	position: relative;
+	display: block; 
+	white-space: nowrap;	
 }
 
-a.botContinuar, a.botContinuarCent {
-	background-image: url(images/continuar.png);
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	/* Safari and Google Chrome only - fix margins */
+	button span {
+		margin-top: -1px;
+	}
 }
 
-a.botVolver, a.botVolverCent {
-	background-image: url(images/volver.png);
+
+/* OPTIONAL BUTTON STYLES for applying custom look and feel: */		
+button.submitBtn { 
+	padding: 0 15px 0 0; 
+	margin-right:5px; 
+	font-size:1em; 
+	text-align: center; 
+	background: transparent url(images/botones.png) no-repeat right -140px; 
+}
+	
+button.submitBtn span {
+	padding: 8px 0 0 15px; 
+	height:28px; 
+	background: transparent url(images/botones.png) no-repeat left top; 
+	color:#2E6E9E; 
+}
+	
+button.submitBtn:hover, button.submitBtnHover { /* the redundant class is used to apply the hover state with a script */
+	color: #000;
+}
+	
+button.submitBtn:hover span, button.submitBtnHover span {
+	color: #000;
 }
 
-a.botGuardar {
-	background-image: url(images/guardar.png);
+button.buscar { 
+	text-align: center;
+	background: #FFF;
+	background: transparent url(images/buscar.png) no-repeat 0 0; 
+	height:22px; 
+	width:22px; 
 }
 
-a.botEliminar {
-	background-image: url(images/eliminar.png);
+button.buscar span  { 
+	padding: 8px 0 0 15px; 
+	height:20px; 
+	display: inline;
 }
 
-a.botLista {
-	background-image: url(images/lista.png);
+
+
+
+
+a.button {
+	/* Sliding right image */
+	background: transparent url(images/botones.png) no-repeat right -140px; 
+	display: block;
+	float: left;
+	height: 28px; 
+	margin-right: 6px;
+	padding-right: 15px; /* CHENGE THIS VALUE ACCORDING TO RIGHT IMAGE WIDTH */
+	/* FONT PROPERTIES */
+	text-decoration: none;
+	text-align: center; 
+}
+a.button span {
+	/* Background left image */ 
+	background: transparent url(images/botones.png) no-repeat left top; 
+	display: block;
+	line-height: 28px; /* CHANGE THIS VALUE ACCORDING TO BUTTONG HEIGHT */
+	padding: 0 0 0 15px; 
+} 
+
+a.button:hover { /* the redundant class is used to apply the hover state with a script */
+	color: #000;
+}
+
+div.venta a.button, div.articulo a.button {
+	background-position: right -280px; 
+	padding-right: 35px;
+	margin-left: 30px;
 }
 
 
@@ -782,8 +1118,10 @@ li {
 
 
 .precioAnterior {
-	font-weight:normal;
 	font-size:10px;
+	font-weight:normal;
+	line-height:1.1em;
+	margin:5px 0 0;
 }
 
 .fasesPedido {
@@ -807,14 +1145,14 @@ li {
 }
 
 .titSeccionCuenta {
-	color:#2338AC;
+	color:#E17009;
 	background-color: #EEE;
 	padding: 1px 10px 1px 10px;
 }
 
 
 .imgCaja {
-	margin: 5px;
+	margin: 15px 5px;
 }
 
 .cajaImagen {
@@ -823,24 +1161,30 @@ li {
 	background-color:#FFF;
 }
 
-.cajaImagen img {
-	width: 85px;
+.cajaImagen a.titulo {
+	display: block;
+	text-align: left;
+	padding-bottom: 2px;
+	border-bottom: 1px dotted #2E6E9E;
 }
+
 
 
 
 .msgInfo {
-	border: 1px solid #DDD;
-	padding: 3px;
+	color: #080;
 	margin: 10px 10px 10px 0px;
 }
 
 .msgError {
-	border: 1px solid #DDD;
-	padding: 3px;
 	margin: 10px 10px 10px 0px;
 	color: #500;
 }
+
+form .msgInfo, form .msgError {
+	margin-left: 140px;
+}
+
 
 .msgOk {
 	border: 1px solid #DDD;
@@ -854,6 +1198,14 @@ li {
 	font-size:10px;
 	color:#555;
 	padding: 0px 0px 0px 5px;
+}
+
+.ok {
+	color: #050;
+}
+
+.nok {
+	color: #500;
 }
 
 div.fotoGrande {
@@ -897,22 +1249,35 @@ div.selecPais {
 }
 
 
-.cajaEnviarAamigo {
-	border: 1px solid #999;
-	width: 500px;
-	padding: 10px;
+.formUp {
+	width: 600px;
+	height: 430px;
 }
 
-.cajaEnviarAamigo input {
+.formUp input {
 	width: 350px;
 }
 
-.cajaEnviarAamigo textarea {
-	width: 450px;
+.formUp textarea {
+	width: 350px;
 	height: 120px;
 }
 
-span#msgDescuento {
+.formUp .titulo {
+	font-weight: bold;
+	padding: 0px 0 20px 140px;
+}
+
+.formUp .botones {
+	padding: 15px 0 20px 140px;
+}
+
+.formUp .aviso {
+	color: #C00;
+	padding: 5px 0 5px 140px;
+}
+
+div#msgDescuento {
 	font-weight:bold;
-	padding-left: 10px;
+	margin-top: 10px;
 }

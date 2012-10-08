@@ -36,7 +36,6 @@ if (!isset($_SESSION["vista"])) {
 	}
 }
 
-
 // Divisa
 if (!isset($_SESSION["divisa"])) {
 	$_SESSION["divisa"] = $__BD->db_valor("select coddivisa from empresa");
@@ -44,10 +43,10 @@ if (!isset($_SESSION["divisa"])) {
 
 
 // Idioma
-if (isset($CLEAN_GET["newlang"])) {
-	$__LIB->cambiarIdioma(htmlentities($CLEAN_GET["newlang"]));
-} 
-
+if (isset($CLEAN_GET["newlang"]))
+	$__LIB->cambiarIdioma($CLEAN_GET["newlang"]);
+else
+	$__LIB->cambiarIdioma('esp');
 
 if (!isset($_SESSION["idioma"]))
 	$_SESSION["idioma"] = $_SESSION["opciones"]["codidiomadefecto"];
@@ -59,5 +58,24 @@ if (!$template || !file_exists(_DOCUMENT_ROOT.'/templates/'.$template))
 	$template = 'default';
 
 define('_TEMPLATE', $template);
+
+date_default_timezone_set('Europe/Madrid');
+
+
+
+if ($__LIB->esTrue($_SESSION["opciones"]["deeplinking"])) {
+	if ($_SESSION["idioma"] != 'esp') {
+		define('_WEB_ROOT_L', _WEB_ROOT.$_SESSION["idioma"].'/');
+		define('_WEB_ROOT_SSL_L', _WEB_ROOT_SSL.$_SESSION["idioma"].'/');
+	}
+	else {
+		define('_WEB_ROOT_L', _WEB_ROOT);
+		define('_WEB_ROOT_SSL_L', _WEB_ROOT_SSL);
+	}
+}
+else {
+	define('_WEB_ROOT_L', _WEB_ROOT);
+	define('_WEB_ROOT_SSL_L', _WEB_ROOT_SSL);
+}
 
 ?>

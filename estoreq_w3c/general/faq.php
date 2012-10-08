@@ -27,7 +27,9 @@ class oficial_faq
 	{
 		global $CLEAN_POST, $__LIB, $__BD;
 
-		echo '<div class="titPagina">'._FAQ.'</div>';
+		echo '<a name="home"></a>';
+		
+		echo '<h1>'._FAQ.'</h1>';
 		echo '<div class="cajaTexto">';
 		
 		if (!$__LIB->esTrue($_SESSION["opciones"]["activarfaq"])) {
@@ -45,11 +47,11 @@ class oficial_faq
 		while ($row = $__BD->db_fetch_array($result)) {	
 			$pregunta = $__LIB->traducir("faqs", "pregunta", $row["id"], $row["pregunta"]);
 			$respuesta = $__LIB->traducir("faqs", "respuesta", $row["id"], $row["respuesta"]);
-			$menu .= '<a href="faq.php#'.$row[0].'">'.$pregunta.'</a><br>';
+			$menu .= '<a href="general/faq.php#'.$row[0].'">'.$pregunta.'</a><br/>';
 			$texto .= '<a name="'.$row[0].'"></a>';
-			$texto .= '<div class="titApartado">'.$pregunta.'</div>';
+			$texto .= '<h2>'.$pregunta.'</h2>';
 			$texto .= nl2br($respuesta);
-			$texto .= '<p><br><a class="botLink" href="#">'._INICIO.'</a></p>';
+			$texto .= '<p><br/><a class="botLink" href="general/faq.php#home">'._INICIO.'</a></p>';
 		}
 		
 		echo $menu;

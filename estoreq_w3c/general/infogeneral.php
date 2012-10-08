@@ -43,7 +43,7 @@ class oficial_infoGeneral
 		$titulo = $__LIB->traducir("infogeneral", "titulo", $codigo, $row[0]);
 		$texto = $__LIB->traducir("infogeneral", "texto", $codigo, $row[1]);
 		
-		echo '<div class="titPagina">'.$titulo.'</div>';
+		echo '<h1>'.$titulo.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		echo nl2br($texto);

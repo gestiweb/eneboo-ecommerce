@@ -30,7 +30,7 @@ class oficial_pedidos
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		
@@ -41,7 +41,7 @@ class oficial_pedidos
 			exit;
 		}
 			
-		$__CLI->seccionCuenta('pedidos');
+		echo $__CLI->seccionCuenta('pedidos');
 		
 		$codigo = "";
 		if (isset($CLEAN_GET["codigo"])) {
@@ -56,7 +56,7 @@ class oficial_pedidos
 				exit;
 			}
 	
-			echo $__LIB->imprimirDocFacturacion("pedido", $id);		
+			echo $__LIB->imprimirDocFacturacion("pedido", $id);
 		}
 		else
 			echo $__CLI->docsFacturacion('pedidos');

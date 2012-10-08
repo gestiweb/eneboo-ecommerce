@@ -16,12 +16,14 @@
 
 /** @no_class */
 
-$CONFIG_MAILER = 'mail'; // three options: 'mail','smtp' or 'sendmail'
+$CONFIG_MAILER = 'mail'; // 'mail','smtp' o 'sendmail'
 $CONFIG_SMTPAUTH = '';
 $CONFIG_SMTPUSER = '';
 $CONFIG_SMTPPASS = '';
 $CONFIG_SMTPHOST = ''; 
-$CONFIG_SENDMAIL = '/usr/sbin/sendmail';
+$CONFIG_SMTPPORT = 25;
+$CONFIG_SMTPSSL = ''; // 'ssl'
+$CONFIG_SENDMAIL = '/usr/sbin/sendmail -bs';
 
 include_once('libreria.php');
 include_once('libreria/fun_bd.php');
@@ -30,8 +32,9 @@ include_once('libreria/fun_cliente.php');
 include_once('libreria/fun_cesta.php');
 include_once('libreria/fun_seguridad.php');
 include_once('libreria/fun_formularios.php');
-include_once('libreria/fun_formularios.php');
-include_once('libreria/fun_debugger.php');
+include_once('libreria/fun_seo.php');
+include_once('libreria/fun_cache.php');
+require_once 'swiftmailer/swift_required.php';
 
 // Se incluyen los ficheros php de los modulos
 $ruta = _DOCUMENT_ROOT.'modulos';
@@ -64,7 +67,6 @@ $__SEC = new funSeguridad;
 
 // Procesado de seguridad de parametros
 $CLEAN_GET = $__SEC->limpiarGET($_GET);
-$CLEAN_POST = $__SEC->limpiarPOST();
-
+$CLEAN_POST = $__SEC->limpiarPOST($_POST);
 
 ?>

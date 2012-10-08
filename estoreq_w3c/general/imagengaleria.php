@@ -15,7 +15,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-error_reporting(E_ALL);
+
 
 /** @class_definition oficial_imagenGalerias */
 //////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ class oficial_imagenGalerias
 
 
 		
-		// Navegación
+		// NavegaciÃ›n
 		$codGaleria = $row["codgaleria"];
 
 		$ordenSQL = "select titulo from galeriasimagenes where codgaleria = '$codGaleria'";
@@ -62,7 +62,7 @@ class oficial_imagenGalerias
 		$imgAnt = $__BD->db_valor($ordenSQL);
 
 
-		echo '<div class="titPagina">'._GALERIA.' &middot; '.$titGaleria.'</div>';
+		echo '<h1>'._GALERIA.' &middot; '.$titGaleria.'</h1>';
 		
 		echo '<div class="fotoGaleria">';
 

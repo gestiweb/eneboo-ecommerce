@@ -18,53 +18,48 @@
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
 
-
 class oficial_formCrearCuenta
 {
-	function contenidos($continua) 
+	function contenidos($continua, $errores) 
 	{
-		global $CLEAN_POST;
+		global $CLEAN_POST, $__LIB;
+
 		$formName = "crearCuenta";
 	
-		$dirFact[0] = $CLEAN_POST["direccion"];
-		$dirFact[1] = $CLEAN_POST["codpostal"];
-		$dirFact[2] = $CLEAN_POST["ciudad"];
-		$dirFact[3] = $CLEAN_POST["provincia"];
-		$dirFact[4] = $CLEAN_POST["codpais"];
-		
-		$dirEnv[0] = $CLEAN_POST["direccion_env"];
-		$dirEnv[1] = $CLEAN_POST["codpostal_env"];
-		$dirEnv[2] = $CLEAN_POST["ciudad_env"];
+		$dirEnv["direccion"] = $CLEAN_POST["direccion_env"];
+		$dirEnv["codpostal"] = $CLEAN_POST["codpostal_env"];
+		$dirEnv["ciudad"] = $CLEAN_POST["ciudad_env"];
 		if (isset($CLEAN_POST["provincia_env"]))
-			$dirEnv[3] = $CLEAN_POST["provincia_env"];
+			$dirEnv["provincia"] = $CLEAN_POST["provincia_env"];
 		else
-			$dirEnv[3] = '';
-		$dirEnv[4] = $CLEAN_POST["codpais_env"];
+			$dirEnv["ciudad"] = '';
+		$dirEnv["codpais"] = $CLEAN_POST["codpais_env"];
 		
 		$codigo = '';
-		$codigo .= '<form name="'.$formName.'" id="'.$formName.'" action="crear_cuenta.php'.$continua.'" method="post">';
+		$codigo .= '<form name="'.$formName.'" id="'.$formName.'" action="cuenta/crear_cuenta.php'.$continua.'" method="post">';
 		
-		$codigo .= '<div class="titApartado">'._DATOS_CUENTA.'</div>';
-		$codigo .= formularios::nuevaCuentaGeneral($CLEAN_POST);
+		$codigo .= '<h2>'._DATOS_CUENTA.'</h2>';
+		$codigo .= formularios::nuevaCuentaGeneral($CLEAN_POST, $errores);
 		
-		$codigo .= '<div class="titApartado">'._PERSONAL.'</div>';
-		$codigo .= formularios::nuevaCuentaPersonal($CLEAN_POST);
+		$codigo .= '<h2>'._PERSONAL.'</h2>';
+		$codigo .= formularios::nuevaCuentaPersonal($CLEAN_POST, $errores);
 		
-		$codigo .= '<div class="titApartado">'._DIRECCION_FACT.'</div>';
-		$codigo .= formularios::dirFact($dirFact, 'crearCuenta');
+		$codigo .= '<h2>'._DIRECCION_FACT.'</h2>';
+		$codigo .= formularios::dirFact($CLEAN_POST, 'crearCuenta', $errores);
 		
-		$codigo .= '<div class="titApartado">'._DIRECCION_ENV.' ('._AVISO_DIRECCION_ENV.')</div>';
-		$codigo .= formularios::dirEnv($dirEnv, 'crearCuenta');
+		$codigo .= '<h2>'._DIRECCION_ENV.' ('._AVISO_DIRECCION_ENV.')</h2>';
+		$codigo .= formularios::dirEnv($dirEnv, 'crearCuenta', $errores);
 		
 		$codigo .= $this->masDatos();
 		
 		$codigo .= '<input type="hidden" name="procesar" value="1">';
+		
+		if ($__LIB->esTrue($_SESSION["opciones"]["validarcrearcuenta"]))
+ 			$codigo .= formularios::codigoValidacion(_CODIGO_VALIDACION, $errores);
+		
+		$codigo .= formularios::botEnviar(_CREAR_CUENTA);
+		
 		$codigo .= '</form>';
-	
-		$codigo .= '<p style="clear:both; padding-top:40px">';
-		$codigo .= '<a class="botLink" href="javascript:document.crearCuenta.submit()">'._CREAR_CUENTA.'</a>';
-		//$codigo .= '<a class="botLink" href="#" onclick="xajax_validarCuenta(xajax.getFormValues(\'crearCuenta\'))">'._CREAR_CUENTA.'</a>';
-		$codigo .= '</p>';
 		
 		echo $codigo;
 	}
@@ -84,4 +79,4 @@ class oficial_formCrearCuenta
 class formCrearCuenta extends oficial_formCrearCuenta{};
 
 $iface_formCrearCuenta = new formCrearCuenta();
-$iface_formCrearCuenta->contenidos($continua);
+$iface_formCrearCuenta->contenidos($continua, $errores);

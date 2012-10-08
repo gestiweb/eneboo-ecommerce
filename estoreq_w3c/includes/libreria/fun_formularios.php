@@ -20,197 +20,221 @@
 
 class oficial_formularios 
 {
-	public static function dirFact($datosDir, $formName = '')
-	{	
-		global $__LIB;
-
-		$codigo = '';
-
-		$codigo .= '
-			<div class="labelForm">'._DIRECCION.' *</div>
-			<div class="datoForm"><input size="30" type="text" name="direccion" id="campo_direccion" value="'.$datosDir[0].'"></div>
-
-			<div class="labelForm">'._CODPOSTAL.' *</div>
-			<div class="datoForm"><input size="30" type="text" name="codpostal" id="campo_codpostal" value="'.$datosDir[1].'"></div>
-
-			<div class="labelForm">'._POBLACION.' *</div>
-			<div class="datoForm"><input size="30" type="text" name="ciudad" id="campo_ciudad" value="'.$datosDir[2].'"></div>
-
-			<div class="labelForm">'._PAIS.' *</div>
-			<div class="datoForm">'.$__LIB->selectPais($formName, "", $datosDir[4]).'</div>
-
-			<div class="labelForm">'._PROVINCIA.' *</div>
-			<div class="datoForm" id="divprovincia">'.$__LIB->selectProvincia("provincia", $datosDir[4], $datosDir[3], "").'</div>';
-
-
-		return $codigo;
-	}
-
-	public static function dirEnv($datosDir, $formName = '')
-	{	
-		global $__LIB;
-
-		$codigo = '';
-
-		$codigo .= '
-			<div class="labelForm">'._DIRECCION.'</div>
-			<div class="datoForm"><input size="30" type="text" name="direccion_env" id="campo_direccion_env" value="'.$datosDir[0].'"></div>
-			
-			<div class="labelForm">'._CODPOSTAL.'</div>
-			<div class="datoForm"><input size="30" type="text" name="codpostal_env" id="campo_codpostal_env"  value="'.$datosDir[1].'"></div>
-			
-			<div class="labelForm">'._POBLACION.'</div>
-			<div class="datoForm"><input size="30" type="text" name="ciudad_env" id="campo_ciudad_env" value="'.$datosDir[2].'"></div>
-			
-			<div class="labelForm">'._PAIS.'</div>
-			<div class="datoForm">'.$__LIB->selectPais($formName, "env", $datosDir[4]).'</div>
-
-			<div class="labelForm">'._PROVINCIA.'</div>
-			<div class="datoForm" id="divprovincia_env">'.$__LIB->selectProvincia("provincia_env", $datosDir[4], $datosDir[3], "").'</div>';
-
-		return $codigo;
-	}
-	
-
-	public static function nombre($datosPer, $nif = false)
-	{	
-		global $__LIB;
-
-		$codigo = '';
-		$empresa = '';
-		if ($__LIB->esTrue($datosPer[6]))
-			$empresa = $datosPer[3];
-
-		$codigo .= '
-			<div class="labelForm">'._NOMBRE.'</div>
-			<div class="datoForm"><input type="text" name="nombre" id="campo_nombre" value="'.$datosPer[1].'"></div>
-		
-			<div class="labelForm">'._APELLIDOS.'</div>
-			<div class="datoForm"><input type="text" name="apellidos" id="campo_apellidos" value="'.$datosPer[2].'"></div>
-		
-			<div class="labelForm">'._EMPRESA.'</div>
-			<div class="datoForm"><input size="30" type="text" name="empresa" id="campo_empresa" value="'.$empresa.'">&nbsp;</div>';
-			
-		if ($nif) {
-			$codigo .= '
-				<div class="labelForm">'._NIF.'</div>
-				<div class="datoForm"><input type="text" name="nif" id="campo_nif">&nbsp;</div>';
-		}
-
-		return $codigo;
-	}
-	
-	
-
-	public static function nombreEnv($datosPer)
-	{	
-		global $__LIB;
-
-		$codigo = '';
-		$empresa = '';
-		if ($__LIB->esTrue($datosPer[6]))
-			$empresa = $datosPer[3];
-
-		$codigo .= '
-			<div class="labelForm">'._NOMBRE.' *</div>
-			<div class="datoForm"><input type="text" name="nombre_env" value="'.$datosPer[1].'"></div>
-		
-			<div class="labelForm">'._APELLIDOS.' *</div>
-			<div class="datoForm"><input type="text" name="apellidos_env" value="'.$datosPer[2].'"></div>
-		
-			<div class="labelForm">'._EMPRESA.'</div>
-			<div class="datoForm"><input size="30" type="text" name="empresa_env" value="'.$empresa.'">&nbsp;</div>';
-			
-		return $codigo;
-	}
-	
-	
-	
-
-	public static function nuevaCuentaGeneral($datos)
+	public static function bloqueCampo($nombre, $label, $valor, $errores, $campoDirecto = '', $requerido = '*', $textarea = false, $pass = false) 
 	{
 		$codigo = '';
+		
+		if ($textarea)
+			$codigo .= '<div class="campoTA">';
+		
+		$codigo .= '<div class="campo">';
+		
+		$codigo .= '<label for="campo_'.$nombre.'">'.$label.' '.$requerido.'</label>';
+		
+		$type = $pass ? 'password' : 'text';
+		
+		if ($campoDirecto)
+			$codigo .= $campoDirecto;
+		else {
+			if ($textarea)
+				$codigo .= '<textarea rows="10" cols="10" name="'.$nombre.'" id="campo_'.$nombre.'">'.$valor.'</textarea>';
+			else
+				$codigo .= '<input type="'.$type.'" name="'.$nombre.'" id="campo_'.$nombre.'" value="'.$valor.'"/>';
+		}
+		
+		if (isset($errores[$nombre]))
+			$codigo .= '<span class="errorForm">'.$errores[$nombre].'</span>';
+		
+		$codigo .= '</div>';
+		
+		if ($textarea)
+			$codigo .= '</div>';
+		
+		return $codigo;
+	}
 	
-			$codigo .= '
-			<div class="labelForm">'._EMAIL.' *</div>
-			<div class="datoForm"><input type="text" name="email" id="campo_email" size="30" value="'.$datos["email"].'"></div>
+	public static function dirFact($datosDir, $formName = '', $errores = array())
+	{	
+		global $__LIB;
+
+		$codigo = '';
+
+		$codigo .= formularios::bloqueCampo('direccion', _DIRECCION, $datosDir["direccion"], $errores);
+		$codigo .= formularios::bloqueCampo('codpostal', _CODPOSTAL, $datosDir["codpostal"], $errores);
+		$codigo .= formularios::bloqueCampo('ciudad', _POBLACION, $datosDir["ciudad"], $errores);
 		
-			<div class="labelForm">'._EMAILCONF.' *</div>
-			<div class="datoForm"><input type="text" name="emailconf" id="campo_emailconf" size="30" value="'.$datos["emailconf"].'"></div>
+		$campoDirecto = $__LIB->selectPais($formName, "", $datosDir["codpais"]);
+		$codigo .= formularios::bloqueCampo('codpais', _PAIS, '', $errores, $campoDirecto);
 		
-			<div class="labelForm">'._PASSWORD.' *</div>
-			<div class="datoForm"><input type="password" name="password" id="campo_password" size="15" maxlength="40"></div>
+		$campoDirecto = '<span id="spanProvincia">'.$__LIB->selectProvincia("provincia", $datosDir["codpais"], $datosDir["provincia"], "").'</span>';
+		$codigo .= formularios::bloqueCampo('provincia', _PROVINCIA, '', $errores, $campoDirecto);
+
+		return $codigo;
+	}
+
+	public static function dirEnv($datosDir, $formName = '', $errores = array(), $suf = '', $ambito = '')
+	{	
+		global $__LIB;
+
+		$codigo = '';
 		
-			<div class="labelForm">'._CONFIRM_PASSWORD.' *</div>
-			<div class="datoForm"><input type="password" name="confirmacion" id="campo_confirmacion" size="15" maxlength="40"></div>';
+		$codigo .= formularios::bloqueCampo('direccion_env', _DIRECCION, $datosDir["direccion$suf"], $errores);
+		$codigo .= formularios::bloqueCampo('codpostal_env', _CODPOSTAL, $datosDir["codpostal$suf"], $errores);
+		$codigo .= formularios::bloqueCampo('ciudad_env', _POBLACION, $datosDir["ciudad$suf"], $errores);
+		
+		$campoDirecto = $__LIB->selectPais($formName, "env", $datosDir["codpais$suf"]);
+		$codigo .= formularios::bloqueCampo('codpais_env', _PAIS, '', $errores, $campoDirecto);
+		
+		$campoDirecto = '<span id="spanProvincia_env">'.$__LIB->selectProvincia("provincia_env", $datosDir["codpais$suf"], $datosDir["provincia$suf"], $ambito).'</span>';
+		$codigo .= formularios::bloqueCampo('provincia_env', _PROVINCIA, '', $errores, $campoDirecto);
+
+		return $codigo;
+	}
+	
+
+	public static function nombre($datos, $nif = false, $errores = '')
+	{	
+		global $__LIB;
+
+		$codigo = '';
+		
+		$codigo .= formularios::bloqueCampo('contacto', _NOMBRE, $datos["contacto"], $errores);
+		$codigo .= formularios::bloqueCampo('apellidos', _APELLIDOS, $datos["apellidos"], $errores);
+		$codigo .= formularios::bloqueCampo('empresa', _EMPRESA, $datos["empresa"], $errores, '', '&nbsp;');
+			
+		if ($nif)
+			$codigo .= formularios::bloqueCampo('nif', _NIF, '', $errores, '');
+
+		return $codigo;
+	}
+	
+	
+
+	public static function nombreEnv($datos, $errores = array())
+	{	
+		global $__LIB;
+
+		$codigo = '';
+		
+		$empresa = '';
+		if ($__LIB->esTrue($datos["esempresa"])) 
+			$empresa = $datos["nombre"];
+		
+		$codigo .= formularios::bloqueCampo('nombre_env', _NOMBRE, $datos["contacto"], $errores);
+		$codigo .= formularios::bloqueCampo('apellidos_env', _APELLIDOS, $datos["apellidos"], $errores);
+		$codigo .= formularios::bloqueCampo('empresa_env', _EMPRESA, $empresa, $errores);
 			
 		return $codigo;
 	}
 	
-	public static function nuevaCuentaPersonal($datos)
+	
+	
+
+	public static function nuevaCuentaGeneral($datos, $errores)
+	{
+		$codigo = '';
+		
+		$codigo .= formularios::bloqueCampo('email', _EMAIL, $datos["email"], $errores);
+		$codigo .= formularios::bloqueCampo('emailconf', _EMAILCONF, $datos["emailconf"], $errores);
+		$codigo .= formularios::bloqueCampo('password', _PASSWORD, $datos["password"], $errores,'', '*', false, true);
+		$codigo .= formularios::bloqueCampo('confirmacion', _CONFIRM_PASSWORD, $datos["confirmacion"], $errores,'', '*', false, true);
+			
+		return $codigo;
+	}
+	
+	public static function nuevaCuentaPersonal($datos, $errores)
 	{	
 		$codigo = '';
 		
-		$codigo .= '		
-			<div class="labelForm">'._NOMBRE.' *</div>
-			<div class="datoForm"><input type="text" name="nombre" id="campo_nombre" size="30" value="'.$datos["nombre"].'"></div>
-		
-		
-			<div class="labelForm">'._APELLIDOS.' *</div>
-			<div class="datoForm"><input type="text" name="apellidos" id="campo_apellidos" size="30" value="'.$datos["apellidos"].'"></div>
-		
-		
-			<div class="labelForm">'._TELEFONO.' </div>
-			<div class="datoForm"><input type="text" name="telefono" id="campo_telefono" size="20" value="'.$datos["telefono"].'">&nbsp;</div>
-		
-		
-			<div class="labelForm">'._FAX.'</div>
-			<div class="datoForm"><input type="text" name="fax" id="campo_fax" size="20" value="'.$datos["fax"].'">&nbsp;</div>
-		
-		
-			<div class="labelForm">'._EMPRESA.'</div>
-			<div class="datoForm"><input type="text" name="empresa" id="campo_empresa" size="30" value="'.$datos["empresa"].'">&nbsp;</div>';
+		$codigo .= formularios::bloqueCampo('nombre', _NOMBRE, $datos["nombre"], $errores);
+		$codigo .= formularios::bloqueCampo('apellidos', _APELLIDOS, $datos["apellidos"], $errores);
+		$codigo .= formularios::bloqueCampo('telefono', _TELEFONO, $datos["telefono"], $errores,'', '');
+		$codigo .= formularios::bloqueCampo('fax', _FAX, $datos["fax"], $errores,'', '');
+		$codigo .= formularios::bloqueCampo('empresa', _EMPRESA, $datos["empresa"], $errores,'', '');
 		
 		return $codigo;
 	}
 
-	public static function editarCuentaPersonal($datos)
+	public static function editarCuentaPersonal($datos, $errores = array())
 	{	
 		global $__LIB;
 	
 		$codigo = '';
 
 		$nombre = '';
-		if ($__LIB->esTrue($datos[6])) 
-			$nombre = $datos[3];
-				eqDebug::log($datos);
-				eqDebug::log($nombre);
+		if ($__LIB->esTrue($datos["esempresa"])) 
+			$nombre = $datos["nombre"];
 		
-		$codigo .= '		
-			<div class="labelForm">'._EMAIL.'</div>
-			<div class="datoForm">&nbsp;&nbsp;<b>'.$datos[0].'</b></div>
-			<div style="width:1px;"></div>
+		$email = '<input name="email" disabled="disabled" value="'.$datos["email"].'"/>';
 		
-			<div class="labelForm">'._NOMBRE.'</div>
-			<div class="datoForm"><input size="30" type="text" name="contacto" value="'.$datos[1].'">*</div>
-		
-			<div class="labelForm">'._APELLIDOS.'</div>
-			<div class="datoForm"><input size="30" type="text" name="apellidos" value="'.$datos[2].'">*</div>
-		
-			<div class="labelForm">'._EMPRESA.'</div>
-			<div class="datoForm"><input size="30" type="text" name="nombre" value="'.$nombre.'"></div>
-			
-			<div class="labelForm">'._TELEFONO.'</div>
-			<div class="datoForm"><input size="30" type="text" name="telefono1" value="'.$datos[4].'">&nbsp;</div>
-		
-			<div class="labelForm">'._FAX.'</div>
-			<div class="datoForm"><input size="30" type="text" name="fax" value="'.$datos[5].'">&nbsp;</div>
-			
-			<input size="30" type="hidden" name="procesarDatos" value="1">';
+		$codigo .= formularios::bloqueCampo('email', _EMAIL, $datos["email"], $errores, $email);
+		$codigo .= formularios::bloqueCampo('contacto', _NOMBRE, $datos["contacto"], $errores);
+		$codigo .= formularios::bloqueCampo('apellidos', _APELLIDOS, $datos["apellidos"], $errores);
+		$codigo .= formularios::bloqueCampo('telefono1', _TELEFONO, $datos["telefono1"], $errores,'', '');
+		$codigo .= formularios::bloqueCampo('fax', _FAX, $datos["fax"], $errores,'', '');
+		$codigo .= formularios::bloqueCampo('nombre', _EMPRESA, $nombre, $errores,'', '');
 		
 		return $codigo;
 	}
 
+	
+	public static function editarPassword($errores = array())
+	{
+		$codigo = '';
+	
+		$campoDirecto = '<input type="password" name="password", id="campo_password">';
+		$codigo .= formularios::bloqueCampo('password', _PASSWORD, '', $errores, $campoDirecto);
+		
+		$campoDirecto = '<input type="password" name="confirmacion", id="campo_confimacion">';
+		$codigo .= formularios::bloqueCampo('confirmacion', _CONFIRM_PASSWORD, '', $errores, $campoDirecto);
+			
+		return $codigo;
+	}
+	
+
+	
+	public static function contactar($valores, $errores)
+	{
+		$codigo = '';
+	
+		if ($valores) {
+			$nombre = $valores["nombre"];
+			$email = $valores["email"];
+			$texto = $valores["texto"];
+		}
+		else {
+			$nombre = '';
+			$email = '';
+			$texto = '';
+		}
+		
+		$codigo .= formularios::bloqueCampo('nombre', _NOMBRE, $nombre, $errores);
+		$codigo .= formularios::bloqueCampo('email', _EMAIL, $email, $errores);
+		$codigo .= formularios::bloqueCampo('texto', _COMENTARIOS, $texto, $errores, '', '*', true);
+			
+		return $codigo;
+	}
+	
+
+	
+	
+	public static function recordarContra($valores, $errores)
+	{
+		$codigo = '';
+		if ($valores)
+			$email = $valores["email"];
+		else
+			$email = '';
+		
+		$codigo .= formularios::bloqueCampo('email', _EMAIL, $email, $errores);
+		$codigo .= formularios::codigoValidacion(_CODIGO_VALIDACION, $errores);
+			
+		return $codigo;
+	}
+	
+
+	
+	
 	public static function datosNoNulos()
 	{
 		$datos = array(
@@ -220,6 +244,35 @@ class oficial_formularios
 		);
 		
 		return $datos;
+	}
+	
+	public static function botEnviar($label = _ENVIAR)
+	{
+		$codigo = '';
+		$codigo .= '<div class="campoEnviar">';
+		$codigo .= '<label for="submit">&nbsp;</label>';
+		$codigo .= '<button type="submit" value="'.$label.'" class="submitBtn"><span>'.$label.'</span></button>';
+		$codigo .= '</div>';
+		
+		return $codigo;
+	}
+	
+	public static function codigoValidacion($label, $errores)
+	{
+		$codigo = '';
+		$codigo .= '<div class="validacion">';
+		$codigo .= '<div class="campo">';
+		$codigo .= '<label for="campo_code">'.$label.' *</label>';
+			
+		$codigo .= '<img src="'._WEB_ROOT.'includes/securimage/securimage_show.php?sid='.md5(uniqid(time())).'" alt="securimage" id="securimage"/>';
+		$codigo .= '<br/><input type="text" name="code" id="campo_code"/>';
+		if (isset($errores["code"]))
+			$codigo .= '<span class="errorForm">'.$errores["code"].'</span>';
+		$codigo .= '<br/><br/><a href="#" onclick="reloadSecurimage(\''._WEB_ROOT.'\'); return false;">'._RELOAD_SECURIMAGE.'</a>';
+		$codigo .= '</div>';
+		$codigo .= '</div>';
+		
+		return $codigo;
 	}
 }
 

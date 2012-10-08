@@ -15,7 +15,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-error_reporting(E_ALL);
 
 /** @class_definition oficial_galerias */
 //////////////////////////////////////////////////////////////////
@@ -23,7 +22,7 @@ error_reporting(E_ALL);
 
 class oficial_galerias
 {
-	// Despliega las imágenes en matriz
+	// Despliega las imagenes en matriz
 	function imagenesMatriz($ordenSQL)
 	{
 		global $__BD;
@@ -102,7 +101,7 @@ class oficial_galerias
 		}
 		
 		if (file_exists($fichImg)) {
-			$codigo = '<img class="thumb" border="0" src="'._WEB_ROOT.'images/thumbnails/'.$baseImg.'">';
+			$codigo = '<img class="thumb" src="'._WEB_ROOT.'images/thumbnails/'.$baseImg.'">';
 			if (file_exists($fichImgN)) {
 				$tamFoto = GetImageSize($fichImgN);
 				if ($tamFoto[0] > $tamFoto[1])
@@ -187,7 +186,7 @@ class oficial_galerias
 		$ordenSQL = "select titulo from galeriasimagenes where codgaleria = '$codGaleria'";
 		$titulo = $__BD->db_valor($ordenSQL);
 		$titPagina = $__LIB->traducir("galeriasimagenes", "titulo", $codGaleria, $titulo);
-		echo '<div class="titPagina">'._GALERIA.' &middot; '.$titPagina.'</div>';
+		echo '<h1>'._GALERIA.' &middot; '.$titPagina.'</h1>';
 		
 		// Sentencia principal
 		$ordenSQL = "select * from imagenes where codgaleria = '$codGaleria' AND publico = true order by orden";

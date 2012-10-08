@@ -16,8 +16,6 @@
  *                                                                         *
  ***************************************************************************/
 
-error_reporting(E_USER_NOTICE);
-
 /** @class_definition oficial_confirmarPedido */
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
@@ -31,8 +29,9 @@ class oficial_confirmarPedido
 	{
 		global $__LIB;
 			
-		$nextUrl = 'crear_pedido.php';
-		$codigo = '<a class="botContinuar" href="'.$nextUrl.'">'._CREAR_PEDIDO.'</a>';		
+		$nextUrl = _WEB_ROOT_SSL_L.'cesta/crear_pedido.php';
+		$codigo = '<a class="button" href="'.$nextUrl.'"><span>'._CREAR_PEDIDO.'</span></a>';
+		$error = '';
 		
 		// Si existe el fichero datos.php dentro del directorio de forma de pago
 		if (file_exists(_DOCUMENT_ROOT.'cesta/sistpago/'.$codPago.'/datos.php')) {
@@ -57,7 +56,7 @@ class oficial_confirmarPedido
 			exit;
 		}
 		
-		$codigo = '<p><br><br>'.$codigo;
+		$codigo = '<p><br/><br/>'.$codigo;
 		return $codigo;
 	}
 
@@ -70,30 +69,41 @@ class oficial_confirmarPedido
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._CREAR_PEDIDO.'</div>';
-		echo '<div class="cajaTexto">';
+		$codigo = '';
+		$codigo .= '<h1>'._CREAR_PEDIDO.'</h1>';
+		$codigo .= '<div class="cajaTexto">';
 	
-		echo $__LIB->fasesPedido('confirmacion');
+		$codigo .= $__LIB->fasesPedido('confirmacion');
 		
 		if (!isset($_SESSION["pedido"])) {
-			echo '<a href="'._WEB_ROOT.'cuenta/login.php">'._PEDIDO_INCORRECTO.'</a>';
+			$codigo .= '<a href="'._WEB_ROOT_SSL_L.'cuenta/login.php">'._PEDIDO_INCORRECTO.'</a>';
 			include("../includes/right_bottom.php");
 			exit;
 		}
 		
-		$error = $__LIB->comprobarPedido($_SESSION["pedido"]["datosEnv"], $CLEAN_POST);	
-		if ($error) {
-			echo '<div class="msgError">'.$error.'</div>';
-			echo '<a href="javascript:history.go(-1)">'._VOLVER.'</a>';
-			include("../includes/right_bottom.php");
-			exit;
-		}
 		
-		// Los datos de pago vienen del formulario anterior
-		$_SESSION["pedido"]["datosPag"] = $CLEAN_POST;
+		if (isset($CLEAN_POST["contacto"])) {
 			
-		echo '<p>'._CONFIRME_PEDIDO;
+			$error = $__LIB->comprobarPedido($_SESSION["pedido"]["datosEnv"], $CLEAN_POST);	
+			if ($error) {
+				$codigo .= '<div class="msgError">'.$error.'</div>';
+				$codigo .= '<a href="javascript:history.go(-1)">'._VOLVER.'</a>';
+				echo $codigo;
+				include("../includes/right_bottom.php");
+				exit;
+			}
+			
+			// Los datos de pago vienen del formulario anterior
+			$_SESSION["pedido"]["datosPag"] = $CLEAN_POST;
+			
+			// Validado el post, cargamos la misma pagina sin el mismo (para evitar repetir el POST)
+			echo '<script type="text/javascript">window.location = "'._WEB_ROOT_SSL_L.'cesta/confirmar_pedido.php"</script>';
+			exit;
+		}
 		
+			
+		$codigo .= '<p>'._CONFIRME_PEDIDO;
+
 		// Los datos de envio vienen de la sesion
 		$datos = $_SESSION["pedido"]["datosEnv"];		
 		
@@ -115,59 +125,75 @@ class oficial_confirmarPedido
 		$formaPago = $__LIB->traducir("formaspago", "descripcion", $datosPago["codpago"], $row["descripcion"]);
 		$descPago = $__LIB->traducir("formaspago", "descripcionlarga", $datosPago["codpago"], $row["descripcionlarga"]);
 		$paso = 0;
-		
+
 									
 		// 1. Impresion del Pedido
-		echo '<div class="titApartado"><span class="titApartadoText">'._PEDIDO.'</span></div>';
-		$_SESSION["cesta"]->imprime_cesta_pedido($datos["codenvio"], $codPago);
+		$codigo .= '<h2><span class="titApartadoText">'._PEDIDO.'</span></h2>';
+		$codigo .= $_SESSION["cesta"]->imprime_cesta_pedido($datos["codenvio"], $codPago);
+		
+		$codigo .= '<br/>';
+		$codigo .= '<a href="'._WEB_ROOT_SSL_L.'general/cesta.php">'._MODIFICAR.'</a>';
+		$codigo .= '<br/>';
+		$codigo .= '<br/>';
+		
 		
 		//2. Datos de envio
-		echo '<div class="titApartado"><span class="titApartadoText">'._DATOS_ENVIO.'</span></div>';
+		$codigo .= '<h2><span class="titApartadoText">'._DATOS_ENVIO.'</span></h2>';
 		
-		echo '<p><b>'._FORMA_ENVIO.'</b><br>';
-		echo $formaEnvio;
+		$codigo .= '<p><b>'._FORMA_ENVIO.'</b><br/>';
+		$codigo .= $formaEnvio;
 		
 		$datos = $_SESSION["pedido"]["datosEnv"];
 		$pais = $__BD->db_valor("select nombre from paises where codpais = '".$datos["codpais_env"]."'");
 		
-		echo '<p><b>'._DIRECCION.'</b><br>';
-		echo $datos["nombre_env"].' '.$datos["apellidos_env"].'<br>';
-		if (strlen(trim($datos["empresa_env"])) > 0)
-			echo $datos["empresa_env"].'<br>';
-		echo $datos["direccion_env"].'<br>';
-		echo $datos["codpostal_env"].' '.$datos["ciudad_env"].'<br>';
-		echo $datos["provincia_env"].'<br>';
-		echo $pais;
+		$codigo .= '<p><b>'._DIRECCION.'</b><br/>';
+		$codigo .= $datos["contacto"].' '.$datos["apellidos"].'<br/>';
+		if (strlen(trim($datos["empresa"])) > 0)
+			$codigo .= $datos["empresa"].'<br/>';
+		$codigo .= $datos["direccion_env"].'<br/>';
+		$codigo .= $datos["codpostal_env"].' '.$datos["ciudad_env"].'<br/>';
+		$codigo .= $datos["provincia_env"].'<br/>';
+		$codigo .= $pais;
+		
+		$codigo .= '<br/><br/>';
+		$codigo .= '<a href="'._WEB_ROOT_SSL_L.'cesta/datos_envio.php">'._MODIFICAR.'</a>';
+		
 		
 		
 		// 3. Datos de Pago
-		echo '<div class="titApartado"><span class="titApartadoText">'._DATOS_PAGO.'</span></div>';
+		$codigo .= '<h2><span class="titApartadoText">'._DATOS_PAGO.'</span></h2>';
 		
-		echo '<p><b>'._FORMA_PAGO.'</b><br>';
-		echo $formaPago;
+		$codigo .= '<p><b>'._FORMA_PAGO.'</b><br/>';
+		$codigo .= $formaPago;
 		
-		echo '<p><b>'._DIRECCION.'</b><br>';
+		$codigo .= '<p><b>'._DIRECCION.'</b><br/>';
 		
 		$datos = $_SESSION["pedido"]["datosPag"];
 		$pais = $__BD->db_valor("select nombre from paises where codpais = '".$datos["codpais"]."'");
-		echo $datos["nombre"].' '.$datos["apellidos"].'<br>';
+		$codigo .= $datos["contacto"].' '.$datos["apellidos"].'<br/>';
 		
 		if ($__LIB->esTrue($_SESSION["opciones"]["solicitarnif"])) {
-			echo _NIF.' '.$datos["nif"].'<br>';
+			$codigo .= _NIF.' '.$datos["nif"].'<br/>';
 		}
 		
 		if (strlen(trim($datos["empresa"])) > 0)
-			echo $datos["empresa"].'<br>';
-		echo $datos["direccion"].'<br>';
-		echo $datos["codpostal"].' '.$datos["ciudad"].'<br>';
-		echo $datos["provincia"].'<br>';
-		echo $pais;
+			$codigo .= $datos["empresa"].'<br/>';
+		$codigo .= $datos["direccion"].'<br/>';
+		$codigo .= $datos["codpostal"].' '.$datos["ciudad"].'<br/>';
+		$codigo .= $datos["provincia"].'<br/>';
+		$codigo .= $pais;
+		
+		$codigo .= '<br/><br/>';
+		$codigo .= '<a href="'._WEB_ROOT_SSL_L.'cesta/datos_pago.php">'._MODIFICAR.'</a>';
+		
 		
 		$nextUrl = 'crear_pedido.php';
 		
-		echo $this->botonProcesar($codPago);																	
+		$codigo .= $this->botonProcesar($codPago);																	
 		
-		echo '</div>';
+		$codigo .= '</div>';
+		
+		echo $codigo;
 	}
 }
 

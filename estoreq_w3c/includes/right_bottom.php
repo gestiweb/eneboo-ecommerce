@@ -13,14 +13,46 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @no_class */
-?>
-	<br class="cleaner"/>
-	</div>
+/** @class_definition oficial_rightBottom */
+//////////////////////////////////////////////////////////////////
+//// OFICIAL /////////////////////////////////////////////////////
 
-<?php
-	echo $__LIB->pie();
-?>
+class oficial_rightBottom
+{
+	function contenidos()
+	{
 
-</body>
-</html>
+		global $__LIB;
+
+		echo	'</div><!-- end content -->
+		
+				</div><!-- end inner -->
+		
+				<br class="cleaner"/>
+		
+			</div><!-- end outer -->
+			<div id="footer">'.$__LIB->pie().'</div>
+		
+		</div><!-- end container -->
+		
+		<div id="outerFooter"></div>
+		
+		<!--	<br class="cleaner"/>
+			</div>-->
+		
+		
+		
+		</body>
+		</html>';
+	}
+}
+//// OFICIAL /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+/** @main_class_definition rightBottom */
+class rightBottom extends oficial_rightBottom {};
+
+$iface_rightBottom = new rightBottom;
+$iface_rightBottom->contenidos();
+
+?>

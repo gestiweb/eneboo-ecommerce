@@ -1,3 +1,10 @@
+.mainTable {
+	width: 950px;
+	padding: 0 10px;
+	background: #FFF;
+	margin: 20px auto;
+}
+
 table.datos {
 	width:500px;
 }
@@ -5,7 +12,6 @@ table.datos {
 table.datos th {
 	text-align: left;
 	font-weight:bold;
-	font-size:11px;
 	border-width: 0px 0px 3px 0px;
 	border-style: solid;
 	border-color: #EEE;
@@ -22,7 +28,14 @@ table.datos td.dato {
 	width:300px;
 }
 
+.mainTable td.contenidos, table.datos td {
+	font: 12px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+}
 
+table.datos th {
+	font: 12px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	font-weight: bold;
+}
 
 table.formBD {
 	width:500px;
@@ -33,19 +46,24 @@ table.formBD td {
 }
  
 table.formBD td.alias {
+	font: 12px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
 	width:200px;
 }
 table.formBD td.aliasLargo {
+	font: 12px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
 	width:300px;
 }
-table.formBD td.campo {
+table.formBD td.campo input, table.formBD td.campo select {
+	font: 12px "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif;
+	position: static;
 }
 
 .licencia {
-	border-width: 1px;
-	border-style: solid;
-	border-color: #CCC;
-	padding: 10px;
-  	width: 600px;
-	height: 400px;
+	margin: 20px 0;
+	overflow:auto; width: 920px; height: 500px;
+	border: 1px solid #DDD;
+}
+.innerLicencia {
+	width: 800px;
+	padding: 8px
 }

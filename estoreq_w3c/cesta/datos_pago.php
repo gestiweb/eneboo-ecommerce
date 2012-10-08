@@ -15,7 +15,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+ini_set('display_errors', true);
 /** @class_definition oficial_datosPago */
 //////////////////////////////////////////////////////////////////
 //// OFICIAL /////////////////////////////////////////////////////
@@ -28,118 +28,84 @@ class oficial_datosPago
 		global $__BD, $__CAT, $__LIB, $__CLI;
 		global $CLEAN_GET, $CLEAN_POST;
 		
+		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._CREAR_PEDIDO.'</div>';
-		echo '<div class="cajaTexto">';
-	
-		echo $__LIB->fasesPedido('pago');
+		$codigo = '';
 		
-		$error = $__LIB->comprobarPedido($CLEAN_POST, false);	
-		if ($error) {
-			echo '<div class="msgError">'.$error.'</div>';
-			echo '<a href="javascript:history.go(-1)">'._VOLVER.'</a>';
-			include("../includes/right_bottom.php");
-			exit;
+		$codigo .= '<h1>'._CREAR_PEDIDO.'</h1>';
+		$codigo .= '<div class="cajaTexto">';
+	
+		$codigo .= $__LIB->fasesPedido('pago');
+		
+		
+		if (isset($CLEAN_POST["contacto"])) {
+			
+			$error = $__LIB->comprobarPedido($CLEAN_POST, false);	
+			if ($error) {
+				$codigo .= '<div class="msgError">'.$error.'</div>';
+				$codigo .= '<a href="javascript:history.go(-1)">'._VOLVER.'</a>';
+				echo $codigo;
+				include("../includes/right_bottom.php");
+				exit;
+			}
+			
+			// Nueva sesion de pedido
+			unset($_SESSION["pedido"]);
+			
+			// Los datos de envio vienen del post
+			$_SESSION["pedido"]["datosEnv"] = $CLEAN_POST;
+			
+			// Validado el post, cargamos la misma pagina sin el mismo (para evitar repetir el POST)
+			echo '<script type="text/javascript">window.location = "'._WEB_ROOT_SSL_L.'cesta/datos_pago.php"</script>';
+ 			exit;
 		}
 		
-		// Nueva sesion de pedido
-		unset($_SESSION["pedido"]);
-		
-		// Los datos de envio vienen del post
-		$_SESSION["pedido"]["datosEnv"] = $CLEAN_POST;
-		
-		echo '<form name="datosDir" id="datosDir" action="confirmar_pedido.php" method="post">';
-		echo '<input type="hidden" name="ambito" value="cesta_pago">';
+		$codigo .= '<form name="datosDir" id="datosDir" action="'._WEB_ROOT_SSL_L.'cesta/confirmar_pedido.php" method="post">';
+		$codigo .= '<input type="hidden" name="ambito" value="cesta_pago">';
 
-		echo '<div class="titApartado">'._DIRECCION_FACT.'</div>';
+		$codigo .= '<h2>'._DIRECCION_FACT.'</h2>';
 	
 		// Datos personales (nombre, empresa)
 		$datosPer = $__CLI->datosPersonales();
 		
 		
 		if ($__LIB->esTrue($_SESSION["opciones"]["solicitarnif"]))
-			echo formularios::nombre($datosPer, true);
+			$codigo .= formularios::nombre($datosPer, true);
 		else
-			echo formularios::nombre($datosPer);
+			$codigo .= formularios::nombre($datosPer);
 			
 		// Direccion de facturacion
 		$dirFact = $__CLI->direccionFact();
-		echo formularios::dirFact($dirFact, 'datosDir');
+		$codigo .= formularios::dirFact($dirFact, 'datosDir');
 		
-		echo '<div class="titApartado">'._FORMA_PAGO.'</div><br>';
+		$codigo .= '<h2>'._FORMA_PAGO.'</h2><br/>';
 		
-		echo '<div id="datosPago">';
+		$codigo .= '<div id="datosPago">';
 		
-		$datosPago = $__LIB->formasPago($dirFact[4], $dirFact[3]);
+		$datosPago = $__LIB->formasPago($dirFact["codpais"], $dirFact["provincia"]);
 		if ($datosPago)
-			echo $datosPago;
+			$codigo .= $datosPago;
 		else
-			echo _NO_FORMAS_PAGO;
+			$codigo .= _NO_FORMAS_PAGO;
 		
-		echo '</div>';
+		$codigo .= '</div>';
 		
+		$codigo .= '<p class="separador">';
 		
-		
-		
-		// Formas de pago
-/*		$ordenSQL = "select * from formaspago where activo = true order by orden";
-		$result = $__BD->db_query($ordenSQL);
-		$paso = 0;	
-		
-		while ($row = $__BD->db_fetch_array($result)) {
-			
-			$codPago = $row["codpago"];
-			if ($row["controlporzonas"])
-				if (!$__LIB->pagoEnZona($codPago))
-			
-			$descripcion = $__LIB->traducir("formaspago", "descripcion", $row["codpago"], $row["descripcion"]);;
-			$descLarga = $__LIB->traducir("formaspago", "descripcionlarga", $row["codpago"], $row["descripcionlarga"]);
-			
-			echo '<div class="formaPago">';
-
-			echo '<div class="checkPago">';
-			echo '<input type="radio" name="codpago" value="'.$row["codpago"].'"';
-			if ($paso++ == 0)
-				echo ' checked';
-			echo '></div>';
-
-			echo '<div class="labelPago">';
-			echo $descripcion;
-			echo '</div>';
-			
-			if (strlen(trim($descLarga)) > 0) {
-				echo '<div class="descPago">';
-				echo nl2br($descLarga);
-				echo '</div>';
-			}
-			
-			if ($__LIB->esTrue($row["gastos"])) {
-				echo '<div class="gastosPago">';
-				echo _AVISO_GASTOS_PAGO.' '.$row["gastos"].'%';
-				echo '</div>';
-			}
-			
-			if ($__LIB->esTrue($row["gastosfijo"])) {
-				echo '<div class="gastosPago">';
-				echo _AVISO_GASTOS_PAGO.' '.$__CAT->precioDivisa($row["gastosfijo"]);
-				echo '</div>';
-			}
-			
-			echo '<br class="cleanerLeft"/>';
-			echo '</div>';
+		$codigo .= '<div id="divContinuar">';
+		$codigo .= '<p class="separador">';
+		$codigo .= '<a class="button" href="cesta/datos_envio.php"><span>'._VOLVER.'</span></a>';
+		if ($datosPago) {
+			$codigo .= '<button type="submit" value="'._CONTINUAR.'" class="submitBtn"><span>'._CONTINUAR.'</span></button>';
 		}
-	*/
-		echo '</form>';
+		$codigo .= '</p></div>';
 		
-		echo '<p class="separador">';
+		$codigo .= '</form>';
 		
-		echo '<div id="divContinuar">';
-		if ($datosPago)
-	 		echo '<p class="separador"><a class="botContinuar" href="javascript:document.datosDir.submit()">'._CONTINUAR.'</a>';
-		echo '</div>';
-				
-		echo '</div>';
+		$codigo .= '</div>';
+		
+		echo $codigo;
 	}
 }
 

@@ -1,0 +1,131 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: verdana;
+	font-size: 11px;
+}
+
+h1 {
+	font-size: 1.3em;
+	font-weight: normal;
+	background-color: #333;
+	color: #FFF;
+	margin: 0px 0px 10px 0px;
+	padding: 15px 0px 10px 10px; 
+}
+
+h2 {
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	color: white;
+	font-size: 10px;
+	margin: 0;
+	padding: 0px 30px 0px 0px;
+}
+
+h2 a {
+	color: #FFF;
+}
+
+#tabs {
+	min-height: 450px;
+	_height: 450px;
+}
+
+#sortable li {
+	background: none;
+}
+
+a {
+	text-decoration: none;
+	color: #555555;
+}
+
+p {
+	padding: 0px;
+	margin: 0px;
+}
+
+#column0 {
+	float: left;
+	width: 200px;
+	padding: 0px 0px 0px 10px;
+}
+
+#column0 ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	line-height: 1.3em;
+}
+
+#column0 a {
+	display: block;
+	line-height: 1.2em;
+	padding: 3px 0px 3px 0px;
+}
+#column0 a:hover {
+	background-color: #EEE;
+}
+#column0 a.actual {
+	font-weight: bold;
+	border-width: 1px 0px;
+	border-style: solid;
+	border-color: #CCC;
+}
+
+#column1 {
+	float: left;
+	width: 740px;
+	padding-left: 10px;
+}
+
+#column2 {
+	float: left;
+	padding: 10px;
+}
+
+#accordion a.familia {
+	padding-left: 20px;
+}
+
+#accordion a.articulo {
+	padding-left: 0px;
+}
+
+fieldset {
+	clear: both;
+	width: 300px;
+	border: 1px solid #DDD;
+	padding: 15px;
+}
+
+input {
+	margin-bottom: 5px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+fieldset img {
+    float: right;
+    margin: 0px 0px 10px 0px;
+    border: 1px solid #DDD;
+}
+
+.button input {
+    font-weight: bold;
+}
+
+div.opcion {
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+br.cleaner {
+	clear: both;
+}
+

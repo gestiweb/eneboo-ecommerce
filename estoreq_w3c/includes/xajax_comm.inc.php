@@ -1,8 +1,11 @@
 <?php
 
-require_once( 'xajax/xajax.inc.php' );
+	include_once("xajax_05/xajax_core/xajax.inc.php");
+	$xajax = new xajax();
 
-$xajax = new xajax( _WEB_ROOT.'includes/xajax_serv.inc.php' );
+//require_once( 'xajax/xajax.inc.php' );
+
+//$xajax = new xajax( _WEB_ROOT.'includes/xajax_serv.inc.php' );
 
 /** @class_definition oficial_declareFuncionesXajax */
 //////////////////////////////////////////////////////////////////
@@ -17,9 +20,11 @@ class oficial_declareFuncionesXajax
 		$funciones[$numFunciones++] = "selectProvincias";
 		$funciones[$numFunciones++] = "cargarFormasEnvio";
 		$funciones[$numFunciones++] = "cargarFormasPago";
-		$funciones[$numFunciones++] = "abrirNavFotos";
-		$funciones[$numFunciones++] = "loadNavFotos";
 		$funciones[$numFunciones++] = "validarCuenta";
+		$funciones[$numFunciones++] = "enviarCorreoAamigo";
+		$funciones[$numFunciones++] = "enviarCorreoComentario";
+		$funciones[$numFunciones++] = "verificarDto";
+		$funciones[$numFunciones++] = "reloadCesta";
 
 		return $funciones;
 	}
@@ -37,5 +42,5 @@ $funciones = $iface_declareFuncionesXajax->contenidos();
 
 if ($funciones)
 	foreach($funciones as $funcion)
-		$xajax->registerFunction($funcion);
+		$xajax->register(XAJAX_FUNCTION, $funcion);
 ?>

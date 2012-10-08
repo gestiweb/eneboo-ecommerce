@@ -30,7 +30,7 @@ class oficial_facturas
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		

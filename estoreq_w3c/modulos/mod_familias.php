@@ -78,33 +78,38 @@ class oficial_modFamilias
 	// Listado de las familias publicas con articulos
 	function contenidos() 
 	{
-		global $__BD, $__CAT, $__LIB;
+		global $__BD, $__CAT, $__LIB, $CLEAN_GET;
+		
+		$__CAT->checkDeepLinks();
 		
 		$codigoMod = '';
 		$familiaTop = '';
 		if (isset($CLEAN_GET["fam"]))
-			$familiaTop = htmlentities($CLEAN_GET["fam"]); 
-		
-		$ordenSQL = "select codfamilia, descripcion from familias where (codmadre = '' OR codmadre is null) AND publico = true order by orden";
+			$familiaTop = htmlentities($CLEAN_GET["fam"]);
+			
+		$familiaTopDL = '';	
+		if (isset($CLEAN_GET["famdl"]))
+			$familiaTopDL = htmlentities($CLEAN_GET["famdl"]);
+			
+		$ordenSQL = "select codfamilia, descripcion, descripciondeeplink from familias where (codmadre = '' OR codmadre is null) AND publico = true order by orden";
 	
 		$result = $__BD->db_query($ordenSQL);
 		
-		while($row = $__BD->db_fetch_array($result)) {
+		while($row = $__BD->db_fetch_assoc($result)) {
 			$codFamilia = $row["codfamilia"];
 			$numArticulos = $__CAT->numArticulosF($codFamilia);
 			if ($numArticulos == 0) continue;
 			
 			$descripcion = $__LIB->traducir("familias", "descripcion", $row["codfamilia"], $row["descripcion"]);
 			
-			$codigoMod .= '<div class="itemMenu">';
-			$codigoMod .= '<a href="'._WEB_ROOT.'catalogo/articulos.php?fam='.$codFamilia.'">'.$descripcion.'</a>';
-	// 		$codigoMod .= ' ('.$numArticulos.')';
+			$estiloMarcar = $familiaTopDL == $row["descripciondeeplink"] ? ' itemMenuActivo' : '';
+			
+			$codigoMod .= '<div class="itemMenu familias '.$estiloMarcar.'">';
+			$codigoMod .= '<a href="'.$__CAT->linkFamilia($codFamilia, $row["descripciondeeplink"]).'">'.$descripcion.'</a>';
 			$codigoMod .= '</div>';
 		
 			if (!$this->antepasadoFamilia($codFamilia, $familiaTop))
 				continue;
-			
-	// 		familiasHijas($codFamilia);
 			
 			if ($familiaTop != $codFamilia)
 				continue;

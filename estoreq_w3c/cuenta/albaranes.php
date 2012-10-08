@@ -30,7 +30,7 @@ class oficial_albaranes
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		
@@ -41,6 +41,7 @@ class oficial_albaranes
 			exit;
 		}
 			
+		
 		if (!$__LIB->esTrue($_SESSION["opciones"]["mostraralbaranes"])) {
 			echo _SECCION_NO_DISPONIBLE;
 			include("../includes/right_bottom.php");

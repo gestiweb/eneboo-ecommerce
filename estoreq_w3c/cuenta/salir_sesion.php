@@ -27,7 +27,7 @@ class oficial_salirSesion
 	{
 		global $CLEAN_POST;
 	
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 
@@ -51,12 +51,12 @@ class oficial_salirSesion
 		else {
 			echo _CONFIRM_SALIR;
 			echo '
-				<form name="salirSesion" action="salir_sesion.php" method="post">
-				<input size="30" type="hidden" name="salir" value="1">
-				<p><br>
-				<a class="botLink" href="javascript:document.salirSesion.submit()">'._SALIR_SESION.'</a>
-				<a class="botVolver" href="javascript:history.go(-1)">'._VOLVER.'</a>
-				</form>';
+				<form action="cuenta/salir_sesion.php" method="post"><div>
+				<input size="30" type="hidden" name="salir" value="1"/>
+				<br/><br/>
+				<button type="submit" value="'._SALIR_SESION.'" class="submitBtn"><span>'._SALIR_SESION.'</span></button>
+				<a class="button" href="javascript:history.go(-1)"><span>'._VOLVER.'</span></a>
+				</div></form>';
 		}
 		
 		echo '</div>';

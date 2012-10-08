@@ -67,6 +67,7 @@ class oficial_paypal
 		$total = round(100 * $_SESSION["cesta"]->total()) / 100;
 	
 		$urlBack = _WEB_ROOT_SSL.'cesta/sistpago/retorno_pasarela.php?code='.$keyPedido;
+		$urlCancel = _WEB_ROOT_SSL.'cesta/sistpago/retorno_pasarela.php';
 
 		$ordenSQL = "select codpasarela from formaspago fp inner join pedidoscli p on fp.codpago = p.codpago where p.codigo = '$codPedido'";
 		$codPasarela = $__BD->db_valor($ordenSQL);
@@ -76,6 +77,8 @@ class oficial_paypal
 			include("../../../includes/right_bottom.php");
 			exit;
 		}
+
+		$amount = $this->calcularImporte($codPedido);
 
 		$ordenSQL = "select parametro, valor from parametrospasarela where codpasarela = '$codPasarela'";
 		$result = $__BD->db_query($ordenSQL);
@@ -94,15 +97,15 @@ class oficial_paypal
 			<input type="hidden" name="cmd" value="_xclick">
 			<input type="hidden" name="item_name" value="'._PEDIDO.'">
 			<input type="hidden" name="item_number" value="'.$codPedido.'">
-			<input type="hidden" name="amount" value="100.00">
+			<input type="hidden" name="amount" value="'.$amount.'">
 			<input type="hidden" name="no_shipping" value="1">
 			<input type="hidden" name="rm" value="2">
 			<input type="hidden" name="return" value="'.$urlBack.'">
-			<input type="hidden" name="cancel_return" value="http://nok.php">
+			<input type="hidden" name="cancel_return" value="'.$urlCancel.'">
 			'.$parametros.'
 			</form>';
-	
-		echo '<p><br><br><a class="botlink" href="javascript:document.paypal.submit()">'._REALIZAR_PAGO_MEDIANTE.' PayPal</a>';
+
+// 		echo '<p><br/><br/><a class="botlink" href="javascript:document.paypal.submit()">'._REALIZAR_PAGO_MEDIANTE.' PayPal</a>';
 
 		echo '
 		<SCRIPT language="JavaScript">
@@ -112,6 +115,17 @@ class oficial_paypal
 			  document.paypal.submit();
 			}
 		</SCRIPT> ';
+	}
+
+	function calcularImporte($codPedido)
+	{
+		global $__BD;
+		$ordenSQL = "select codpago,codenvio from pedidoscli where codigo = '$codPedido'";
+		$codPE = $__BD->db_row($ordenSQL);
+
+		$precio = $_SESSION["cesta"]->total($codPE[0], $codPE[1]);
+		$valor = number_format($precio,2,".","");
+		return $valor;
 	}
 }
 

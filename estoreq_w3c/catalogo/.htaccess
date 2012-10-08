@@ -1,26 +1,9 @@
 RewriteEngine on
 
-RewriteRule ^([a-zA-Z0-9_\-]+)$ articulos.php?fam=$1
-RewriteRule ^([a-zA-Z0-9_\-]+)$([a-zA-Z0-9_\-]+)$ articulos.php?ref=$2
-RewriteRule ^autores/([a-zA-Z0-9_\-]+)/fotografia/([a-zA-Z0-9_\-]+)$ foto.php?idFoto=$2&codAutor=$1
-RewriteRule ^autores/([a-zA-Z0-9_\-]+)/fotografia-grande/([a-zA-Z0-9_\-]+)$ fotogrande.php?idFoto=$2&codAutor=$1
+RewriteRule ^([a-z0-9\-]+)$ articulos.php?famdl=$1 [QSA]
+RewriteRule ^([a-z0-9\-]+)/([a-z0-9\-]+)$ articulo.php?refdl=$2 [QSA]
 
-RewriteRule ^artists$ autores.php
-RewriteRule ^artists/([a-zA-Z0-9_\-]+)$ autor.php?codAutor=$1&pag=1
-RewriteRule ^artists/([a-zA-Z0-9_\-]+)/work/([a-zA-Z0-9_\-]+)$ foto.php?idFoto=$2&codAutor=$1
-RewriteRule ^artists/([a-zA-Z0-9_\-]+)/work-large/([a-zA-Z0-9_\-]+)$ fotogrande.php?idFoto=$2&codAutor=$1
-
-RewriteRule ^noticias$ noticias.php
-RewriteRule ^noticias/([a-zA-Z0-9_\-]+)$ noticias.php?id=$1
-
-RewriteRule ^nuevasfotos$ nuevasfotos.php
-RewriteRule ^contactar$ contactar.php
-RewriteRule ^exposiciones$ exposiciones.php
-RewriteRule ^quienessomos$ quienessomos.php
-RewriteRule ^browse$ browse.php
-RewriteRule ^participa$ participa.php
-RewriteRule ^enlaces$ enlaces.php
-RewriteRule ^noticias$ noticias.php
-RewriteRule ^lista$ lista.php
-RewriteRule ^cesta$ cesta.php
-
+RewriteRule ^([a-zA-Z0-9_\-]+)/orden/([a-zA-Z0-9]+)$ articulos.php?famdl=$1&orden=$2 [QSA] 
+RewriteRule ^([a-zA-Z0-9_\-]+)/pagina/([0-9]+)$ articulos.php?famdl=$1&pagina=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9_\-]+)/numr/([0-9]+)$ articulos.php?famdl=$1&numr=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9_\-]+)/vista/([a-z]+)$ articulos.php?famdl=$1&vista=$2 [QSA]

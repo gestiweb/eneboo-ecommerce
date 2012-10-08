@@ -55,21 +55,21 @@ if (!$arquitectura || !$tipobd || !$servidor || !$usuario || !$basedatos)
 
 ?>
 
-<div class="titPagina"><?php echo _INSTALL_TV ?></div>
+<h1><?php echo _INSTALL_TV ?></h1>
 
 <p>
 <?php
 
 	echo $__LIB->fasesInstalacion('bd');
-	echo '<div class="titApartado">'._FASES_INS_BD.'</div>';
+	echo '<h2>'._FASES_INS_BD.'</h2>';
 	
 	echo _INS_TEXTO_1;
 
-	echo '<p><a class="botLink" href="javascript:formBD.submit()">'._INS_COMPROBAR_1.'</a>';
+	echo '<p><a class="button" href="javascript:formBD.submit()"><span>'._INS_COMPROBAR_1.'</span></a>';
 
-	echo '<div class="titApartado">'._ESTADO_CONEXION.'</div>';
+	echo '<br/><br/><h2>'._ESTADO_CONEXION.'</h2>';
 	if (!$procesar)
-		echo '<p><div class="msgInfo">'._PENDIENTE_CHECK.'</div>';
+		echo '<div class="msgInfo">'._PENDIENTE_CHECK.'</div>';
 	
 	$error = '';
 	if ($procesar == '1' && !$datosCompletos) {
@@ -95,7 +95,8 @@ if (!$arquitectura || !$tipobd || !$servidor || !$usuario || !$basedatos)
 		if (!$error) {
 			$__LIB->crearConfigureBD($CLEAN_POST); 
 			echo '<p><div class="msgOk">'._INS_OK_1.'</div>';
-			echo '<p><a class="botLink" href="paso3.php">'._SIGUIENTE_MAS.'</a>';		
+			echo '<p><a class="button" href="paso3.php"><span>'._SIGUIENTE_MAS.'<span/></a>';
+			echo '<br/><br/>';
 		}
 	}
 		
@@ -107,7 +108,7 @@ if (!$arquitectura || !$tipobd || !$servidor || !$usuario || !$basedatos)
 ?>
 
 
-<div class="titApartado"><?php echo _DATOS_CONEXION ?></div>
+<h2><?php echo _DATOS_CONEXION ?></h2>
 
 	<form action="paso2.php" method="post" name="formBD">
 		<table class="formBD">

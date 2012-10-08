@@ -35,14 +35,14 @@ class oficial_modOfertas
 		srand((double)microtime()*1000000);
 		$randval = rand(0, $numOfertas - 1);
 		
-		$ordenSQL = "select referencia, descripcion, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where  enoferta = true and publico=true limit 1 offset $randval";
+		$ordenSQL = "select referencia, descripcion, descripciondeeplink, pvp, codimpuesto, enoferta, pvpoferta, ivaincluido from articulos where  enoferta = true and publico=true limit 1 offset $randval";
 		
 		$result = $__BD->db_query($ordenSQL);
 		$row = $__BD->db_fetch_array($result);
 		
 		$codigoMod .= '<div class="cajaImagen">';
 		$codigoMod .= $__LIB->cajaImagen($row);
-	 	$codigoMod .= '<br><br><a class="botLink" href="'._WEB_ROOT.'catalogo/articulos.php?ver=enoferta">'.strtolower(_MAS_OFERTAS).'</a>';
+	 	$codigoMod .= '<br/><br/><a class="botLink" href="catalogo/articulos.php?ver=enoferta">'.strtolower(_MAS_OFERTAS).'</a>';
 		$codigoMod .= '</div>';
 		
 		return $codigoMod;

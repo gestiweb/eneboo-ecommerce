@@ -100,6 +100,7 @@ class oficial_textosEsp
 		define('_MSG_CONTACTO', 'Contacto desde la Tienda Virtual');
 		define('_CONSULTA_ENVIADA', 'Tu consulta ha sido enviada. Gracias');
 		define('_RELLENAR_CAMPOS', 'Debe rellenar todos los campos');
+		define('_RELLENAR_CAMPO', 'Campo requerido');
 		define('_CONTACTAR', 'Contactar');
 		define('_CESTA_VACIA', 'Su cesta est&aacute; vac&iacute;a');
 		define('_SIGUIENTE', 'siguiente');
@@ -136,7 +137,7 @@ class oficial_textosEsp
 		define('_SELECCIONAR', 'Seleccionar');
 		define('_DTO', 'Descuento');
 		define('_ANTES', 'Antes');
-		define('_ADD_CART', 'A&ntilde;adir a la cesta');
+		define('_ADD_CART', 'Comprar');
 		define('_ADD_FAVORITOS', 'A&ntilde;adir a favoritos');
 		define('_CONFIRME_PEDIDO', 'Revise todos los datos y pulse <i>Crear pedido</i> para confirmar su pedido');
 		define('_DEBES_LOGIN', 'Para acceder a esta zona de la web debe entrar en su cuenta');
@@ -165,15 +166,18 @@ class oficial_textosEsp
 		define('_NOTICIAS', 'Noticias');
 		define('_AUTOR', 'Autor');
 		define('_MAS_NOTICIAS', 'Ver todas las noticias');
+		define('_MODIFICAR', 'Modificar');
 		define('_ERROR_LOGIN', 'Login incorrecto');
 		define('_RELLENAR_TODOS_CAMPOS', 'Los campos marcados con * son obligatorios');
 		define('_CUENTA_CREADA', 'Su cuenta ha sido creada correctamente. Se ha enviado una confirmaci&oacute;n a la direcci&oacute;n de correo que ha proporcionado. Si no ha recibido este correo en las pr&oacute;ximas 2 horas, p&oacute;ngase en contacto con nosotros.'); 
 		define('_YA_TENGO_CUENTA', 'Su cuenta se cre&oacute; correctamente'); 
 		define('_PASSWORD_DISTINTO', 'El password no coincide'); 
+		define('_PASSWORD_ERROR_FORMAT', 'Entre 6 y 20 caracteres alfanum&eacute;ricos'); 
 		define('_EMAIL_EXISTENTE', 'Esta direcci&oacute;n de correo ya se encuentra registrada'); 
 		define('_RELLENAR_TODOS_DATOS_PAGO', 'Debe rellenar todos los datos de pago'); 
 		define('_RELLENAR_TODOS_DATOS_ENVIO', 'Debe rellenar todos los datos de env&iacute;o');
 		define('_PASSWORD_MIN_6', 'El password debe tener al menos 6 d&iacute;gitos');   
+		define('_ERROR_FORMAT', 'Formato err&oacute;neo'); 
 		define('_NIF', 'N.I.F.');
 		define('_TEXTO_CUENTA_CREADA', 'Se cre&oacute; su cuenta correctamente. Para entrar, pulse ');   
 		define('_CUENTA_CREADA_MAIL', 'Bienvenido'); 
@@ -228,16 +232,24 @@ class oficial_textosEsp
 		define("_TUNOMBRE", "Tu nombre");
 		define("_TEXTO", "Texto");
 		define("_CANCELAR", "Cancelar");
-		define("_ENVIA_RECOMENDACION", "te env&iacute;a una recomendación");
+		define("_ENVIA_RECOMENDACION", "te envía una recomendación");
 		define("_ENVIA_COMENTARIOS", "Comentario desde la tienda online");
 		define("_RECOMENDACION_ENVIADA", "Se envi&oacute; la recomendaci&oacute;n. Gracias");
 		define("_COMENTARIO_ENVIADO", "Se envi&oacute; tu comentario. Gracias");
-		define("_CODIGO_DTO", "Código de descuento");
-		define("_INTRO_CODIGO_DTO", "Si dispone de un código de descuento, introdúzcalo aquí");
+		define("_CODIGO_DTO", "C&oacute;digo de descuento");
+		define("_INTRO_CODIGO_DTO", "Si dispone de un c&oacute;digo de descuento, introd&uacute;zcalo aqu&iacute;");
 		define("_VERIFICAR", "Verificar");
-		define("_DTO_NOVALIDO", "Descuento no válido");
+		define("_DTO_NOVALIDO", "Descuento no v&aacute;lido");
 		define("_UNMOMENTO", "Un momento por favor...");
+		define("_RELOAD_SECURIMAGE", "Cambiar imagen");
 		
+		define("_CAMPOS_OBLIGATORIOS","Campos obligatorios");
+		define("_CERRAR_VENTANA","Cerrar ventana");
+
+		define("_NO_AUTO_ACCOUNT","No es posible crear una cuenta. Contacte con el webmaster");
+		define("_CODIGO_VALIDACION","C&oacute;digo de validaci&oacute;n");
+		define("_CODIGO_VALIDACION_INCORRECTO","C&oacute;digo de validaci&oacute;n incorrecto");
+		define("_REDIRECCION_PAGO", "Conectando... un momento por favor");
 		
 		
 		
@@ -316,13 +328,7 @@ class oficial_textosEsp
 		define('_INS_COMPROBAR_3','Realizar el proceso');
 		define('_INS_OK_3','Proceso finalizado con &eacute;xito. A continuaci&oacute;n puede entrar en la p&aacute;gina de inicio de la tienda virtual. Si todo ha funcionado correctamente, recuerde eliminar completamente el directorio <b>instalar</b>. A continuaci&oacute;n deber&aacute; abrir Abanq para comenzar a trabajar desde la gesti&oacute;n de la tienda virtual');
 		define('_INS_SIGUIENTE_3','Ir a la tienda >>');
-		
-		define("_CAMPOS_OBLIGATORIOS","Campos obligatorios");
-		define("_CERRAR_VENTANA","Cerrar ventana");
 
-		define("_NO_AUTO_ACCOUNT","No es posible crear una cuenta. Contacte con el webmaster");
-		define("_CODIGO_VALIDACION","C&oacute;digo de validaci&oacute;n");
-		define("_CODIGO_VALIDACION_INCORRECTO","C&oacute;digo de validaci&oacute;n incorrecto");
 	}
 }
 

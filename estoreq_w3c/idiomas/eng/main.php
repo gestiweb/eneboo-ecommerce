@@ -100,6 +100,7 @@ class oficial_textosEng
 		define('_MSG_CONTACTO', 'Contact from the eStore');
 		define('_CONSULTA_ENVIADA', 'Your request has been sent. Thank you');
 		define('_RELLENAR_CAMPOS', 'You must fill out all the fields');
+		define('_RELLENAR_CAMPO', 'Required field');
 		define('_CONTACTAR', 'Contact');
 		define('_CESTA_VACIA', 'Your cart is empty');
 		define('_SIGUIENTE', 'next');
@@ -112,6 +113,7 @@ class oficial_textosEng
 		define('_CONTRA_RECORDADA', 'An email has been sent to your account with instructions to change your password');
 		define('_CONTRA_CAMBIADA', 'Your password was changed. An email with your new password has been sent to you.');
 		define('_CAMBIO_CONTRA', 'Password change');
+		define('_PASSWORD_ERROR_FORMAT', 'Between 6 and 20 characters'); 
 		define('_MAIL_CONTRA', 'Someone (probably you) has requested a new password in our eStore. To change you password click on the link below.');
 		define('_MAIL_NO_REGISTRADO', 'Email address not registered');
 		define('_NUEVA_CONTRA', 'New password: ');
@@ -221,6 +223,28 @@ class oficial_textosEng
 		define("_GALERIA","Gallery");
 		define("_AMPLIAR_IMG", "Larger image");
 		define("_CERRAR", "Close");
+
+		define("_ENVIAR_AMIGO", "Recommend this product");
+		define("_ENVIAR_COMENTARIO", "Comment this product");		
+		define("_TUNOMBRE", "Your name");
+		define("_TEXTO", "Comments");
+		define("_CANCELAR", "Cancel");
+		define("_ENVIA_RECOMENDACION", "recommends");
+		define("_ENVIA_COMENTARIOS", "Comentario desde la tienda online");
+		define("_RECOMENDACION_ENVIADA", "Thank you");
+		define("_COMENTARIO_ENVIADO", "Thank you");
+		define("_CODIGO_DTO", "Promotional code");
+		define("_INTRO_CODIGO_DTO", "Enter your promotional code here");
+		define("_VERIFICAR", "Check code");
+		define("_DTO_NOVALIDO", "Invalid code");
+		define("_UNMOMENTO", "Please wait...");
+		define("_RELOAD_SECURIMAGE", "Try another image");
+		
+		define("_CODIGO_VALIDACION","Validation code");
+		define("_CODIGO_VALIDACION_INCORRECTO","Error in validation code");
+		define('_MODIFICAR', 'Change');
+		define('_ERROR_FORMAT', 'Invalid format'); 
+		
 		
 		// INSTALACION. Solo en espanol
 		define('_SI','S&iacute;');

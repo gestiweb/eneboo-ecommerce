@@ -28,12 +28,13 @@ class oficial_login
 		global $__BD, $__CAT, $__LIB, $__SEC, $__CLI;
 		global $CLEAN_GET, $CLEAN_POST;
 	
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
 		echo '<div class="cajaTexto">';
 		
 		if ($__LIB->comprobarCliente()) {
 			$__CLI->cuenta();
+			echo '</div>';
 			include("../includes/right_bottom.php");
 			exit;
 		}
@@ -95,17 +96,16 @@ class oficial_login
 		
 			include('form_login.php');
 	
-			echo '<br><br>';
+			echo '<br/><br/>';
 
 			if (!$__LIB->esTrue($_SESSION["opciones"]["noautoaccount"])) {
 				$continua = '';
 				if (isset($CLEAN_GET["continua"]))
 					$continua = '?continua=1';
-				echo '<a class="botLink" href="crear_cuenta.php'.$continua.'">'._CREAR_CUENTA.'</a>';
-				echo '&nbsp;&nbsp;&nbsp;';
+				echo '<a class="button" href="cuenta/crear_cuenta.php'.$continua.'"><span>'._CREAR_CUENTA.'</span></a>';
 			}
 
-			echo '<a class="botLink" href="olvide_contra.php">'._OLVIDE_CONTRA.'</a>';
+			echo '<a class="button" href="cuenta/olvide_contra.php"><span>'._OLVIDE_CONTRA.'</span></a>';
 		}
 	
 		echo '</div>';

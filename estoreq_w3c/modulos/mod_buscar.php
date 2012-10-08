@@ -24,9 +24,14 @@ class oficial_modBuscar
 	function contenidos()
 	{
 		$codigoMod = '
-		<form name="buscar" method="post" action="'._WEB_ROOT.'catalogo/articulos.php">
-		<input type="text" name="palabras" size="10" maxlength="100"> <a href="javascript:buscar.submit()"><img border="0" src="'._WEB_ROOT.'images/buscar.png"></a><input type="hidden" name="buscar" value="1"></form>';
-	
+		<form id="buscar" method="post" action="catalogo/articulos.php">
+		<div>
+		<input type="text" name="palabras" size="10"/>
+		<input type="hidden" name="buscar" value="1"/>
+		<button type="submit" class="buscar"><span></span></button>
+		</div>
+		</form>';
+		
 		return $codigoMod;
 	}
 }

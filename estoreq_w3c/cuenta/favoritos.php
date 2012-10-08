@@ -30,14 +30,14 @@ class oficial_favoritos
 	
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._FAVORITOS.'</div>';
+		$codigo = '';
 		
-		echo '<div class="cajaTexto">';
+		$codigo .= '<h1>'._MI_CUENTA.'</h1>';
 		
-		$__CLI->seccionCuenta('favoritos');
+		$codigo .= '<div class="cajaTexto">';
 		
-		echo '<div class="titApartado">'._FAVORITOS.'</div>';
-			
+		$codigo .= $__CLI->seccionCuenta('favoritos');
+		
 		$codCliente = $__CLI->codCliente;
 		
 		$referencia = '';
@@ -63,8 +63,8 @@ class oficial_favoritos
 				$error = _NO_ARTICULOS;
 				
 			if (!$error) {
-				$codigo = $referencia.$codCliente;
-				$ordenSQL = "insert into favoritos (codigo,referencia,codcliente) values ('$codigo', '$referencia', '$codCliente')";
+				$codigoFav = $referencia.$codCliente;
+				$ordenSQL = "insert into favoritos (codigo,referencia,codcliente) values ('$codigoFav', '$referencia', '$codCliente')";
 				$result = $__BD->db_query($ordenSQL);
 				if (!$result)
 					$error = _ERROR;
@@ -80,15 +80,16 @@ class oficial_favoritos
 		}
 		
 		if ($error)
-			echo '<div class="msgInfo">'.$error.'</div>';
+			$codigo .= '<div class="msgInfo">'.$error.'</div>';
 		
 		
 		// Se muestran los favoritos como un listado de articulos
-		$ordenSQL = "select a.referencia as referencia, descripcion, pvp, codimpuesto, stockfis, stockmin, controlstock, codplazoenvio, enoferta, pvpoferta from articulos a inner join favoritos f on a.referencia = f.referencia where f.codcliente = '$codCliente'";
-		echo $__CAT->articulosLista($ordenSQL);
+		$ordenSQL = "select a.referencia as referencia, ivaincluido, descripciondeeplink, descripcion, pvp, codimpuesto, stockfis, stockmin, controlstock, codplazoenvio, enoferta, pvpoferta from articulos a inner join favoritos f on a.referencia = f.referencia where f.codcliente = '$codCliente'";
+		$codigo .= $__CAT->articulosLista($ordenSQL);
 		
-		echo '</div>';
-
+		$codigo .= '</div>';
+		
+		echo $codigo;
 	}
 }
 

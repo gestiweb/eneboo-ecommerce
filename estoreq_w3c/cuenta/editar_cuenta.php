@@ -31,70 +31,73 @@ class oficial_editarCuenta
 		
 		$__LIB->comprobarCliente(true);
 		
-		echo '<div class="titPagina">'._MI_CUENTA.'</div>';
+		echo '<h1>'._MI_CUENTA.'</h1>';
 		
-		echo '<div class="cajaTexto" style="width: 470px">';
+		echo '<div class="cajaTexto">';
 		
-		$__CLI->seccionCuenta('editar_cuenta');
+		echo $__CLI->seccionCuenta('editar_cuenta');
 		
 		// Datos modificados
-		if (isset($CLEAN_POST["procesarDatos"]))
-			if ($CLEAN_POST["procesarDatos"] == 1) {
-				$result = $__CLI->actualizarDatos($CLEAN_POST);
-				if ($result == 'ok')
-					echo '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
- 				else
- 					echo '<div class="msgError">'.$result.'</div>';
-			}
+		$resultDatos = '';
+		if (isset($CLEAN_POST["procesarDatos"])) {
+			$resultDatos = $__CLI->actualizarDatos($CLEAN_POST);
+			if ($resultDatos == 'ok')
+				$resultDatos = '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
+			else
+				$resultDatos = '<div class="msgError">'.$resultDatos.'</div>';
+		}
 		
 		// Password modificado
-		if (isset($CLEAN_POST["procesarPassword"]))
-			if ($CLEAN_POST["procesarPassword"] == 1) {
-				$result = $__CLI->actualizarPassword($CLEAN_POST);
-				if ($result == 'ok')
-					echo '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
-				else
-					echo '<div class="msgError">'.$result.'</div>';
-			}
+		$resultPass = '';
+		if (isset($CLEAN_POST["procesarPassword"])) {
+			$resultPass = $__CLI->actualizarpassword($CLEAN_POST);
+			if ($resultPass == 'ok')
+				$resultPass = '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
+			else
+				$resultPass = '<div class="msgError">'.$resultPass.'</div>';
+		}
 		
 		// Direccion de facturacion modificada
-		if (isset($CLEAN_POST["procesarDireccionFact"]))
-			if ($CLEAN_POST["procesarDireccionFact"] == 1) {
-				$result = $__CLI->actualizarDir($CLEAN_POST);
-				if ($result == 'ok')
-					echo '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
-				else
-					echo '<div class="msgError">'.$result.'</div>';
-			}
+		$resultDirFact = '';
+		if (isset($CLEAN_POST["procesarDireccionFact"])) {
+			$resultDirFact = $__CLI->actualizarDir($CLEAN_POST);
+			if ($resultDirFact == 'ok')
+				$resultDirFact = '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
+			else
+				$resultDirFact = '<div class="msgError">'.$resultDirFact.'</div>';
+		}
 		
 		// Direccion de envio modificada
-		if (isset($CLEAN_POST["procesarDireccionEnv"]))
-			if ($CLEAN_POST["procesarDireccionEnv"] == 1) {
-				// Actualizar
-				if ($CLEAN_POST["id"])
-					$result = $__CLI->actualizarDir($CLEAN_POST, '_env');
-				// Nueva direccion
-				else
-					$result = $__CLI->introducirDirEnv($CLEAN_POST);
-				
-				if ($result == 'ok')
-					echo '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
-				else
-					echo '<div class="msgError">'.$result.'</div>';
-			}
+		$resultDirEnv = '';
+		if (isset($CLEAN_POST["procesarDireccionEnv"])) {
+			// Actualizar
+			if ($CLEAN_POST["id"])
+				$resultDirEnv = $__CLI->actualizarDir($CLEAN_POST, '_env');
+			// Nueva direccion
+			else
+				$resultDirEnv = $__CLI->introducirDirEnv($CLEAN_POST);
+			
+			if ($resultDirEnv == 'ok')
+				$resultDirEnv = '<div class="msgInfo">'._DATOS_CAMBIADOS.'</div>';
+			else
+				$resultDirEnv = '<div class="msgError">'.$resultDirEnv.'</div>';
+		}
 		
 		$datos = $__CLI->datosPersonales();
 		
-		$destino = "editar_cuenta.php";
+		$destino = "cuenta/editar_cuenta.php";
 ?>
 
-		<div class="titApartado"><?php echo _CAMBIAR_DATOS_CUENTA?></div>
+		<a name="datosCuenta"></a>
+		<h2><?php echo _CAMBIAR_DATOS_CUENTA?></h2>
 		<?php
 			//include("form_datos_cuenta.php");
-			echo '<form name="datosCuenta" action="'.$destino.'" method="post">';
+			echo '<form name="datosCuenta" action="'.$destino.'#datosCuenta" method="post">';
+			echo $resultDatos;
 			$datosPersonales = $__CLI->datosPersonales();
 			echo formularios::editarCuentaPersonal($datosPersonales);
- 			echo '<p class="separador"/><a class="botGuardar" href="javascript:document.datosCuenta.submit()">'._ENVIAR.'</a>';
+			echo formularios::botEnviar();
+			echo '<input type="hidden" name="procesarDatos" value="1">';
  			echo '</form>';
 		?>
 		
@@ -102,46 +105,63 @@ class oficial_editarCuenta
 		
 		
 		
-		<div class="titApartado"><?php echo _CAMBIAR_PASSWORD?></div>
+		<a name="datosPass"></a>
+		<h2><?php echo _CAMBIAR_PASSWORD?></h2>
 		<?php
-			include("form_password.php");
+			echo '<form name="datosPass" action="'.$destino.'#datosPass" method="post">';
+			echo $resultPass;
+			echo formularios::editarPassword();
+			echo formularios::botEnviar();
+			echo '<input type="hidden" name="procesarPassword" value="1">';
+ 			echo '</form>';
 		?>
 		
 		<p>&nbsp;</p>
 		
 		
 		
-		<div class="titApartado"><?php echo _CAMBIAR_DIRECCION_FACT?></div>
 		
-		<form name="datosDirFact" id="datosDirFact" action="<?php echo $destino?>" method="post">
+		<a name="direccionFact"></a>
+		<h2><?php echo _CAMBIAR_DIRECCION_FACT?></h2>
+		
+		<form name="datosDirFact" id="datosDirFact" action="<?php echo $destino?>#direccionFact" method="post">
 		
 		<?php
 			$dirFact = $__CLI->direccionFact();
+			echo $resultDirFact;
 			echo formularios::dirFact($dirFact, 'datosDirFact');
 		?>
 		
-		<input size="30" type="hidden" name="id" value="<?php echo $dirFact[5]?>">
+		<input size="30" type="hidden" name="id" value="<?php echo $dirFact["id"]?>">
 		<input size="30" type="hidden" name="procesarDireccionFact" value="1">
+				
+		<?php
+			echo formularios::botEnviar();
+		?>
 
-		<p style="clear: left; padding-top:30px"/><a class="botGuardar" href="javascript:document.datosDirFact.submit()"><?php echo _ENVIAR ?></a>
-		
 		</form>
 		
 				
-		<form name="datosDirEnv" id="datosDirEnv" action="<?php echo $destino?>" method="post">
+				
+				
+		<a name="direccionEnv"></a>
+		<form name="datosDirEnv" id="datosDirEnv" action="<?php echo $destino?>#direccionEnv" method="post">
 		
 		<p>&nbsp;</p>
 		
-		<div class="titApartado"><?php echo _CAMBIAR_DIRECCION_ENV?></div>
+		<h2><?php echo _CAMBIAR_DIRECCION_ENV?></h2>
 		<?php
 			$dirEnv = $__CLI->direccionEnv();
+			echo $resultDirEnv;
 			echo formularios::dirEnv($dirEnv, 'datosDirEnv');
 		?>
 		
-		<input size="30" type="hidden" name="id" value="<?php echo $dirEnv[5]?>">
+		<input size="30" type="hidden" name="id" value="<?php echo $dirEnv["id"]?>">
 		<input size="30" type="hidden" name="procesarDireccionEnv" value="1">
 
-		<p style="clear: left; padding-top:30px"/><a class="botGuardar" href="javascript:document.datosDirEnv.submit()"><?php echo _ENVIAR ?></a>
+		<?php
+			echo formularios::botEnviar();
+		?>
 		
 		</form>
 		

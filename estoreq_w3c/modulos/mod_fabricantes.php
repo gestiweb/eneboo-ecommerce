@@ -35,8 +35,9 @@ class oficial_modFabricantes
 		$ordenSQL = "select codfabricante, nombre from fabricantes where publico = true order by nombre";
 		$result = $__BD->db_query($ordenSQL);
 		
-		$codigoMod .= '<form name="fabricantes" action="'._WEB_ROOT.'catalogo/articulos.php" method="get">';
-		$codigoMod .= '<select name="fab" onChange="this.form.submit();" size="1">';
+		$codigoMod .= '<form action="catalogo/articulos.php" method="get">';
+		$codigoMod .= '<div>';
+		$codigoMod .= '<select name="fab" class="fabricantes" onchange="this.form.submit();">';
 	
 		$codigoMod .= '<option></option>';
 		while($row = $__BD->db_fetch_array($result)) {
@@ -57,6 +58,7 @@ class oficial_modFabricantes
 			$codigoMod .= '</option>';
 		}
 		$codigoMod .= '</select>';
+		$codigoMod .= '</div>';
 		$codigoMod .= '</form>';
 		
 		if (!$hayAlgo)

@@ -30,23 +30,39 @@ class oficial_modCesta
 		if (!isset($_SESSION["cesta"]))
 			return;
 			
+		$codigoMod .= '<div id="cestaLateral">';
+		$codigoMod .= $this->innerContenidos();
+		$codigoMod .= '</div>';
+		
+/*		$codigoMod .= '<div class="itemMenu">PESO '.$cesta->peso();
+		$codigoMod .= '</div>';*/
+		
+		return $codigoMod;
+	}
+	// Listado de articulos en la cesta
+	function innerContenidos()
+	{
+		global $__BD, $__LIB, $__CAT;
+	
+		$codigo = '';
+		
 		$cesta = $_SESSION["cesta"];
 		
 		if (!$cesta->cestaVacia()) {
 			for ($i=0; $i < $cesta->num_articulos; $i++){			
-				$referencia = $cesta->codigos[$i];			
-				if($referencia != 'null') {								
-					$descripcion = $__BD->db_valor("select descripcion from articulos where referencia='$referencia';");	
-					$descripcion = $__LIB->traducir("articulos", "descripcion", $referencia, $descripcion);
-					
-					$codigoMod .= '<div class="itemMenu">';
-					$codigoMod .= '<a href="'._WEB_ROOT.'catalogo/articulo.php?ref='.$referencia.'">'.$descripcion.'</a>';
-					$codigoMod .= '</div>';
+				$referencia = $cesta->codigos[$i];	
+				if($referencia != 'null') {
+					$row = $__BD->db_row("select descripcion, descripciondeeplink from articulos where referencia='$referencia';");
+					$descripcion = $__LIB->traducir("articulos", "descripcion", $referencia, $row[0]);
+					$link = $__CAT->linkArticulo($referencia, $row[1]);
+					$codigo .= '<div class="itemMenu">';
+					$codigo .= '<a href="'.$link.'">'.$descripcion.'</a>';
+					$codigo .= '</div>';
 				}
 			}
 		}
 		
-		return $codigoMod;
+		return $codigo;
 	}
 }
 

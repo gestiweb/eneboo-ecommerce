@@ -44,7 +44,7 @@ class oficial_sesion
 		if (isset($_SESSION["codCliente"]))
 			$__CLI = new cliente();
 	
-		$__BD->conectaBD();
+ 		$__BD->conectaBD();
 	}
 }
 

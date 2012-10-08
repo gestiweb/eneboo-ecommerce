@@ -26,7 +26,7 @@ class oficial_articulos
 	function unsetTodos()
 	{
 		unset($_SESSION["buscar"]);
-		unset($_SESSION["orden"]);
+// 		unset($_SESSION["orden"]);
 		unset($_SESSION["fabricante"]);
 		unset($_SESSION["familia"]);
 		unset($_SESSION["ver"]);
@@ -35,9 +35,8 @@ class oficial_articulos
 	// Realiza la consulta a base de datos sobre los artículos, la lanza y los muestra
 	function contenidos() 
 	{
-	
 		global $__BD, $__CAT, $__LIB;
-		global $CLEAN_GET, $CLEAN_POST; 	
+		global $CLEAN_GET, $CLEAN_POST;
 	
 		$titPagina = '';	
 		
@@ -67,6 +66,10 @@ class oficial_articulos
 		$codFamilia = '';
 		if (isset($CLEAN_GET["fam"]))
 			$codFamilia = $CLEAN_GET["fam"];
+		else if(isset($CLEAN_GET["famdl"])) {
+			$ordenSQL = "select codfamilia from familias where descripciondeeplink = '".$CLEAN_GET["famdl"]."'";
+			$codFamilia = $__BD->db_valor($ordenSQL);
+		}
 		
 		if ($codFamilia) {
 			$this->unsetTodos();
@@ -83,10 +86,13 @@ class oficial_articulos
 			$palabras = addslashes($CLEAN_POST["palabras"]);
 			$like = $__CAT->likeBuscar($palabras);
 		
-			if ($like)
+ 			if ($like)
 				$_SESSION["buscar"] = $like;
 			else
-				$where .= ' AND 1=0';
+				$_SESSION["buscar"] = "1=0";
+			
+			echo '<script type="text/javascript">window.location = "'._WEB_ROOT_SSL_L.'catalogo/articulos.php"</script>';
+			exit;
 		}
 		
 		
@@ -148,8 +154,8 @@ class oficial_articulos
 		
 		// Control de orden
 		$orderBy = '';
-		if (isset($CLEAN_GET["ord"]))
-			$_SESSION["orden"] = $CLEAN_GET["ord"];
+		if (isset($CLEAN_GET["orden"]))
+			$_SESSION["orden"] = $CLEAN_GET["orden"];
 			
 		
 		// Control de orden y sentencia en funcion del idioma
@@ -181,24 +187,45 @@ class oficial_articulos
 			
 		$totalArticulos = $__BD->db_num_rows($ordenSQL);
 		
-		$navPaginas = $__CAT->navPaginas($ordenSQL);
+		$navPaginas = $__CAT->navPaginas($ordenSQL, "top");
+		$navPaginasB = $__CAT->navPaginas($ordenSQL);
 		$ordenSQL .= $__CAT->wherePagina($ordenSQL);
 		
-		$codigo .= '<div class="titPagina">'.$titPagina.'</div>';
+		
+/*		$cache = new JG_Cache();
+		
+		$keyCache = $ordenSQL;
+		
+		$data = $cache->get($keyCache);
+		
+		if ($data === FALSE) {}
+		else
+			return $data;
+		
+		echo 'cacheando';*/
+		
+		$codigo .= '<h1>'.$titPagina.'</h1>';
 		
 		$subFamilias = '';
 		if (isset($_SESSION["familia"]))
+// 			$subFamilias = $__CAT->familiasMatriz($codFamilia);
 			$subFamilias = $__CAT->listaFamiliasHijas($codFamilia);
-		if ($subFamilias)
+		if ($subFamilias) {
 			$codigo .= $subFamilias;
+// 			$codigo .= '<br class="cleaner"/>';
+// 			return $codigo;
+		}
+		
 		
 		$codigo .= $navPaginas;
 		// Llamada principal	
 		$codigo .= $__CAT->articulos($ordenSQL);
 		$codigo .= '<br class="cleaner"/>';
-		$codigo .= $navPaginas;
+		$codigo .= $navPaginasB;
 		$codigo .= $__CAT->navOpciones($totalArticulos);
 
+// 		$cache->set($keyCache, $codigo);
+		
 		return $codigo;
 	}
 
@@ -213,25 +240,8 @@ class oficial_articulos
 //// OFICIAL /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 
-/** @class_definition pcrednet_articulos */
-//////////////////////////////////////////////////////////////////
-//// PC REDNET /////////////////////////////////////////////////////
-
-class pcrednet_articulos extends oficial_articulos
-{
-	function masWhere()
-	{
-		$masWhere = " AND obsoleto = false";
-		return $masWhere;
-	}
-}
-
-//// PC REDNET /////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-
-	
 /** @main_class_definition oficial_articulos */
-class articulos extends pcrednet_articulos{};
+class articulos extends oficial_articulos {};
 
 $iface_articulos = new articulos;
 $iface_articulos->contenidos();

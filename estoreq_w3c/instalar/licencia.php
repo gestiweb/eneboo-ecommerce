@@ -19,17 +19,24 @@ require_once( '../idiomas/esp/main.php' );
 
 ?>
 
-<div class="titPagina"><?php echo _INSTALL_TV ?></div>
+<h1><?php echo _INSTALL_TV ?></h1>
 
-<p>
+<br/><br/>
+
 <?php
 	echo $__LIB->fasesInstalacion('licencia'); 
-	echo '<div class="titApartado">'._FASES_INS_LICENCIA.'</div>';
+	echo '<h2>'._FASES_INS_LICENCIA.'</h2>';
 	echo _INS_TEXTO_LIC
 ?>
 
-<p><a class="botLink" href="paso1.php"><?php echo _SIGUIENTE_MAS ?></a>
-<p>
-<iframe src="gpl.html" class="licencia" scrolling="auto"></iframe>
+<br/><br/>
+<a class="button" href="paso1.php"><span><?php echo _SIGUIENTE_MAS ?></span></a>
+<br/><br/>
+			
+<div class="licencia">
+<div class="innerLicencia">
+	<?php readfile('gpl.html') ?>
+</div>
+</div>
 
 <?php require_once( 'right_bottom.php' );

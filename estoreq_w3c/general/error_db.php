@@ -23,7 +23,7 @@ div {
 <body>
 
 	<div>	
-	En estos momentos no es posible acceder al sistema<br>Disculpe las molestias
+	En estos momentos no es posible acceder al sistema<br/>Disculpe las molestias
 	</div>
 	
 </body>

@@ -92,8 +92,8 @@ class oficial_crearPedido
 				"dtolineal" => 0,
 				"dtopor" => 0,
 				"gastosenvio" => "'".$gastosEnvio."'",
-				"pvpsindtoiva" => "'".$netoSinDto["coniva"]."'",
-				"pvptotaliva" => "'".$netoSinDto["coniva"]."'"
+				//"pvpsindtoiva" => "'".$netoSinDto["coniva"]."'",
+				//"pvptotaliva" => "'".$netoSinDto["coniva"]."'"
 			);
 									
 			$linea = $this->editarLinea($linea);
@@ -253,8 +253,8 @@ class oficial_crearPedido
 				"dtolineal" => 0,
 				"dtopor" => 0,
 				"gastosenvio" => "false",
-				"pvpsindtoiva" => "'".$pvpUnitario."'",
-				"pvptotaliva" => "'".$pvpUnitario."'"
+				//"pvpsindtoiva" => "'".$pvpUnitario."'",
+				//"pvptotaliva" => "'".$pvpUnitario."'"
 			);
 	
 		if (!$this->insertarLinea($linea))
@@ -315,8 +315,8 @@ class oficial_crearPedido
 				"dtolineal" => 0,
 				"dtopor" => 0,
 				"gastosenvio" => "false",
-				"pvpsindtoiva" => "'".$gastosConIva."'",
-				"pvptotaliva" => "'".$gastosConIva."'"
+				//"pvpsindtoiva" => "'".$gastosConIva."'",
+				//"pvptotaliva" => "'".$gastosConIva."'"
 			);
 	
 		if (!$this->insertarLinea($linea))
@@ -366,8 +366,8 @@ class oficial_crearPedido
 				"dtolineal" => 0,
 				"dtopor" => 0,
 				"gastosenvio" => "false",
-				"pvpsindtoiva" => "'".$pvpUnitario."'",
-				"pvptotaliva" => "'".$pvpUnitario."'",
+				//"pvpsindtoiva" => "'".$pvpUnitario."'",
+				//"pvptotaliva" => "'".$pvpUnitario."'",
 			);
 	
 		if (!$this->insertarLinea($linea))

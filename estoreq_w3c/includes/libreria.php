@@ -350,12 +350,12 @@ class oficial_funLibreria
 		
 		$codigo .= '<tr>';
 		$codigo .= '<th align="left" class="desc">'._ARTICULO.'</th>';
-/*				
+				
 				if ($__LIB->esTrue($_SESSION["opciones"]["desglosariva"])) {*/
-// 					$codigo .= '<th align="left">'._PRECIO.'</th>';
-// 					$codigo .= '<th align="left">'._IVA.'</th>';
-// 				}
-// 				else
+ 					$codigo .= '<th align="left">'._PRECIO.'</th>';
+ 					$codigo .= '<th align="left">'._IVA.'</th>';
+ 				}
+ 				else
 		$codigo .= '<th align="left">'._PRECIO.'</th>';
 			
 		$codigo .= '<th align="left">'._CANTIDAD.'</th>
@@ -1169,11 +1169,11 @@ class oficial_funLibreria
 		$codPeso = $_SESSION["cesta"]->intervaloPeso();
 		$codZona = $this->zonaEnvio($codPais, $provincia);
 
-		//		if ($__LIB->envioGratuito()) {
-		//		$codEnvio = $_SESSION["opciones"]["codenviogratis"];
-		//	$ordenSQL = "select codenvio, descripcion, pvp, codimpuesto, ivaincluido from formasenvio where codenvio = '$codEnvio'";
-		//		}
-		//	else
+				if ($__LIB->envioGratuito()) {
+				$codEnvio = $_SESSION["opciones"]["codenviogratis"];
+			$ordenSQL = "select codenvio, descripcion, pvp, codimpuesto, ivaincluido from formasenvio where codenvio = '$codEnvio'";
+				}
+			else
 		$ordenSQL = "select codenvio, descripcion, pvp, codimpuesto, ivaincluido, controlporzonas from formasenvio where activo = true";
 
 		$result = $__BD->db_query($ordenSQL);

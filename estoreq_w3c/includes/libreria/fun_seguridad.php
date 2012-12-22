@@ -192,7 +192,7 @@ class oficial_funSeguridad
 	
 	function validarDatosCuenta($tainted, $tipo, $insert = false)
 	{
-		global $__BD;
+		global $__BD, $__LIB;
 
 		foreach($tainted as $campo=>$val)
 			$errores[$campo] = '';
@@ -223,8 +223,8 @@ class oficial_funSeguridad
 		$errores["codpostal"] = $this->validarCampo('codpostal', $tainted["codpostal"]);
 
 		$camposNoNulos = array ("nombre", "apellidos", "email", "emailconf", "password", "confirmacion", "direccion", "codpostal", "ciudad", "provincia", "codpais");
-
-		$errores["code"] = $this->validarCampo('securimage', $tainted["code"]);
+                if ($__LIB->esTrue($_SESSION["opciones"]["validarcrearcuenta"]))
+			$errores["code"] = $this->validarCampo('securimage', $tainted["code"]);
 		
 		// Comprobacion de direccion de envio: Todos vacios o todos rellenos
 		$numVacios = 0;

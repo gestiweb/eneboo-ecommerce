@@ -102,7 +102,7 @@ class oficial_olvideContra
 				$id = $__BD->db_valor("select max(id) from recordarcontras");
 				if (!$id) $id = 0;
 				$id++;
-				$result = $__BD->db_query("insert into recordarcontras values($id, '$fecha', $randValor, '$email')");
+				$result = $__BD->db_query("insert into recordarcontras(id, fecha, codigo, email) values($id, '$fecha', $randValor, '$email')");
 				if (!$result) {
 					echo _ERROR_FATAL;
 					include("../includes/right_bottom.php");

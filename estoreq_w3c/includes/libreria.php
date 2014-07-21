@@ -351,7 +351,7 @@ class oficial_funLibreria
 		$codigo .= '<tr>';
 		$codigo .= '<th align="left" class="desc">'._ARTICULO.'</th>';
 				
-				if ($__LIB->esTrue($_SESSION["opciones"]["desglosariva"])) {*/
+				if ($__LIB->esTrue($_SESSION["opciones"]["desglosariva"])) {
  					$codigo .= '<th align="left">'._PRECIO.'</th>';
  					$codigo .= '<th align="left">'._IVA.'</th>';
  				}
